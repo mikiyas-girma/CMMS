@@ -3,7 +3,7 @@ const About = () => {
     return (
         <div>
             <h1>About Page</h1>
-            <p>Welcome to our website!</p>
+            <p>this is CMMS website</p>
         </div>
     );
 };
