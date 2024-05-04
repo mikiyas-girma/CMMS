@@ -2,8 +2,7 @@
 const About = () => {
     return (
         <div>
-            <h1>About Page</h1>
-            <p>this is CMMS website</p>
+            <h1>This is the About Page</h1>
         </div>
     );
 };
