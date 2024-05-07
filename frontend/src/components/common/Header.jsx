@@ -7,7 +7,7 @@ const Header = () => {
         <header>
             <div className="header-div">
 
-            <h1 className="title"><Link to={PathConstants.HOME}>CMMS website</Link></h1>
+            <h1 className="text-center "><Link to={PathConstants.HOME}>CMMS website</Link></h1>
                 <nav className="navbar">
                     <ul className="navlist">
                         <Grid templateColumns='repeat(2, 1fr)' gap={6}>
