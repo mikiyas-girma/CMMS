@@ -7,7 +7,7 @@ const Navbar = () => {
     <HStack justifyContent='space-between' bg='tomato'>
         <Image src={logo} boxSize='50px' margin='10px'/>
         <HStack>
-             <Breadcrumb separator='-' spacing={8} marginRight='30px' fontSize='lg' color='white' lineHeight= '110%' fontWeight='bold'>
+             <Breadcrumb separator='-' spacing={8} marginRight='30px' fontSize='lg' color='white' lineHeight= '110%' >
                <BreadcrumbItem>
                  <BreadcrumbLink href='#'>Home</BreadcrumbLink>
                </BreadcrumbItem>
