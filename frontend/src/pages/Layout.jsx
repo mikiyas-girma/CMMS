@@ -19,7 +19,7 @@ export default function Layout() {
                 </Suspense>
             </main>
             
-            <Footer  style={{ position: "sticky", bottom: 0 }} />
+            <Footer  style={{ position: "fixed", bottom: 0 }} />
         </>
     )
 }
