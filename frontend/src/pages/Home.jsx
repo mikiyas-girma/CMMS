@@ -1,5 +1,6 @@
 import { Box, Button, FormControl, FormLabel, Input, Stack, useColorMode} from "@chakra-ui/react";
 import { Card, CardHeader, CardBody, CardFooter, Text } from '@chakra-ui/react'
+import { Heading, Grid, GridItem, VStack } from '@chakra-ui/react'
 
 export default function Home() {
 
@@ -26,10 +27,11 @@ export default function Home() {
       </ul>
       </div>
       </div> */}
-      <div >
+      <div className="flex justify-end" >
         <Button onClick={toggleColorMode}>
-          Toggle {colorMode === "light" ? "Dark" : "Light"} Mode
+           {colorMode === "light" ? "Dark" : "Light"}
         </Button>
+
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-5 px-8">
         <section className="col-span-2 py-12 sm:pb-16 lg:pb-20 xl:pb-24">
