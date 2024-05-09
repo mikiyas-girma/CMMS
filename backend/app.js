@@ -6,6 +6,6 @@ app.use(express.json());
 
 if (process.env.NODE_ENV === "developement") app.use(morgan("dev"));
 
-app.use("/cmms/api/users", userRouter);
+app.use("/cmms/api/", userRouter);
 
 export default app;
