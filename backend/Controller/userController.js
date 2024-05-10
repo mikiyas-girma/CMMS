@@ -3,7 +3,7 @@ import { User, StoreOwner, Employee } from "../Models/UserModel.js";
 export const RegisterStoreOwner = async (req, res) => {
   req.body.role = "storeOwner";
   try {
-    const user = await User.create(req.body);
+    const user = await StoreOwner.create(req.body);
     res.status(201).json({
       status: "success",
       data: {
@@ -13,13 +13,33 @@ export const RegisterStoreOwner = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "fail",
-      message: err,
+      message: err.message,
     });
   }
 };
 export const getAllStoreOwner = async (req, res) => {
   try {
     const user = await User.find();
+    res.status(200).json({
+      status: "success",
+      results: user.length,
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+export const UpdateStoreOwner = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
     res.status(200).json({
       status: "success",
       data: {
@@ -29,7 +49,7 @@ export const getAllStoreOwner = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "fail",
-      message: err,
+      message: err.message,
     });
   }
 };
