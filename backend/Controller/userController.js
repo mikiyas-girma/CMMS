@@ -1,4 +1,5 @@
-import User from "../Models/UserModel.js";
+import { User, StoreOwner, Employee } from "../Models/UserModel.js";
+
 export const RegisterStoreOwner = async (req, res) => {
   req.body.role = "storeOwner";
   try {

@@ -52,7 +52,7 @@ userSchema.pre("save", async function (next) {
 });
 
 const User = mongoose.model("User", userSchema);
-const StoreOwner = User.Discriminator(
+const StoreOwner = User.discriminator(
   "StoreOwner",
   new mongoose.Schema({
     status: {
@@ -63,7 +63,8 @@ const StoreOwner = User.Discriminator(
     },
   })
 );
-const Employee = User.Discriminator(
+const Employee = User.discriminator(
+  "Employee",
   new mongoose.Schema({
     status: {
       type: String,
