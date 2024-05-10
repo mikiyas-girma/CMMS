@@ -36,7 +36,7 @@ export const getAllStoreOwner = async (req, res) => {
 };
 export const UpdateStoreOwner = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    const user = await StoreOwner.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -44,6 +44,22 @@ export const UpdateStoreOwner = async (req, res, next) => {
       status: "success",
       data: {
         user,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+export const DeleteStoreOwner = async (req, res) => {
+  try {
+    const user = await StoreOwner.findByIdAndDelete(req.params.id);
+    res.status(204).json({
+      status: "success",
+      data: {
+        message: "User deleted Successfully",
       },
     });
   } catch (err) {
