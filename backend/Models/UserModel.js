@@ -52,5 +52,26 @@ userSchema.pre("save", async function (next) {
 });
 
 const User = mongoose.model("User", userSchema);
+const StoreOwner = User.Discriminator(
+  "StoreOwner",
+  new mongoose.Schema({
+    status: {
+      type: String,
+      required: true,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
+  })
+);
+const Employee = User.Discriminator(
+  new mongoose.Schema({
+    status: {
+      type: String,
+      required: true,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
+  })
+);
 
-export default User;
+export { User, StoreOwner, Employee };
