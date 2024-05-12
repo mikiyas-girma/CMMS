@@ -36,6 +36,9 @@ export const getAllStoreOwner = async (req, res) => {
 };
 export const UpdateStoreOwner = async (req, res, next) => {
   try {
+    if (req.body.password || req.body.passwordConfirm) {
+      throw new Error("This Endpoint is not for updating password ");
+    }
     const user = await StoreOwner.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
