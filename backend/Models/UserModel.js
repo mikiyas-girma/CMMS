@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import validator from "validator";
 
 const userSchema = new mongoose.Schema({
   Fname: {
@@ -15,6 +16,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    validate: [validator.isEmail, "Please provide a valid email"],
   },
   username: {
     type: String,
@@ -25,6 +27,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 8,
+    select: false,
   },
   passwordConfirm: {
     type: String,
@@ -39,7 +42,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    required: true,
+    required: [true, "please enter user role"],
     enum: ["admin", "storeOwner", "employee"],
   },
   image: String,
