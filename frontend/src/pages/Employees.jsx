@@ -1,69 +1,81 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { chakra, TableContainer, Table, Thead, Tr, Th, Tbody, Td, Button, FormControl, FormLabel, Input } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input, Table, Tbody, Td, Th, Thead, Tr,Text, Tfoot } from '@chakra-ui/react';
 const employees = [
     { id: Math.floor(Math.random() * 1000), name: 'Biniam', role: 'store-keeper', date: '11 / 22 / 22' },
     { id: Math.floor(Math.random() * 1000), name: 'Mikias', role: 'store-keeper', date: '11 / 22 / 22' },
     { id: Math.floor(Math.random() * 1000), name: 'Jibrel', role: 'store-keeper', date: '11 / 22 / 22' },
     { id: Math.floor(Math.random() * 1000), name: 'Nani', role: 'store-keeper', date: '11 / 22 / 22' },
 ]
+const Stu = [
+    { id: Math.floor(Math.random() * 1000), name: 'Biniam', role: 'store-keeper', date: '11 / 22 / 22' },
+    { id: Math.floor(Math.random() * 1000), name: 'Mikias', role: 'store-keeper', date: '11 / 22 / 22' },
+]
 
 const Employees = () => {
     const [task, setTask] = useState("")
-    //  const [employ, setEmploy] = useState(employees);
+    const [employ, setEmploy] = useState(employees);
+    const [Stud, setStud] = useState(Stu);
+    const nameRef = useRef(null)
+    const roleRef = useRef(null)
     const handleSubmit = (e) => {
+        const date = new Date()
         e.preventDefault();
         const Employes = {
             id: Math.floor(Math.random() * 1000),
-            name: task,
-            role: task
+            name: nameRef.current.value,
+            role: roleRef.current.value,
+            date: `${date.toLocaleTimeString()}${date.toLocaleDateString()}`
         }
-        setTask(console.log(Employes))
+        console.log(Employes)
 
     }
 
-
     const handleDelete = (id) => {
-        console.log(employ.filter(e => e.id !== id))
-        setEmploy(employ.filter(e => e.id !== id));
+        setEmploy(employ.filter((e) => e.id !== id))
+        console.log(employ.filter((e) => e.id !== id))
     }
 
     return (
         <div>
-            < div >
-                <section>
-                    <form onSubmit={handleSubmit} >
-                        <label htmlFor='name'>Employee Name</label>
-                        <input type='text' name='name' id='name' onChange={(e) => setTask(e.target.value)} /><br></br>
-                        <label htmlFor='role'>Role</label>
-                        <input type='text' name='role' id='employee' onChange={(e) => setTask(e.target.value)} /><br></br>
-                        <button color='blue' type='submit'>Submit</button>
-                    </form>
-                </section>
-            </div >
-            <div>
-                <TableContainer>
-                    <Table variant='simple' >
-                        <Thead>
-                            <Tr>
-                                <Th>Employee Name</Th>
-                                <Th>Role</Th>
-                                <Th >Date</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody >
-                            {employees.map((emple) => (
-                                <tr key={emple.id}>
-                                    <Td>{emple.name}</Td>
-                                    <Td>{emple.role}</Td>
-                                    <Td >{emple.date}</Td>
-                                    <Td><EditIcon color="blue" cursor='pointer' onClick={() => handleEdit(todo.id)}>Edit</EditIcon></Td>
-                                    <td><button color="red" cursor='pointer' onClick={() => handleDelete(emple.id)}>Delete</button></td>
-                                </tr>))}
+            <section>
+                <form onSubmit={handleSubmit} >
+                    <FormControl padding='20px 20px' marginLeft='100px' >
+                        <FormLabel htmlFor='name'>Employee Name</FormLabel>
+                        <Input width='700px' ref={nameRef} type='text' name='name' id='name' value={task.name} onChange={(e) => setTask(e.target.value)} /><br></br>
+                        <FormLabel htmlFor='role'>Role</FormLabel>
+                        <Input width='700px' ref={roleRef} type='text' name='role' id='employee' value={task.role} onChange={(e) => setTask(e.target.value)} /><br></br>
+                        <Button marginTop='20px'colorScheme='teal' variant='solid' type='submit'>Submit</Button>
+                    </FormControl>
+                </form>
+            </section>
 
-                        </Tbody>
-                    </Table>
-                </TableContainer>
+            <div>
+                <Table marginLeft='100px' width='900px' marginBottom='100px'  >
+                    <Thead>
+                        <Tr >
+                            <Th>Employee Name </Th>
+                            <Th>Role</Th>
+                            <Th >Date</Th>
+                            <Th></Th>
+                            <Th></Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody >
+                        {employ.map((event) => (
+                            <Tr key={event.id}>
+                                <Td>{event.name}</Td>
+                                <Td>{event.role}</Td>
+                                <Td >{event.date}</Td>
+                                <Td><Button colorScheme='blue' cursor='pointer' >Edit</Button></Td>
+                                <Td><Button colorScheme='red' variant='solid' cursor='pointer' onClick={() => handleDelete(event.id)}>Delete</Button></Td>
+                            </Tr>))}
+                    </Tbody>
+                    <Tfoot>
+                        <Td>Total # of Employees</Td>
+                        <Td>( {employ.length} )</Td>
+                    </Tfoot>
+                </Table>
             </div>
         </div>
     )
