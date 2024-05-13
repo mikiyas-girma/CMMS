@@ -4,6 +4,7 @@ import {
   getAllStoreOwner,
   UpdateStoreOwner,
   BlockStoreOwner,
+  UnBlockStoreOwner,
 } from "../Controller/userController.js";
 const userRouter = express.Router();
 
@@ -13,5 +14,6 @@ userRouter
   .patch(UpdateStoreOwner)
   .delete(RegisterStoreOwner);
 userRouter.route("/storeOwner/block/:id").patch(BlockStoreOwner);
+userRouter.route("/storeOwner/unblock/:id").patch(UnBlockStoreOwner);
 
 export default userRouter;

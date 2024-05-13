@@ -81,7 +81,31 @@ export const BlockStoreOwner = async (req, res) => {
     });
   }
 };
-
+export const UnBlockStoreOwner = async (req, res) => {
+  try {
+    if (req.body.password || req.body.passwordConfirm) {
+      throw new Error("This Endpoint is not for updating password ");
+    }
+    const user = await StoreOwner.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: "active",
+      },
+      { new: true, runValidators: true }
+    );
+    res.status(200).json({
+      status: "success",
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
 export const DeleteStoreOwner = async (req, res) => {
   try {
     const user = await StoreOwner.findByIdAndDelete(req.params.id);
