@@ -4,11 +4,13 @@ import PathConstants from './pathConstants'
 
 const Home = React.lazy(() => import("../pages/Home"));
 const About = React.lazy(() => import('../pages/About'));
+const Employees = React.lazy(() => import('../pages/Employees'));
 
 
 const routes = [
     { path: PathConstants.HOME, element: <Home /> },
     { path: PathConstants.ABOUT, element: <About />},
+    { path: PathConstants.EMPLOYEES, element: <Employees />}
 ]
 
 
