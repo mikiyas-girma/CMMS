@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Suspense } from "react";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import ThemeToggle from "../components/common/ThemeToggle";
 
 
 export default function Layout() {
@@ -11,6 +12,7 @@ export default function Layout() {
 
     return (
         <>
+            <ThemeToggle />
             {!isLandingPage && <Header />}
 
             <main>
