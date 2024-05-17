@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import ThemeToggle from "../components/common/ThemeToggle";
+import PulseCards from "../components/common/PulseCards";
 
 
 export default function Layout() {
@@ -16,7 +17,9 @@ export default function Layout() {
             {!isLandingPage && <Header />}
 
             <main>
-                <Suspense fallback={<div>loading ...</div>}>
+                <Suspense fallback={
+                    <PulseCards />
+                }>
                     <Outlet />
                 </Suspense>
             </main>

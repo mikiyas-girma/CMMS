@@ -70,27 +70,29 @@ export default function Home() {
                             mb={{ base: '3rem !important', sm: 0 }}
                             flexWrap="wrap"
                         >
-                            <chakra.button
-                                w={{ base: '100%', sm: 'auto' }}
-                                h={12}
-                                px={6}
-                                color="white"
-                                size="lg"
-                                rounded="md"
-                                mb={{ base: 2, sm: 0 }}
-                                zIndex={5}
-                                lineHeight={1}
-                                bgGradient="linear(to-l, #0ea5e9,#2563eb)"
-                                _hover={{ bgGradient: 'linear(to-l, #0ea5e9,#2563eb)', opacity: 0.9 }}
-                            >
-                                <chakra.span> Explore ComponentsKart </chakra.span>
-                                <Icon as={MdBolt} h={4} w={4} ml={1} />
-                            </chakra.button>
+                            <Link href='/dashboard'>
+                                <chakra.button
+                                    w={{ base: '100%', sm: 'auto' }}
+                                    h={12}
+                                    px={6}
+                                    color="white"
+                                    size="lg"
+                                    rounded="md"
+                                    mb={{ base: 2, sm: 0 }}
+                                    zIndex={5}
+                                    lineHeight={1}
+                                    bgGradient="linear(to-l, #0ea5e9,#2563eb)"
+                                    _hover={{ bgGradient: 'linear(to-l, #0ea5e9,#2563eb)', opacity: 0.9 }}
+                                >
+                                    <chakra.span>Get  Dashboard </chakra.span>
+                                    <Icon as={MdBolt} h={4} w={4} ml={1} />
+                                </chakra.button>
+                            </Link>
                         </HStack>
                     </Stack>
                     <Stack direction="column" spacing={6} px={4} justifyContent="center" maxW="450px">
                         <SignIn />
-                       
+
                     </Stack>
                 </Stack>
             </Container>

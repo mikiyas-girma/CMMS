@@ -58,9 +58,11 @@ import { Link } from 'react-router-dom';
           <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
         </Flex>
         {LinkItems.map((link) => (
+            <Link to={link.to}>
           <NavItem key={link.name} icon={link.icon} >
-            <Link to={link.to}>{link.name}</Link>
+            {link.name}
           </NavItem>
+            </Link>
         ))}
       </Box>
     );
@@ -146,7 +148,7 @@ import { Link } from 'react-router-dom';
                     spacing="1px"
                     ml="2"
                   >
-                    <Text fontSize="sm">Justina Clark</Text>
+                    <Text fontSize="sm">Mikias Girma</Text>
                     <Text fontSize="xs" color="gray.600">
                       Admin
                     </Text>

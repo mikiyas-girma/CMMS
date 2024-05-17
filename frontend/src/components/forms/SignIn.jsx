@@ -55,11 +55,9 @@ const SignIn = () => {
                 <Link fontSize={{ base: 'md', sm: 'md' }}>Forgot password?</Link>
               </Stack>
               <Button
-                bg="green.300"
+                bgGradient="linear(to-l, #0ea5e9,#2563eb)"
+                _hover={{ bgGradient: 'linear(to-l, #0ea5e9,#2562eb)', opacity: 0.8 }}
                 color="white"
-                _hover={{
-                  bg: 'green.500'
-                }}
                 rounded="md"
                 w="100%"
               >
