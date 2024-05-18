@@ -4,7 +4,8 @@ const PathConstants = {
     HOME: "/",
     // other pages's paths...
     ABOUT: "about",
-    EMPLOYEES: "employees"
+    EMPLOYEES: "employees",
+    DASHBOARD: "dashboard",
 }
 
 export default PathConstants

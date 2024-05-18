@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import Header from "../components/common/Header";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
+import ThemeToggle from "../components/common/ThemeToggle";
+import PulseCards from "../components/common/PulseCards";
 
 
 export default function Layout() {
@@ -12,15 +14,18 @@ export default function Layout() {
 
     return (
         <>
+            <ThemeToggle />
             {!isLandingPage && <Header />}
             <Navbar></Navbar>
             <main>
-                <Suspense fallback={<div>loading ...</div>}>
+                <Suspense fallback={
+                    <PulseCards />
+                }>
                     <Outlet />
                 </Suspense>
             </main>
             
-            <Footer  style={{ position: "sticky", bottom: 0 }} />
+            <Footer  style={{ position: "fixed", bottom: 0 }} />
         </>
     )
 }
