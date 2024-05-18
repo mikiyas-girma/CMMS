@@ -30,7 +30,7 @@ const SignIn = () => {
           <VStack
             as="form"
             spacing={8}
-            boxSize={{ base: 'xs', sm: 'sm', md: 'md' }}
+            boxSize={{ base: 'xs', sm: 'sm', md: 'sm' }}
             h="max-content !important"
             bg={useColorModeValue('white', 'gray.700')}
             rounded="lg"
@@ -38,9 +38,9 @@ const SignIn = () => {
             p={{ base: 5, sm: 10 }}
           >
             <VStack spacing={4} w="100%">
-              <FormControl id="email">
-                <FormLabel>Email</FormLabel>
-                <Input rounded="md" type="email" />
+              <FormControl id="username">
+                <FormLabel>username</FormLabel>
+                <Input rounded="md" type="text" />
               </FormControl>
               <FormControl id="password">
                 <FormLabel>Password</FormLabel>

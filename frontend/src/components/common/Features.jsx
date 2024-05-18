@@ -1,32 +1,35 @@
 import { Container, Box, chakra, Text, Icon, SimpleGrid } from '@chakra-ui/react';
 // Here we have used react-icons package for the icons
-import { MdOutlinePersonPin, MdPermDeviceInformation, MdOutlineFlashlightOn } from 'react-icons/md';
-import { SiMinds } from 'react-icons/si';
+import { MdConstruction } from "react-icons/md";
+import { HiBell, HiViewBoards } from "react-icons/hi";
+import { ImStatsBars } from "react-icons/im";
+import { BiDesktop } from "react-icons/bi";
 
 
 
 const features = [
   {
-    heading: 'Learn with flashcards',
-    content:
-      'The main part of the learning process is using flashcards, you see a question, then you answer it.',
-    icon: MdOutlineFlashlightOn
+    heading: 'Real-time inventory tracking',
+    content:' Our system provides up-to-the-minute updates on material quantities and availability, so you can make informed decisions in real-time.',
+    icon: MdConstruction
   },
   {
-    heading: 'Never forget',
-    content: `With our latest SRS algorithm, you will never forget what you've learned. The more you remember something, the less often the system will ask you to review it.`,
-    icon: SiMinds
+    heading: 'Notification Capability',
+    content: `Our system alerts you whenever material quantities fall below preset thresholds,\
+                ensuring you can replenish stock in time and maintain smooth operations.`,
+
+    icon: HiBell
   },
   {
-    heading: 'Tiny bits of information',
-    content:
-      'Instead of showing you a wall of text that will take you a long time to read and then that you quickly forget, we show you tiny bits of information every day.',
-    icon: MdPermDeviceInformation
+    heading: 'Powerful Analytics',
+    content: `Make data-driven decisions to optimize your material management processes and\
+                improve overall efficiency.`,
+    icon: ImStatsBars
   },
   {
-    heading: 'Community',
-    content: `Keep your learning streak going, see stats of what you've learned and share it with others via your public profile. You can also join our private discord server!`,
-    icon: MdOutlinePersonPin
+    heading: 'Intuitive User Interfaces',
+    content: 'Experience a seamless and user-friendly interface designed to simplify your material management tasks. ',
+    icon: BiDesktop
   }
 ];
 

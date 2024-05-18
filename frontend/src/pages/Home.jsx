@@ -48,22 +48,22 @@ export default function Home() {
           Toggle {colorMode === "light" ? "Dark" : "Light"} Mode
         </Button>
       </div> */}
-            <Container maxW="6xl" px={{ base: 6, md: 3 }} py={0}>
+            <Container maxW="7xl" px={{ base: 6, md: 3 }} py={10}>
                 <Stack direction={{ base: 'column', md: 'row' }} justifyContent="center" alignItems="center">
-                    <Stack direction="column" spacing={6} justifyContent="center" maxW="480px">
-                        <chakra.h1 fontSize="5xl" lineHeight={1} fontWeight="bold" textAlign="left">
-                            Build products faster <br />
-                            <chakra.span color="teal">in ChakraUI</chakra.span>
+                    <Stack direction="column" spacing={2} justifyContent="center" maxW="480px">
+                        <chakra.h1 fontSize={{ base: '3xl', sm: '2rem', md: '2.3rem', lg: '2.7rem' }}
+                                    lineHeight={1} fontWeight="bold" textAlign={{ base: 'left', md: 'left' }}>
+                            Manage your inventory operation with<br />
+                            <chakra.span color="teal">Best CMMS</chakra.span>
                         </chakra.h1>
                         <Text
-                            fontSize="1.2rem"
-                            textAlign="left"
+                            fontSize={{ base: '1.2rem', md: '1.3rem', lg: '1.5rem'}}
+                            textAlign={{ base: 'left', md: 'left' }}
                             lineHeight="1.375"
                             fontWeight="400"
                             color="gray.500"
                         >
-                            TemplatesKart provides the best ChakraUI templates. Focus on your business, not on the
-                            boilerplate.
+                            Streamline material operation and revolutionize resource handling with our powerful CMMS.
                         </Text>
                         <HStack
                             spacing={{ base: 0, sm: 2 }}
@@ -90,7 +90,7 @@ export default function Home() {
                             </Link>
                         </HStack>
                     </Stack>
-                    <Stack direction="column" spacing={6} px={4} justifyContent="center" maxW="450px">
+                    <Stack direction="column" spacing={6} px={4} justifyContent="right">
                         <SignIn />
 
                     </Stack>

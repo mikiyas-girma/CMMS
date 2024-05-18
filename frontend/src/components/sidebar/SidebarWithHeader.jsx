@@ -20,23 +20,25 @@ import {
     MenuList,
   } from '@chakra-ui/react';
   import {
-    FiHome,
     FiTrendingUp,
-    FiCompass,
-    FiStar,
     FiSettings,
     FiMenu,
     FiBell,
     FiChevronDown,
   } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { MdDashboard } from "react-icons/md";
+import { HiUsers } from "react-icons/hi2";
+import { ImProfile } from "react-icons/im";
+import { BiSolidReport } from "react-icons/bi";
   
   const LinkItems = [
-    { name: 'Home', icon: FiHome, to: '/'},
-    { name: 'Trending', icon: FiTrendingUp },
-    { name: 'Explore', icon: FiCompass },
-    { name: 'Favourites', icon: FiStar },
-    { name: 'Settings', icon: FiSettings },
+    { name: 'Dashboard', icon: MdDashboard, to: '/'},
+    { name: 'Materials', icon: FiTrendingUp, to: '/materials' },
+    { name: 'Employees', icon: HiUsers, to: '/employees'},
+    { name: 'Profile', icon: ImProfile, to: '/profile' },
+    { name: 'Reports', icon: BiSolidReport, to: '/reports' },
+    { name: 'Settings', icon: FiSettings, to: '/settings'},
   ];
   
   const SidebarContent = ({ onClose, ...rest }) => {
@@ -52,9 +54,11 @@ import { Link } from 'react-router-dom';
         {...rest}
       >
         <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+            <Link to="/">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-            Logo
+            CMMS
           </Text>
+            </Link>
           <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
         </Flex>
         {LinkItems.map((link) => (
@@ -127,7 +131,7 @@ import { Link } from 'react-router-dom';
           fontFamily="monospace"
           fontWeight="bold"
         >
-          Logo
+          Logo  
         </Text>
   
         <HStack spacing={{ base: '0', md: '6' }}>
@@ -139,7 +143,7 @@ import { Link } from 'react-router-dom';
                   <Avatar
                     size={'sm'}
                     src={
-                      'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                      'https://imgur.com/ijpmXRn.jpg'
                     }
                   />
                   <VStack
@@ -164,7 +168,6 @@ import { Link } from 'react-router-dom';
               >
                 <MenuItem>Profile</MenuItem>
                 <MenuItem>Settings</MenuItem>
-                <MenuItem>Billing</MenuItem>
                 <MenuDivider />
                 <MenuItem>Sign out</MenuItem>
               </MenuList>
