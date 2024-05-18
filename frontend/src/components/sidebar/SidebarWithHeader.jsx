@@ -182,7 +182,7 @@ import { BiSolidReport } from "react-icons/bi";
     const { isOpen, onOpen, onClose } = useDisclosure();
   
     return (
-      <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+      <Box minH="100vh" bg={useColorModeValue('gray.90')}>
         <SidebarContent onClose={onClose} display={{ base: 'none', md: 'block' }} />
         <Drawer
           isOpen={isOpen}
@@ -197,7 +197,7 @@ import { BiSolidReport } from "react-icons/bi";
           </DrawerContent>
         </Drawer>
         <MobileNav onOpen={onOpen} />
-        <Box ml={{ base: 0, md: 60 }} p="4">
+        <Box ml={{ base: 0, md: 60 }} p="2">
           {children}
         </Box>
       </Box>
