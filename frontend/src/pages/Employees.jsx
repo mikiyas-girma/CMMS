@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+// import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Button, FormControl, FormLabel, Input, Table, Tbody, Td, Th, Thead, Tr,Text, Tfoot } from '@chakra-ui/react';
 const employees = [
     { id: Math.floor(Math.random() * 1000), name: 'Biniam', role: 'store-keeper', date: '11 / 22 / 22' },

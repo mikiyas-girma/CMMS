@@ -11,7 +11,7 @@ const Employees = React.lazy(() => import('../pages/Employees'));
 const routes = [
     { path: PathConstants.HOME, element: <Home /> },
     { path: PathConstants.ABOUT, element: <About />},
-    { path: PathConstants.DASHBOARD, element: <Dashboard />}
+    { path: PathConstants.DASHBOARD, element: <Dashboard />},
     { path: PathConstants.EMPLOYEES, element: <Employees />}
 ]
 

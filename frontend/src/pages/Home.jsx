@@ -26,38 +26,16 @@ export default function Home() {
 
     return (
         <>
-            {/* <div className="mt-5">
-      <h1 className="text-center text-indigo-500 t</Container>ext-4xl font-bold">
-      Construction Material && Machinery Management System
-      </h1>
-      </div>
-      <div>
-      <h3 className="text-left text-indigo-700 text-xl font-bold">Streamlining Material Operation and Revolutionizing Resource Handling</h3>
-      </div>
-      <div>
-      <div>
-      <h4>Say goodbye to manual inventory tracking and hello to seamless material management.</h4>
-      <ul>
-        <li>Real-time inventory tracking</li>
-        <li>Intuitive user interfaces</li>
-        <li>Powerful analytics for informed decision-making</li>
-        <li>Enhance productivity</li>
-      </ul>
-      </div>
-        <Button onClick={toggleColorMode}>
-           {colorMode === "light" ? "Dark" : "Light"}
-        </Button>
-      </div> */}
             <Container maxW="7xl" px={{ base: 6, md: 3 }} py={10}>
                 <Stack direction={{ base: 'column', md: 'row' }} justifyContent="center" alignItems="center">
                     <Stack direction="column" spacing={2} justifyContent="center" maxW="480px">
                         <chakra.h1 fontSize={{ base: '3xl', sm: '2rem', md: '2.3rem', lg: '2.7rem' }}
-                                    lineHeight={1} fontWeight="bold" textAlign={{ base: 'left', md: 'left' }}>
+                            lineHeight={1} fontWeight="bold" textAlign={{ base: 'left', md: 'left' }}>
                             Manage your inventory operation with<br />
                             <chakra.span color="teal">Best CMMS</chakra.span>
                         </chakra.h1>
                         <Text
-                            fontSize={{ base: '1.2rem', md: '1.3rem', lg: '1.5rem'}}
+                            fontSize={{ base: '1.2rem', md: '1.3rem', lg: '1.5rem' }}
                             textAlign={{ base: 'left', md: 'left' }}
                             lineHeight="1.375"
                             fontWeight="400"
