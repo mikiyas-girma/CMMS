@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 // import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { Button, FormControl, FormLabel, Input, Table, Tbody, Td, Th, Thead, Tr,Text, Tfoot } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, Table, Tbody, Td, Th, Thead, Tr, Text, Tfoot } from '@chakra-ui/react';
+import SidebarWithHeader from '../components/sidebar/SidebarWithHeader';
 const employees = [
     { id: Math.floor(Math.random() * 1000), name: 'Biniam', role: 'store-keeper', date: '11 / 22 / 22' },
     { id: Math.floor(Math.random() * 1000), name: 'Mikias', role: 'store-keeper', date: '11 / 22 / 22' },
@@ -37,47 +38,49 @@ const Employees = () => {
     }
 
     return (
-        <div>
-            <section>
-                <form onSubmit={handleSubmit} >
-                    <FormControl padding='20px 20px' marginLeft='100px' >
-                        <FormLabel htmlFor='name'>Employee Name</FormLabel>
-                        <Input width='700px' ref={nameRef} type='text' name='name' id='name' value={task.name} onChange={(e) => setTask(e.target.value)} /><br></br>
-                        <FormLabel htmlFor='role'>Role</FormLabel>
-                        <Input width='700px' ref={roleRef} type='text' name='role' id='employee' value={task.role} onChange={(e) => setTask(e.target.value)} /><br></br>
-                        <Button marginTop='20px'colorScheme='teal' variant='solid' type='submit'>Submit</Button>
-                    </FormControl>
-                </form>
-            </section>
-
+        <SidebarWithHeader>
             <div>
-                <Table marginLeft='100px' width='900px' marginBottom='100px'  >
-                    <Thead>
-                        <Tr >
-                            <Th>Employee Name </Th>
-                            <Th>Role</Th>
-                            <Th >Date</Th>
-                            <Th></Th>
-                            <Th></Th>
-                        </Tr>
-                    </Thead>
-                    <Tbody >
-                        {employ.map((event) => (
-                            <Tr key={event.id}>
-                                <Td>{event.name}</Td>
-                                <Td>{event.role}</Td>
-                                <Td >{event.date}</Td>
-                                <Td><Button colorScheme='blue' cursor='pointer' >Edit</Button></Td>
-                                <Td><Button colorScheme='red' variant='solid' cursor='pointer' onClick={() => handleDelete(event.id)}>Delete</Button></Td>
-                            </Tr>))}
-                    </Tbody>
-                    <Tfoot>
-                        <Td>Total # of Employees</Td>
-                        <Td>( {employ.length} )</Td>
-                    </Tfoot>
-                </Table>
+                <section>
+                    <form onSubmit={handleSubmit} >
+                        <FormControl padding='20px 20px' marginLeft='100px' >
+                            <FormLabel htmlFor='name'>Employee Name</FormLabel>
+                            <Input width='700px' ref={nameRef} type='text' name='name' id='name' value={task.name} onChange={(e) => setTask(e.target.value)} /><br></br>
+                            <FormLabel htmlFor='role'>Role</FormLabel>
+                            <Input width='700px' ref={roleRef} type='text' name='role' id='employee' value={task.role} onChange={(e) => setTask(e.target.value)} /><br></br>
+                            <Button marginTop='20px' colorScheme='teal' variant='solid' type='submit'>Submit</Button>
+                        </FormControl>
+                    </form>
+                </section>
+
+                <div>
+                    <Table marginLeft='100px' width='900px' marginBottom='100px'  >
+                        <Thead>
+                            <Tr >
+                                <Th>Employee Name </Th>
+                                <Th>Role</Th>
+                                <Th >Date</Th>
+                                <Th></Th>
+                                <Th></Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody >
+                            {employ.map((event) => (
+                                <Tr key={event.id}>
+                                    <Td>{event.name}</Td>
+                                    <Td>{event.role}</Td>
+                                    <Td >{event.date}</Td>
+                                    <Td><Button colorScheme='blue' cursor='pointer' >Edit</Button></Td>
+                                    <Td><Button colorScheme='red' variant='solid' cursor='pointer' onClick={() => handleDelete(event.id)}>Delete</Button></Td>
+                                </Tr>))}
+                        </Tbody>
+                        <Tfoot>
+                            <Td>Total # of Employees</Td>
+                            <Td>( {employ.length} )</Td>
+                        </Tfoot>
+                    </Table>
+                </div>
             </div>
-        </div>
+        </SidebarWithHeader>
     )
 }
 
