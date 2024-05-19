@@ -7,6 +7,12 @@ const passwordPlugin = function (schema, options) {
     this.passwordConfirm = undefined;
     next();
   });
+  schema.methods.correctPassword = async function (
+    candidatePassword,
+    userPassword
+  ) {
+    return await bcrypt.compare(candidatePassword, userPassword);
+  };
 };
 
 export default passwordPlugin;
