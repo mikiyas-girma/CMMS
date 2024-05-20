@@ -4,6 +4,7 @@ import { AppError } from "./utils/AppError.js";
 import { ErrorHandler } from "./utils/ErrorController.js";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRouter.js";
+import MaterialRouter from "./routes/MaterialRouter.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 if (process.env.NODE_ENV === "developement") app.use(morgan("dev"));
 
 app.use("/cmms/api/users", userRouter);
+app.use("/cmms/api/materials", MaterialRouter);
 app.all("*", (req, res, next) => {
   console.log(
     new AppError(`Can't find ${req.originalUrl} on this server!`, 404)
