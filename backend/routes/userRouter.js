@@ -6,10 +6,13 @@ import {
   BlockStoreOwner,
   UnBlockStoreOwner,
   DeleteStoreOwner,
-  updatePassword,
   getUserById,
 } from "../Controller/userController.js";
-import { login, protect } from "../Controller/authController.js";
+import {
+  login,
+  protect,
+  updatePassword,
+} from "../Controller/authController.js";
 const userRouter = express.Router();
 userRouter.route("/storeOwner/login").post(login);
 
