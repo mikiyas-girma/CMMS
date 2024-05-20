@@ -12,14 +12,16 @@ import {
   login,
   protect,
   updatePassword,
+  restrictTo,
 } from "../Controller/authController.js";
 const userRouter = express.Router();
 userRouter.route("/storeOwner/login").post(login);
 
 userRouter.use(protect);
-userRouter.route("/storeOwner").get(getAllStoreOwner).post(RegisterStoreOwner);
 userRouter.route("/updateMypassword").post(updatePassword);
 
+userRouter.use(restrictTo("admin"));
+userRouter.route("/storeOwner").get(getAllStoreOwner).post(RegisterStoreOwner);
 userRouter
   .route("/storeOwner/:id")
   .patch(UpdateStoreOwner)

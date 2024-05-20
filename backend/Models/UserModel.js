@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "storeOwner", "employee"],
     },
     image: String,
+    passwordChangedAt: Date,
   },
   { timestamps: true }
 );
@@ -63,7 +64,7 @@ const StoreOwner = User.discriminator(
       default: "active",
     },
   })
-)
+);
 const Employee = User.discriminator(
   "Employee",
   new mongoose.Schema({

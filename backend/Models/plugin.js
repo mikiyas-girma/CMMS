@@ -25,6 +25,7 @@ const passwordPlugin = function (schema, options) {
         this.passwordChangedAt.getTime() / 1000,
         10
       );
+      console.log("time", JWTTimestamp, changedTimestamp);
       return JWTTimestamp < changedTimestamp;
     }
     return false;
