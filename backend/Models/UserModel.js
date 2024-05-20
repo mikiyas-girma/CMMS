@@ -63,7 +63,7 @@ const StoreOwner = User.discriminator(
       default: "active",
     },
   })
-);
+)
 const Employee = User.discriminator(
   "Employee",
   new mongoose.Schema({

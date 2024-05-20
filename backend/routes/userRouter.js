@@ -7,6 +7,7 @@ import {
   UnBlockStoreOwner,
   DeleteStoreOwner,
   updatePassword,
+  getUserById,
 } from "../Controller/userController.js";
 import { login, protect } from "../Controller/authController.js";
 const userRouter = express.Router();
@@ -19,7 +20,8 @@ userRouter.route("/updateMypassword").post(updatePassword);
 userRouter
   .route("/storeOwner/:id")
   .patch(UpdateStoreOwner)
-  .delete(DeleteStoreOwner);
+  .delete(DeleteStoreOwner)
+  .get(getUserById);
 userRouter.route("/storeOwner/block/:id").patch(BlockStoreOwner);
 userRouter.route("/storeOwner/unblock/:id").patch(UnBlockStoreOwner);
 

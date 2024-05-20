@@ -25,6 +25,20 @@ export const getAllStoreOwner = asyncHandler(async (req, res) => {
     },
   });
 });
+export const getUserById = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  if (!user) return next(new AppError("User not found", 404));
+
+  res.status(200).json({
+    status: "success",
+    msg: "User fetched successfully",
+    data: {
+      user,
+    },
+  });
+});
 
 export const UpdateStoreOwner = asyncHandler(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm)
