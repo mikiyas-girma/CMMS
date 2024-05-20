@@ -13,6 +13,22 @@ const passwordPlugin = function (schema, options) {
   ) {
     return await bcrypt.compare(candidatePassword, userPassword);
   };
+  schema.pre("save", function (next) {
+    if (!this.isModified("password") || this.isNew) return next();
+
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+  });
+  schema.methods.changePasswordAfter = function (JWTTimestamp) {
+    if (this.passwordChangedAt) {
+      const changedTimestamp = parseInt(
+        this.passwordChangedAt.getTime() / 1000,
+        10
+      );
+      return JWTTimestamp < changedTimestamp;
+    }
+    return false;
+  };
 };
 
 export default passwordPlugin;

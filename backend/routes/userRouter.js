@@ -5,17 +5,22 @@ import {
   UpdateStoreOwner,
   BlockStoreOwner,
   UnBlockStoreOwner,
+  DeleteStoreOwner,
+  updatePassword,
 } from "../Controller/userController.js";
-import { login } from "../Controller/authController.js";
+import { login, protect } from "../Controller/authController.js";
 const userRouter = express.Router();
+userRouter.route("/storeOwner/login").post(login);
 
-userRouter.route("/storeOwner/").get(getAllStoreOwner).post(RegisterStoreOwner);
+userRouter.use(protect);
+userRouter.route("/storeOwner").get(getAllStoreOwner).post(RegisterStoreOwner);
+userRouter.route("/updateMypassword").post(updatePassword);
+
 userRouter
   .route("/storeOwner/:id")
   .patch(UpdateStoreOwner)
-  .delete(RegisterStoreOwner);
+  .delete(DeleteStoreOwner);
 userRouter.route("/storeOwner/block/:id").patch(BlockStoreOwner);
 userRouter.route("/storeOwner/unblock/:id").patch(UnBlockStoreOwner);
-userRouter.route("/storeOwner/login").post(login);
 
 export default userRouter;
