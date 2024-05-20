@@ -48,3 +48,60 @@ export const login = asyncHandler(async (req, res, next) => {
   }
   createSendToken(user, 200, res);
 });
+export const protect = asyncHandler(async (req, res, next) => {
+  let token;
+  // console.log("req", req);
+
+  if (req.cookies && req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+  console.log("Token:", req.cookies.jwt);
+
+  if (!token) {
+    return next(
+      new AppError("You are not logged in. Please log in to get access.", 401)
+    );
+  }
+
+  // Verify token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  // const decoded = await jwt.verify(
+  //   token,
+  //   process.env.JWT_SECRET,
+  //   (err, decoded) => {
+  //     if (err) {
+  //       return next(new AppError("Token is not valid", 403));
+  //     }
+  //     console.log("decode", decoded);
+  //   }
+  // );
+
+  // Check if user still exists
+  const freshUser = await User.findById(decoded.id);
+  if (!freshUser) {
+    return next(
+      new AppError("The user belonging to this token no longer exists.", 401)
+    );
+  }
+
+  // Check if user account is active
+  if (!freshUser.status === "active") {
+    return next(
+      new AppError("The user account is disabled. Please contact support.", 403)
+    );
+  }
+
+  // Check if user changed password after the token was issued
+  if (freshUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError(
+        "The user recently changed the password. Please log in again.",
+        401
+      )
+    );
+  }
+
+  // Grant access to protected route
+  req.user = freshUser;
+  next();
+});
