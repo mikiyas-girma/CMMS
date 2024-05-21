@@ -9,6 +9,7 @@ import {
   getUserById,
   RegisterEmployee,
   getAllEmployee,
+  uploadUserPhoto,
 } from "../Controller/userController.js";
 import {
   login,

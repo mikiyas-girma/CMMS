@@ -1,6 +1,28 @@
 import { User, StoreOwner, Employee } from "../Models/UserModel.js";
 import asyncHandler from "express-async-handler";
 import { AppError } from "../utils/AppError.js";
+import multer from "multer";
+
+// updatePassword iddlware can update only  the pasword and passwordconfirm if othres also paassed thay can't be updated
+// export const checkStatusChangePermission = (req, res, next) => {
+//   if (req.body.status) {
+//     return next(
+//       new AppError("You can't update status, you have no permission", 403)
+//     );
+//   }
+//   next();
+// };
+const multerStorage = multer.memoryStorage();
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("not an image Please upload only image", 400), false);
+  }
+};
+const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
+
+export const uploadUserPhoto = upload.single("photo");
 
 export const RegisterStoreOwner = asyncHandler(async (req, res) => {
   req.body.role = "storeOwner";

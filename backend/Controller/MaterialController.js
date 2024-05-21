@@ -14,7 +14,7 @@ export const getAllMaterials = asyncHandler(async (req, res) => {
 });
 
 export const createMaterial = asyncHandler(async (req, res) => {
-  //   errq.body.user = req.user._id;
+  req.body.user = req.user._id;
   const material = await Material.create(req.body);
   res.status(201).json({
     status: "success",
