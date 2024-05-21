@@ -30,15 +30,15 @@ userRouter
   .post(restrictTo("admin"), RegisterStoreOwner);
 userRouter
   .route("/storeOwner/:id")
-  .patch(restrictTo("admin"), UpdateStoreOwner)
+  .patch(restrictTo("admin"), checkPasswordUpdate, UpdateStoreOwner)
   .delete(restrictTo("admin"), DeleteStoreOwner)
   .get(restrictTo("admin"), getUserById);
 userRouter
   .route("/storeOwner/block/:id")
-  .patch(restrictTo("admin"), BlockStoreOwner);
+  .patch(restrictTo("admin"), checkPasswordUpdate, BlockStoreOwner);
 userRouter
   .route("/storeOwner/unblock/:id")
-  .patch(restrictTo("admin"), UnBlockStoreOwner);
+  .patch(restrictTo("admin"), checkPasswordUpdate, UnBlockStoreOwner);
 
 //employee
 userRouter

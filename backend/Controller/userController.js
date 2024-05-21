@@ -77,11 +77,6 @@ export const getUserById = asyncHandler(async (req, res, next) => {
 });
 
 export const UpdateStoreOwner = asyncHandler(async (req, res, next) => {
-  if (req.body.password || req.body.passwordConfirm)
-    return next(
-      new AppError("This Endpoint is not for updating password", 400)
-    );
-
   const user = await StoreOwner.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -95,11 +90,6 @@ export const UpdateStoreOwner = asyncHandler(async (req, res, next) => {
 });
 
 export const BlockStoreOwner = asyncHandler(async (req, res, next) => {
-  if (req.body.password || req.body.passwordConfirm)
-    return next(
-      new AppError("This Endpoint is not for updating password", 400)
-    );
-
   const user = await StoreOwner.findByIdAndUpdate(
     req.params.id,
     { status: "inactive" },
@@ -114,11 +104,6 @@ export const BlockStoreOwner = asyncHandler(async (req, res, next) => {
 });
 
 export const UnBlockStoreOwner = asyncHandler(async (req, res, next) => {
-  if (req.body.password || req.body.passwordConfirm)
-    return next(
-      new AppError("This Endpoint is not for updating password", 400)
-    );
-
   const user = await StoreOwner.findByIdAndUpdate(
     req.params.id,
     { status: "active" },
