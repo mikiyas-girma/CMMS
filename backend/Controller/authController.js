@@ -56,7 +56,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   if (req.cookies && req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-  console.log("Token:", req.cookies.jwt);
+  // console.log("Token:", req.cookies.jwt);
 
   if (!token) {
     return next(
@@ -66,19 +66,24 @@ export const protect = asyncHandler(async (req, res, next) => {
 
   // Verify token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  // const decoded = await jwt.verify(
-  //   token,
-  //   process.env.JWT_SECRET,
-  //   (err, decoded) => {
+  // let decoded;
+  // try {
+  //   decoded = jwt.verify(token, process.env.JWT_SECRET);
+  // } catch (err) {
+  //   return next(new AppError("Token is not valid", 403));
+  // }
+  // const decoded = await new Promise((resolve, reject) => {
+  //   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
   //     if (err) {
-  //       return next(new AppError("Token is not valid", 403));
+  //       reject(new AppError("Token is not valid", 403));
+  //     } else {
+  //       resolve(decoded);
   //     }
-  //     console.log("decode", decoded);
-  //   }
-  // );
+  //   });
+  // });
 
   // Check if user still exists
-  const freshUser = await User.findById(decoded.id);
+  const freshUser = await User.findById(decoded?.id);
   if (!freshUser) {
     return next(
       new AppError("The user belonging to this token no longer exists.", 401)
@@ -129,7 +134,6 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
 });
 export const restrictTo = (...roles) => {
   return (req, res, next) => {
-    // roles ['admin', 'lead-guide']. role='user'
     console.log("role", req.user.role);
     if (!roles.includes(req.user.role)) {
       return next(
