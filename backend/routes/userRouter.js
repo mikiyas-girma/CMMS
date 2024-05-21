@@ -10,6 +10,7 @@ import {
   RegisterEmployee,
   getAllEmployee,
   uploadUserPhoto,
+  checkPasswordUpdate,
 } from "../Controller/userController.js";
 import {
   login,

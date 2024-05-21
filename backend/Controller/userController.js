@@ -24,6 +24,20 @@ const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 
 export const uploadUserPhoto = upload.single("photo");
 
+export const checkPasswordUpdate = (req, res, next) => {
+  // Check if the request body contains password fields
+  if (req.body.password || req.body.passwordConfirm) {
+    // If not, return an error
+    return next(
+      new AppError(
+        "You are not authorized to update another user's password",
+        403
+      )
+    );
+  }
+  next();
+};
+
 export const RegisterStoreOwner = asyncHandler(async (req, res) => {
   req.body.role = "storeOwner";
   const user = await StoreOwner.create(req.body);
