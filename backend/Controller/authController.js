@@ -91,7 +91,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   }
 
   // Check if user account is active
-  if (!freshUser.status === "active") {
+  if (freshUser.status !== "active") {
     return next(
       new AppError("The user account is disabled. Please contact support.", 403)
     );
@@ -109,6 +109,7 @@ export const protect = asyncHandler(async (req, res, next) => {
 
   // Grant access to protected route
   req.user = freshUser;
+  // console.log(req.user);
   next();
 });
 export const updatePassword = asyncHandler(async (req, res, next) => {

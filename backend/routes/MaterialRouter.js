@@ -12,7 +12,7 @@ const MaterialRouter = express.Router();
 
 MaterialRouter.use(protect);
 
-MaterialRouter.route("/material")
+MaterialRouter.route("/")
   .get(restrictTo("employee", "storeOwner"), getAllMaterials)
   .post(restrictTo("employee"), createMaterial);
 // MaterialRouter.use(restrictTo("employee"));

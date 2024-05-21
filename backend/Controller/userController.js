@@ -106,7 +106,31 @@ export const DeleteStoreOwner = asyncHandler(async (req, res) => {
   });
 });
 
+//employee
 
+export const RegisterEmployee = asyncHandler(async (req, res) => {
+  req.body.role = "employee";
+  const user = await Employee.create(req.body);
+  res.status(201).json({
+    status: "success",
+    msg: "user Registered successfully ",
+    data: {
+      user,
+    },
+  });
+});
+
+export const getAllEmployee = asyncHandler(async (req, res) => {
+  const users = await Employee.find();
+  res.status(200).json({
+    status: "success",
+    results: users.length,
+    msg: "users fetched successfully",
+    data: {
+      users,
+    },
+  });
+});
 
 // export const RegisterStoreOwner = async (req, res) => {
 //   req.body.role = "storeOwner";

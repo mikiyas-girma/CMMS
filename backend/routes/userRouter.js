@@ -7,6 +7,8 @@ import {
   UnBlockStoreOwner,
   DeleteStoreOwner,
   getUserById,
+  RegisterEmployee,
+  getAllEmployee,
 } from "../Controller/userController.js";
 import {
   login,
@@ -20,14 +22,26 @@ userRouter.route("/storeOwner/login").post(login);
 userRouter.use(protect);
 userRouter.route("/updateMypassword").post(updatePassword);
 
-userRouter.use(restrictTo("admin"));
-userRouter.route("/storeOwner").get(getAllStoreOwner).post(RegisterStoreOwner);
+userRouter
+  .route("/storeOwner")
+  .get(restrictTo("admin"), getAllStoreOwner)
+  .post(restrictTo("admin"), RegisterStoreOwner);
 userRouter
   .route("/storeOwner/:id")
-  .patch(UpdateStoreOwner)
-  .delete(DeleteStoreOwner)
-  .get(getUserById);
-userRouter.route("/storeOwner/block/:id").patch(BlockStoreOwner);
-userRouter.route("/storeOwner/unblock/:id").patch(UnBlockStoreOwner);
+  .patch(restrictTo("admin"), UpdateStoreOwner)
+  .delete(restrictTo("admin"), DeleteStoreOwner)
+  .get(restrictTo("admin"), getUserById);
+userRouter
+  .route("/storeOwner/block/:id")
+  .patch(restrictTo("admin"), BlockStoreOwner);
+userRouter
+  .route("/storeOwner/unblock/:id")
+  .patch(restrictTo("admin"), UnBlockStoreOwner);
+
+//employee
+userRouter
+  .route("/employee")
+  .get(restrictTo("storeOwner"), getAllEmployee)
+  .post(restrictTo("storeOwner"), RegisterEmployee);
 
 export default userRouter;
