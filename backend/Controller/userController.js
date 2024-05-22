@@ -2,6 +2,7 @@ import { User, StoreOwner, Employee } from "../Models/UserModel.js";
 import asyncHandler from "express-async-handler";
 import { AppError } from "../utils/AppError.js";
 import multer from "multer";
+import sharp from "sharp";
 
 // updatePassword iddlware can update only  the pasword and passwordconfirm if othres also paassed thay can't be updated
 // export const checkStatusChangePermission = (req, res, next) => {
@@ -24,11 +25,11 @@ const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 
 export const uploadUserPhoto = upload.single("image");
 
-export const resizePhoto = (req, res, next) => {
-  console.log(erq.file);
+export const resizePhoto = async (req, res, next) => {
+  console.log(req.file);
   if (!req.file) return next();
   req.file.filename = `user-${req.user.username}-${Date.now()}.jpeg`;
-  sharp(req.file.buffer)
+  await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
@@ -42,7 +43,7 @@ export const checkPasswordUpdate = (req, res, next) => {
     // If not, return an error
     return next(
       new AppError(
-        "You are not authorized to update another user's password",
+        "You are not authorized to update another user's password or this endpoint is not for updating password.",
         403
       )
     );
@@ -165,7 +166,8 @@ export const getAllEmployee = asyncHandler(async (req, res) => {
   });
 });
 export const UpdateMe = asyncHandler(async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+  if (req.file) req.body.image = req.file.filename;
+  const user = await User.findByIdAndUpdate(req.user.id, req.body, {
     new: true,
     runValidators: true,
   });

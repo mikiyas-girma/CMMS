@@ -12,6 +12,7 @@ import {
   uploadUserPhoto,
   checkPasswordUpdate,
   resizePhoto,
+  UpdateMe,
 } from "../Controller/userController.js";
 import {
   login,
@@ -24,6 +25,9 @@ userRouter.route("/storeOwner/login").post(login);
 
 userRouter.use(protect);
 userRouter.route("/updateMypassword").post(updatePassword);
+userRouter
+  .route("/updateMe")
+  .patch(checkPasswordUpdate, uploadUserPhoto, resizePhoto, UpdateMe);
 
 userRouter
   .route("/storeOwner")
