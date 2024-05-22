@@ -45,7 +45,7 @@ import { BiSolidReport } from "react-icons/bi";
     return (
       <Box
         transition="3s ease"
-        bg={useColorModeValue('white', 'gray.900')}
+        bg={useColorModeValue('gray.50', 'gray.900')}
         borderRight="1px"
         borderRightColor={useColorModeValue('gray.200', 'gray.700')}
         w={{ base: 'full', md: 60 }}
@@ -111,7 +111,7 @@ import { BiSolidReport } from "react-icons/bi";
         px={{ base: 4, md: 4 }}
         height="20"
         alignItems="center"
-        bg={useColorModeValue('white', 'gray.900')}
+        bg={useColorModeValue('gray.50', 'gray.900')}
         borderBottomWidth="1px"
         borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
         justifyContent={{ base: 'space-between', md: 'flex-end' }}
@@ -131,7 +131,7 @@ import { BiSolidReport } from "react-icons/bi";
           fontFamily="monospace"
           fontWeight="bold"
         >
-          Logo  
+          CMMS  
         </Text>
   
         <HStack spacing={{ base: '0', md: '6' }}>
@@ -163,7 +163,7 @@ import { BiSolidReport } from "react-icons/bi";
                 </HStack>
               </MenuButton>
               <MenuList
-                bg={useColorModeValue('white', 'gray.900')}
+                bg={useColorModeValue('gray.50', 'gray.900')}
                 borderColor={useColorModeValue('gray.200', 'gray.700')}
               >
                 <MenuItem>Profile</MenuItem>
