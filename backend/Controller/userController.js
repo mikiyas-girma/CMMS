@@ -22,7 +22,19 @@ const multerFilter = (req, file, cb) => {
 };
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 
-export const uploadUserPhoto = upload.single("photo");
+export const uploadUserPhoto = upload.single("image");
+
+export const resizePhoto = (req, res, next) => {
+  console.log(erq.file);
+  if (!req.file) return next();
+  req.file.filename = `user-${req.user.username}-${Date.now()}.jpeg`;
+  sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/users${req.file.filename}`);
+  next();
+};
 
 export const checkPasswordUpdate = (req, res, next) => {
   // Check if the request body contains password fields
@@ -149,6 +161,18 @@ export const getAllEmployee = asyncHandler(async (req, res) => {
     msg: "users fetched successfully",
     data: {
       users,
+    },
+  });
+});
+export const UpdateMe = asyncHandler(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
     },
   });
 });

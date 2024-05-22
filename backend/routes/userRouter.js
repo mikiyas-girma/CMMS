@@ -11,6 +11,7 @@ import {
   getAllEmployee,
   uploadUserPhoto,
   checkPasswordUpdate,
+  resizePhoto,
 } from "../Controller/userController.js";
 import {
   login,
