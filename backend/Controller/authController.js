@@ -91,7 +91,10 @@ export const protect = asyncHandler(async (req, res, next) => {
   }
 
   // Check if user account is active
-  if (freshUser.status !== "active") {
+  if (
+    (freshUser.role === "employee" || freshUser.role === "storeOwner") &&
+    freshUser.status !== "active"
+  ) {
     return next(
       new AppError("The user account is disabled. Please contact support.", 403)
     );
