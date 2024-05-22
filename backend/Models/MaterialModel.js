@@ -20,6 +20,11 @@ const materialSchema = new mongoose.Schema(
       default: 0,
       min: [0, "Added quantity must be a positive number"],
     },
+    weight: {
+      type: Number,
+      default: 0,
+      min: [0, "Weight must be a positive number"],
+    },
     removedQuantity: {
       type: Number,
       default: 0,
@@ -31,6 +36,7 @@ const materialSchema = new mongoose.Schema(
     },
     image: {
       type: String,
+      required: [true, "Material image is required"],
     },
   },
   { timestamps: true }

@@ -3,6 +3,9 @@ import { protect, restrictTo } from "../Controller/authController.js";
 import {
   getAllMaterials,
   createMaterial,
+  uploadMaterialPhoto,
+  resizeMaterialPhoto,
+  checkMaterialExists,
   // updateMaterial,
   // deleteMaterial,
   // getMaterialById,
@@ -14,7 +17,13 @@ MaterialRouter.use(protect);
 
 MaterialRouter.route("/")
   .get(restrictTo("employee", "storeOwner"), getAllMaterials)
-  .post(restrictTo("employee"), createMaterial);
+  .post(
+    restrictTo("employee"),
+    uploadMaterialPhoto,
+    checkMaterialExists,
+    resizeMaterialPhoto,
+    createMaterial
+  );
 // MaterialRouter.use(restrictTo("employee"));
 // MaterialRouter.route("/material/:id")
 //   .patch(updateMaterial)
