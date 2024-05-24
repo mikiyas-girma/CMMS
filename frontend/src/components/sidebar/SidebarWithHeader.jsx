@@ -36,7 +36,6 @@ import { BiSolidReport } from "react-icons/bi";
     { name: 'Dashboard', icon: MdDashboard, to: '/dashboard'},
     { name: 'Materials', icon: FiTrendingUp, to: '/materials' },
     { name: 'Employees', icon: HiUsers, to: '/employees'},
-    { name: 'Profile', icon: ImProfile, to: '/profile' },
     { name: 'Reports', icon: BiSolidReport, to: '/reports' },
     { name: 'Settings', icon: FiSettings, to: '/settings'},
   ];

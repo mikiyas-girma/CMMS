@@ -10,31 +10,31 @@ import RecentNotifications from '../components/notifications/RecentNotifications
 const Dashboard = () => {
     const location = useLocation();
     return (
-        <SidebarWithHeader>
-            <Box p="4">
-                <Grid
-                    gridTemplateColumns={'1fr .4fr 1fr'}
-                    templateRows="repeat(2, 1fr)"
-                    gap={0}
-                >
-                    <GridItem colSpan={2} bg="" p={0} boxShadow="sm">
-                        <InventoryOverview />
-                    </GridItem>
-                    <GridItem bg="" px={4} boxShadow="sm">
-                        <Text>Chart</Text>
-                        <LineChart />
-                    </GridItem>
-                    <GridItem colSpan={1} bg="" px={4} boxShadow="sm">
-                        {/* <EmployeeOverview /> */}
-                        <RecentNotifications />
-                    </GridItem>
-                    <GridItem colSpan={2} bg="" px={4} boxShadow="sm">
-                        <Text>Materials</Text>
-                        <BarChart />
-                    </GridItem>
-                </Grid>
-            </Box>
-        </SidebarWithHeader>
+      <SidebarWithHeader>
+        <Box p="4">
+          <Grid
+            gridTemplateColumns={{ base: '1fr', md: '1fr 1fr', lg: '1fr .5fr 1fr'}}
+            templateRows={{ base: 'repeat(4, 1fr)', md: 'repeat(2, 1fr)' }}
+            gap={0}
+          >
+            <GridItem colSpan={{ base: 1, md: 3, lg: 2 }} bg="" p={0} boxShadow="sm">
+              <InventoryOverview />
+            </GridItem>
+            <GridItem colSpan={{ base: 1, md: 3, lg: 1 }} bg="" px={4} boxShadow="sm">
+              <Text>Chart</Text>
+              <LineChart />
+            </GridItem>
+            <GridItem colSpan={{ base: 1, md: 3, lg: 1 }} bg="" px={4} boxShadow="sm">
+              {/* <EmployeeOverview /> */}
+              <RecentNotifications />
+            </GridItem>
+            <GridItem colSpan={{ base: 1, md: 3, lg: 2 }} bg="" px={4} boxShadow="sm">
+              <Text>Materials</Text>
+              <BarChart />
+            </GridItem>
+          </Grid>
+        </Box>
+      </SidebarWithHeader>
     );
 };
 
