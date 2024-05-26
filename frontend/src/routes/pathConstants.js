@@ -6,6 +6,7 @@ const PathConstants = {
     DASHBOARD: "dashboard",
     Materials: "materials",
     EMPLOYEES: "employees",
+    
 }
 
 export default PathConstants
