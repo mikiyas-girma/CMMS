@@ -22,7 +22,6 @@ export default function Layout() {
                     <Outlet />
                 </Suspense>
             </main>
-            
             <Footer  style={{ position: "fixed", bottom: 0 }} />
         </>
     )
