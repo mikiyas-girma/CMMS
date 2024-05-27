@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import { AppError } from "../utils/AppError.js";
 import multer from "multer";
 import sharp from "sharp";
+import { Email } from "../utils/Email.js";
 
 // updatePassword iddlware can update only  the pasword and passwordconfirm if othres also paassed thay can't be updated
 // export const checkStatusChangePermission = (req, res, next) => {
@@ -54,6 +55,8 @@ export const checkPasswordUpdate = (req, res, next) => {
 export const RegisterStoreOwner = asyncHandler(async (req, res) => {
   req.body.role = "storeOwner";
   const user = await StoreOwner.create(req.body);
+  const url = `${req.protocol}://${req.get("host")}/me/${user._id}`;
+  await new Email(user, url).sendWelcome();
   res.status(201).json({
     status: "success",
     msg: "user Registered successfully ",
@@ -145,6 +148,9 @@ export const DeleteStoreOwner = asyncHandler(async (req, res) => {
 export const RegisterEmployee = asyncHandler(async (req, res) => {
   req.body.role = "employee";
   const user = await Employee.create(req.body);
+  const url = `${req.protocol}://${req.get("host")}/me/${user._id}`;
+  await new Email(user, url).sendWelcome();
+
   res.status(201).json({
     status: "success",
     msg: "user Registered successfully ",
