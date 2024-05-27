@@ -49,27 +49,14 @@ export class Email {
     const html = `
       <!DOCTYPE html>
       <html>
-      <head>
-<<<<<<< HEAD
-        <title>Welcome to the Natours Family</title>
-      </head>
-      <body>
-        <h1>Welcome to the Natours Family, ${this.firstName}!</h1>
-=======
-        <title>Welcome to CMMS</title>
-      </head>
+      
       <body>
         <h1>Welcome to CMMS, ${this.firstName}!</h1>
->>>>>>> 0ad6df8 (sendWlecome method in Email class)
         <p>We're excited to have you on board. Please click the link below to confirm your email address:</p>
         <a href="${this.url}">Confirm your email</a>
       </body>
       </html>
     `;
-<<<<<<< HEAD
-    await this.send("Welcome to the Natours Family!", html);
-=======
     await this.send("Welcome to CMMS!", html);
->>>>>>> 0ad6df8 (sendWlecome method in Email class)
   }
 }
