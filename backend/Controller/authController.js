@@ -148,7 +148,7 @@ export const restrictTo = (...roles) => {
   };
 };
 
-export const forgotPassword = catchAsync(async (req, res, next) => {
+export const forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(new AppError("There is no user with the email address", 404));
