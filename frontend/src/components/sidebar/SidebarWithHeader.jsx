@@ -166,7 +166,7 @@ import { BiSolidReport } from "react-icons/bi";
                 bg={useColorModeValue('gray.50', 'gray.900')}
                 borderColor={useColorModeValue('gray.200', 'gray.700')}
               >
-                <MenuItem>Profile</MenuItem>
+                <MenuItem><Link to='/profile'>Profile</Link> </MenuItem>
                 <MenuItem>Settings</MenuItem>
                 <MenuDivider />
                 <MenuItem>Sign out</MenuItem>

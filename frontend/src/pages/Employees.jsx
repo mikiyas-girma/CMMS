@@ -4,8 +4,8 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Button, FormControl, FormLabel, Input, Table, Tbody, Td, Th, Thead, Tr, Text, Tfoot, Box, Heading } from '@chakra-ui/react';
 import SidebarWithHeader from '../components/sidebar/SidebarWithHeader';
 const EmployeesData = [
-    { id: Math.floor(Math.random() * 1000), name: 'Biniam', role: 'store-Keeper', status: 'Inactive', date: '10:09:45 AM5/12/2024' },
-    { id: Math.floor(Math.random() * 1000), name: 'Mikias', role: 'store-keeper', status: 'Active', date: '09:55:45 PM5/26/2024' },
+    { id: Math.floor(Math.random() * 1000), name: 'Biniam', role: 'Store-Keeper', status: 'Inactive', date: '10:09:45 AM5/12/2024' },
+    { id: Math.floor(Math.random() * 1000), name: 'Mikias', role: 'Store-keeper', status: 'Active', date: '09:55:45 PM5/26/2024' },
     { id: Math.floor(Math.random() * 1000), name: 'Nani', role: 'Store-Owner', status: 'Active', date: '05:21:45 AM5/29/2024' },
     { id: Math.floor(Math.random() * 1000), name: 'Jibrel', role: 'Admin', status: 'Inactive', date: '02:26:45 AM5/06/2024' }
 ]
@@ -31,7 +31,7 @@ const Employees = () => {
                 id: Math.floor(Math.random() * 1000),
                 name: e.target.name.value,
                 role: e.target.role.value,
-                status: employData.status,
+                status: 'Inactive',
                 date: `${date.toLocaleTimeString()}${date.toLocaleDateString()}`
             }
             console.log(Employes)
