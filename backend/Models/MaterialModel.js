@@ -13,23 +13,16 @@ const materialSchema = new mongoose.Schema(
     },
     totalQuantity: {
       type: Number,
+      default: 0,
       min: [0, "Total quantity must be a positive number"],
     },
-    addedQuantity: {
-      type: Number,
-      default: 0,
-      min: [0, "Added quantity must be a positive number"],
-    },
+
     weight: {
       type: Number,
       default: 0,
       min: [0, "Weight must be a positive number"],
     },
-    removedQuantity: {
-      type: Number,
-      default: 0,
-      min: [0, "Removed quantity must be a positive number"],
-    },
+
     user: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
