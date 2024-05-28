@@ -78,3 +78,15 @@ export const updateMaterial = asyncHandler(async (req, res, next) => {
     },
   });
 });
+export const deleteMaterial = asyncHandler(async (req, res, next) => {
+  const material = await Material.findByIdAndDelete(req.params.id);
+
+  if (!material) {
+    return next(new AppError("No material found with that ID", 404));
+  }
+
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+});
