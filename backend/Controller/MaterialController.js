@@ -17,7 +17,7 @@ const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 export const uploadMaterialPhoto = upload.single("image");
 
 export const resizeMaterialPhoto = async (req, res, next) => {
-  console.log(req.file);
+  // console.log(req.file);
   if (!req.file) return next();
   req.file.filename = `material-${req.body.name}-${req.user.username}-${Date.now()}.jpeg`;
   await sharp(req.file.buffer)
@@ -29,7 +29,7 @@ export const resizeMaterialPhoto = async (req, res, next) => {
 };
 export const checkMaterialExists = asyncHandler(async (req, res, next) => {
   const material = await Material.findOne({ name: req.body.name });
-  console.log("Material", req);
+  // console.log("Material", req);
 
   if (material) {
     return next(new AppError("Material with this name already exists.", 400));
@@ -55,6 +55,24 @@ export const createMaterial = asyncHandler(async (req, res) => {
   const material = await Material.create(req.body);
   res.status(201).json({
     status: "success",
+    data: {
+      material,
+    },
+  });
+});
+export const updateMaterial = asyncHandler(async (req, res, next) => {
+  if (req.file) req.body.image = req.file.filename;
+  const material = await Material.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!material) {
+    return next(new AppError("No material found with that ID", 404));
+  }
+
+  res.status(200).json({
+    status: "updated successfully",
     data: {
       material,
     },

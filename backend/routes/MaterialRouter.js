@@ -6,7 +6,7 @@ import {
   uploadMaterialPhoto,
   resizeMaterialPhoto,
   checkMaterialExists,
-  // updateMaterial,
+  updateMaterial,
   // deleteMaterial,
   // getMaterialById,
 } from "../Controller/MaterialController.js";
@@ -24,10 +24,14 @@ MaterialRouter.route("/")
     resizeMaterialPhoto,
     createMaterial
   );
-// MaterialRouter.use(restrictTo("employee"));
-// MaterialRouter.route("/material/:id")
-//   .patch(updateMaterial)
-//   .delete(deleteMaterial)
-//   .get(getMaterialById);
+MaterialRouter.route("/material/:id").patch(
+  restrictTo("employee"),
+  uploadMaterialPhoto,
+  checkMaterialExists,
+  resizeMaterialPhoto,
+  updateMaterial
+);
+// .delete(restrictTo("employee"), deleteMaterial)
+// .get(restrictTo("employee"), getMaterialById);
 
 export default MaterialRouter;
