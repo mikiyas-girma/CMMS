@@ -8,7 +8,7 @@ import {
   checkMaterialExists,
   updateMaterial,
   deleteMaterial,
-  // getMaterialById,
+  getMaterialById,
 } from "../Controller/MaterialController.js";
 
 const MaterialRouter = express.Router();
@@ -32,7 +32,7 @@ MaterialRouter.route("/material/:id")
     resizeMaterialPhoto,
     updateMaterial
   )
-  .delete(restrictTo("employee"), deleteMaterial);
-// .get(restrictTo("employee"), getMaterialById);
+  .delete(restrictTo("employee"), deleteMaterial)
+  .get(restrictTo("employee"), getMaterialById);
 
 export default MaterialRouter;
