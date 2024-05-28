@@ -52,11 +52,15 @@ export const checkPasswordUpdate = (req, res, next) => {
   next();
 };
 
-export const RegisterStoreOwner = asyncHandler(async (req, res) => {
+export const RegisterStoreOwner = asyncHandler(async (req, res, next) => {
   req.body.role = "storeOwner";
   const user = await StoreOwner.create(req.body);
   const url = `${req.protocol}://${req.get("host")}/me/${user._id}`;
-  await new Email(user, url).sendWelcome();
+  try {
+    await new Email(user, url).sendWelcome();
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
   res.status(201).json({
     status: "success",
     msg: "user Registered successfully ",
@@ -145,12 +149,18 @@ export const DeleteStoreOwner = asyncHandler(async (req, res) => {
 
 //employee
 
-export const RegisterEmployee = asyncHandler(async (req, res) => {
+export const RegisterEmployee = asyncHandler(async (req, res, next) => {
+  const password = req.body.password;
   req.body.role = "employee";
   const user = await Employee.create(req.body);
   const url = `${req.protocol}://${req.get("host")}/me/${user._id}`;
-  await new Email(user, url).sendWelcome();
+  try {
+    await new Email(user, url).sendWelcome(password);
+  } catch (error) {
+    console.log("error", error);
 
+    return next(new AppError(error.message, 500));
+  }
   res.status(201).json({
     status: "success",
     msg: "user Registered successfully ",

@@ -1,10 +1,11 @@
 import nodemailer from "nodemailer";
-import { fromString as htmlToTextFromString } from "html-to-text";
+// import nodemailerSendgrid from "nodemailer-sendgrid";
+import { htmlToText } from "html-to-text";
 
 export class Email {
   constructor(user, url) {
     this.to = user.email;
-    this.firstName = user.name.split(" ")[0];
+    this.firstName = user.Fname;
     this.url = url;
     this.from = `CMMS <${process.env.EMAIL_FROM}>`;
   }
@@ -12,11 +13,13 @@ export class Email {
   newTransport() {
     if (process.env.NODE_ENV === "production") {
       // SendGrid
+
       return nodemailer.createTransport({
-        service: "SendGrid",
+        host: "smtp.sendgrid.net",
+        port: 587,
         auth: {
-          user: process.env.SENDGRID_USERNAME,
-          pass: process.env.SENDGRID_PASSWORD,
+          user: "apikey",
+          pass: process.env.SENDGRID_API_KEY,
         },
       });
     }
@@ -33,27 +36,86 @@ export class Email {
 
   async send(subject, html) {
     // Define email options
+    const text = htmlToText(html);
+
     const mailOptions = {
       from: this.from,
       to: this.to,
       subject,
       html,
-      text: htmlToTextFromString(html),
+      text,
     };
 
     // Create a transport and send email
     await this.newTransport().sendMail(mailOptions);
   }
 
-  async sendWelcome() {
+  async sendWelcome(pass) {
     const html = `
       <!DOCTYPE html>
       <html>
-      
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+          }
+          .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+          }
+          .header {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #333333;
+          }
+          .content {
+            margin-top: 20px;
+            line-height: 1.6;
+          }
+          .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            color: #ffffff;
+            background-color: #777777;
+            text-decoration: none;
+            border-radius: 5px;
+          }
+  
+          .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #777777;
+          }
+        </style>
+      </head>
       <body>
-        <h1>Welcome to CMMS, ${this.firstName}!</h1>
-        <p>We're excited to have you on board. Please click the link below to confirm your email address:</p>
-        <a href="${this.url}">Confirm your email</a>
+        <div class="container">
+          <div class="header">
+            Welcome to CMMS, ${this.firstName}!
+          </div>
+          <div class="content">
+            <p>Dear ${this.firstName},</p>
+            <p>We're excited to have you on board. Your account has been registered  as a storekeeper of a store.</p>
+            <p>Your password is: <strong>${pass}</strong></p>
+            <p>You can log in to the system by clicking the link below:</p>
+            <p><a href="${this.url}" class="button">Login to CMMS</a></p>
+            <p>After you have logged into the system, please change your password to ensure your account's security.</p>
+          </div>
+          <div class="footer">
+            <p>Best regards,</p>
+            <p>Jibril Arbicho,
+            Store Owner of CMMS</p>
+          </div>
+        </div>
       </body>
       </html>
     `;
