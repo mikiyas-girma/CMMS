@@ -142,6 +142,24 @@ export const withdrawAndUpdateQuantities = asyncHandler(
       change.user = req.user._id;
       change.changeType = "withdraw";
     }
+    for (const change of changes) {
+      const material = await Material.findById(change.material);
+
+      if (!material) {
+        return next(
+          new AppError(`Material with ID ${change.material} not found`, 404)
+        );
+      }
+
+      if (material.totalQuantity < change.quantity) {
+        return next(
+          new AppError(
+            ` Cannot withdraw ${change.quantity} units from Material with ID ${change.material} because totalQuantity < quantity`,
+            400
+          )
+        );
+      }
+    }
 
     const insertedChanges = await QuantityChange.insertMany(changes);
 
