@@ -7,6 +7,11 @@ const QuantityChangeSchema = new mongoose.Schema(
       ref: "Material",
       required: true,
     },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
     changeType: {
       type: String,
       required: true,

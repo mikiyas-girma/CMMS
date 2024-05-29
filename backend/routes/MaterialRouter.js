@@ -9,6 +9,7 @@ import {
   updateMaterial,
   deleteMaterial,
   getMaterialById,
+  insertAndUpdateQuantities,
 } from "../Controller/MaterialController.js";
 
 const MaterialRouter = express.Router();
@@ -24,15 +25,19 @@ MaterialRouter.route("/")
     resizeMaterialPhoto,
     createMaterial
   );
+MaterialRouter.use(restrictTo("employee"));
+
+MaterialRouter.route("/addmaterial").post(insertAndUpdateQuantities);
+MaterialRouter.route("/withdrawmaterial").post();
+
 MaterialRouter.route("/material/:id")
   .patch(
-    restrictTo("employee"),
     uploadMaterialPhoto,
     checkMaterialExists,
     resizeMaterialPhoto,
     updateMaterial
   )
-  .delete(restrictTo("employee"), deleteMaterial)
-  .get(restrictTo("employee"), getMaterialById);
+  .delete(deleteMaterial)
+  .get(getMaterialById);
 
 export default MaterialRouter;

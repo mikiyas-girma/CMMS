@@ -3,7 +3,7 @@ import { AppError } from "../utils/AppError.js";
 import Material from "../Models/MaterialModel.js";
 import multer from "multer";
 import sharp from "sharp";
-
+import QuantityChange from "../Models/QuantityChangesModel.js";
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
@@ -103,4 +103,32 @@ export const getMaterialById = asyncHandler(async (req, res, next) => {
       material,
     },
   });
+});
+
+export const insertAndUpdateQuantities = asyncHandler(async (req, res) => {
+  console.log(req.body);
+  const changes = req.body;
+  for (const change of changes) {
+    change.user = req.user._id;
+    change.changeType = "add";
+  }
+
+  const insertedChanges = await QuantityChange.insertMany(changes);
+
+  const bulkOps = insertedChanges.map((change) => {
+    const update = { $inc: { totalQuantity: change.quantity } };
+
+    return {
+      updateOne: {
+        filter: { _id: change.material },
+        update: update,
+      },
+    };
+  });
+
+  await Material.bulkWrite(bulkOps);
+
+  res
+    .status(200)
+    .send("Sample data inserted and total quantities updated successfully");
 });
