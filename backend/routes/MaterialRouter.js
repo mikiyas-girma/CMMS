@@ -10,6 +10,7 @@ import {
   deleteMaterial,
   getMaterialById,
   insertAndUpdateQuantities,
+  withdrawAndUpdateQuantities,
 } from "../Controller/MaterialController.js";
 
 const MaterialRouter = express.Router();
@@ -28,7 +29,7 @@ MaterialRouter.route("/")
 MaterialRouter.use(restrictTo("employee"));
 
 MaterialRouter.route("/addmaterial").post(insertAndUpdateQuantities);
-MaterialRouter.route("/withdrawmaterial").post();
+MaterialRouter.route("/withdrawmaterial").post(withdrawAndUpdateQuantities);
 
 MaterialRouter.route("/material/:id")
   .patch(

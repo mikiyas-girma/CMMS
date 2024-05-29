@@ -128,7 +128,39 @@ export const insertAndUpdateQuantities = asyncHandler(async (req, res) => {
 
   await Material.bulkWrite(bulkOps);
 
-  res
-    .status(200)
-    .send("Sample data inserted and total quantities updated successfully");
+  res.status(200).json({
+    status: "success",
+    message: "Sample data inserted and total quantities updated successfully",
+  });
 });
+
+export const withdrawAndUpdateQuantities = asyncHandler(
+  async (req, res, next) => {
+    console.log(req.body);
+    const changes = req.body;
+    for (const change of changes) {
+      change.user = req.user._id;
+      change.changeType = "withdraw";
+    }
+
+    const insertedChanges = await QuantityChange.insertMany(changes);
+
+    const bulkOps = insertedChanges.map((change) => {
+      const update = { $inc: { totalQuantity: -change.quantity } };
+
+      return {
+        updateOne: {
+          filter: { _id: change.material },
+          update: update,
+        },
+      };
+    });
+
+    await Material.bulkWrite(bulkOps);
+
+    res.status(200).json({
+      status: "success",
+      message: "Sample data removed and total quantities updated successfully",
+    });
+  }
+);
