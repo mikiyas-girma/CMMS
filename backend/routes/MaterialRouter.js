@@ -12,6 +12,7 @@ import {
   insertAndUpdateQuantities,
   withdrawAndUpdateQuantities,
   GetReportOfHowManyMaterialsAdded,
+  GetReportOfHowManyMaterialsRemoved,
 } from "../Controller/MaterialController.js";
 
 const MaterialRouter = express.Router();
@@ -31,7 +32,10 @@ MaterialRouter.route("/addedmaterialreport").post(
   restrictTo("employee", "storeOwner"),
   GetReportOfHowManyMaterialsAdded
 );
-
+MaterialRouter.route("/removedmaterialreport").post(
+  restrictTo("employee", "storeOwner"),
+  GetReportOfHowManyMaterialsRemoved
+);
 MaterialRouter.use(restrictTo("employee"));
 
 MaterialRouter.route("/addmaterial").post(insertAndUpdateQuantities);
