@@ -182,3 +182,33 @@ export const withdrawAndUpdateQuantities = asyncHandler(
     });
   }
 );
+export const GetReportOfHowManyMaterialsAdded = asyncHandler(
+  async (req, res, next) => {
+    const { start, upto } = req.body;
+    const report = await QuantityChange.aggregate([
+      {
+        $match: {
+          date: { $gte: new Date(start), $lte: new Date(upto) },
+          changeType: "add",
+        },
+      },
+      {
+        $group: {
+          _id: "$material",
+          totalQuantity: { $sum: "$quantity" },
+        },
+      },
+      {
+        $sort: {
+          totalQuantity: -1,
+        },
+      },
+    ]);
+    res.status(200).json({
+      status: "success",
+      data: {
+        report,
+      },
+    });
+  }
+);

@@ -11,6 +11,7 @@ import {
   getMaterialById,
   insertAndUpdateQuantities,
   withdrawAndUpdateQuantities,
+  GetReportOfHowManyMaterialsAdded,
 } from "../Controller/MaterialController.js";
 
 const MaterialRouter = express.Router();
@@ -26,6 +27,11 @@ MaterialRouter.route("/")
     resizeMaterialPhoto,
     createMaterial
   );
+MaterialRouter.route("/addedmaterialreport").post(
+  restrictTo("employee", "storeOwner"),
+  GetReportOfHowManyMaterialsAdded
+);
+
 MaterialRouter.use(restrictTo("employee"));
 
 MaterialRouter.route("/addmaterial").post(insertAndUpdateQuantities);
