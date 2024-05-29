@@ -5,12 +5,17 @@ import { ErrorHandler } from "./utils/ErrorController.js";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRouter.js";
 import MaterialRouter from "./routes/MaterialRouter.js";
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
 
+import xss from "xss-clean";
 const app = express();
-
+app.use(helmet());
 app.use(cookieParser());
 
 app.use(express.json());
+app.use(mongoSanitize());
+app.use(xss());
 
 if (process.env.NODE_ENV === "developement") app.use(morgan("dev"));
 
