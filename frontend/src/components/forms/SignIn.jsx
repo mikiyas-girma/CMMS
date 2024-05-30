@@ -17,7 +17,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { login } from "../../utils/login";
-
+import { PulseLoader } from "react-spinners";
 const SignIn = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
@@ -87,7 +87,7 @@ const SignIn = () => {
               w="100%"
               type="submit"
             >
-              Sign in
+              {loading ? <PulseLoader color="#FFFFFF" /> : "Sign in"}
             </Button>
           </VStack>
         </VStack>
