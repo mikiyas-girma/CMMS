@@ -7,15 +7,15 @@ import userRouter from "./routes/userRouter.js";
 import MaterialRouter from "./routes/MaterialRouter.js";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
+import cors from "cors";
 
-import xss from "xss-clean";
 const app = express();
 app.use(helmet());
+app.use(cors());
 app.use(cookieParser());
 
 app.use(express.json());
 app.use(mongoSanitize());
-app.use(xss());
 
 if (process.env.NODE_ENV === "developement") app.use(morgan("dev"));
 
