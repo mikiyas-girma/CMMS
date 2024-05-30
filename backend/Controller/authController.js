@@ -35,6 +35,7 @@ const createSendToken = (user, statusCode, res) => {
 
 export const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
+  // console.log("body", req.body);
   // 1) Check if email and password exist
   if (!email || !password) {
     return next(new AppError("Please provide email and password!", 400));

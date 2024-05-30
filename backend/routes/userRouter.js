@@ -22,7 +22,7 @@ import {
   forgotPassword,
 } from "../Controller/authController.js";
 const userRouter = express.Router();
-userRouter.route("/storeOwner/login").post(login);
+userRouter.route("/login").post(login);
 userRouter.route("/forgotPassword").post(forgotPassword);
 
 userRouter.use(protect);

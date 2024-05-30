@@ -26,10 +26,11 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("data", email, password);
+    console.log("da", email, password);
     setloading(true);
-    // const response = await login({ email, password });
-    // console.log(response);
+    const response = await login(email, password);
+    setloading(false);
+    console.log("response", response);
   };
 
   return (
@@ -51,7 +52,7 @@ const SignIn = () => {
         >
           <VStack spacing={4} w="100%">
             <FormControl id="username">
-              <FormLabel>username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <Input
                 rounded="md"
                 type="text"
