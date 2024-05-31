@@ -76,6 +76,11 @@ const Employee = User.discriminator(
       enum: ["active", "inactive"],
       default: "active",
     },
+    storeOwner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "StoreOwner",
+      required: true,
+    },
   })
 );
 

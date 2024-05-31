@@ -85,7 +85,11 @@ const SignIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormControl>
-            {error && <p className=" text-red-600">{error}</p>}
+            {error && (
+              <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                {error}
+              </p>
+            )}
           </VStack>
           <VStack w="100%">
             <Stack direction="row" justifyContent="space-between" w="100%">
