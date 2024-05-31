@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Container,
   FormControl,
@@ -17,21 +19,35 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { login } from "../../utils/login";
+
 import { PulseLoader } from "react-spinners";
 const SignIn = () => {
+  const navigate = useNavigate();
+
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [loading, setloading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  let response = {};
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("da", email, password);
     setloading(true);
-    const response = await login(email, password);
+    response = await login(email, password);
     setloading(false);
-    console.log("response", response);
+    if (response?.data?.user?.role === "admin") {
+      navigate("/dashboard");
+    }
+    if (response?.error) {
+      setError(response?.error);
+    }
+    console.log(("error", error));
+    setEmail("");
+    setPassword("");
   };
+  // navigate("/dashboard");
 
   return (
     <Flex p={8} flex={1} align="center">
@@ -69,6 +85,7 @@ const SignIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormControl>
+            {error && <p className=" text-red-600">{error}</p>}
           </VStack>
           <VStack w="100%">
             <Stack direction="row" justifyContent="space-between" w="100%">
