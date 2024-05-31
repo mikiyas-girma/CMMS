@@ -151,6 +151,8 @@ export const DeleteStoreOwner = asyncHandler(async (req, res) => {
 
 export const RegisterEmployee = asyncHandler(async (req, res, next) => {
   const password = req.body.password;
+  req.body.storeOwner = req.user._id;
+
   req.body.role = "employee";
   const user = await Employee.create(req.body);
   const url = `${req.protocol}://${req.get("host")}/me/${user._id}`;

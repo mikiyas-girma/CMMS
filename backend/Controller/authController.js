@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { AppError } from "../utils/AppError.js";
-import { User } from "../Models/UserModel.js";
+import { StoreOwner, User } from "../Models/UserModel.js";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
 
@@ -46,6 +46,13 @@ export const login = asyncHandler(async (req, res, next) => {
   const correct = await user.correctPassword(password, user.password);
   if (!user || !correct) {
     return next(new AppError("Incorrect email or password", 401));
+  }
+  if (user.role === "employee") {
+    const storeOwner = await StoreOwner.findById(user.storeOwner);
+
+    if (!storeOwner || storeOwner.status !== "active") {
+      return next(new AppError("StoreOwner is inactive. Cannot log in.", 403));
+    }
   }
   createSendToken(user, 200, res);
 });
@@ -103,6 +110,14 @@ export const protect = asyncHandler(async (req, res, next) => {
     return next(
       new AppError("The user account is disabled. Please contact support.", 403)
     );
+  }
+
+  if (freshUser.role === "employee") {
+    const storeOwner = await StoreOwner.findById(freshUser.storeOwner);
+
+    if (!storeOwner || storeOwner.status !== "active") {
+      return next(new AppError("StoreOwner is inactive. Access denied.", 403));
+    }
   }
   // if (
   //   (freshUser.role === "employee" && freshUser.role === "storeOwner") &&
