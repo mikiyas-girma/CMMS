@@ -5,24 +5,21 @@ import Footer from "../components/common/Footer";
 import ThemeToggle from "../components/common/ThemeToggle";
 import PulseCards from "../components/common/PulseCards";
 
-
 export default function Layout() {
   const location = useLocation();
 
-  const isLandingPage = location.pathname === '/';
+  const isLandingPage = location.pathname === "/";
 
-    return (
-        <>
-            <ThemeToggle />
-            {!isLandingPage && <Header />}
-            <main>
-                <Suspense fallback={
-                    <PulseCards />
-                }>
-                    <Outlet />
-                </Suspense>
-            </main>
-            <Footer  style={{ position: "fixed", bottom: 0 }} />
-        </>
-    )
+  return (
+    <>
+      <ThemeToggle />
+      {!isLandingPage && <Header />}
+      <main>
+        <Suspense fallback={<PulseCards />}>
+          <Outlet />
+        </Suspense>
+      </main>
+      <Footer style={{ position: "fixed", bottom: 0 }} />
+    </>
+  );
 }

@@ -23,7 +23,7 @@ const routes = [
   { path: PathConstants.EMPLOYEES, element: <Employees /> },
   { path: PathConstants.Materials, element: <Materials /> },
   { path: PathConstants.PROFILE, element: <Profile /> },
-  { path: PathConstants.Notification, element: <Notification /> },
+  { path: PathConstants.NOTIFICATION, element: <Notification /> },
 ];
 
 export default routes;

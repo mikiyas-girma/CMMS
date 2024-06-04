@@ -7,7 +7,7 @@ const PathConstants = {
   Materials: "materials",
   EMPLOYEES: "employees",
   PROFILE: "profile",
-  Notification: "notification",
+  NOTIFICATION: "notification",
 };
 
 export default PathConstants;
