@@ -5,7 +5,7 @@ const PathConstants = {
   // other pages's paths...
   DASHBOARD: "dashboard",
   MATERIALS: "materials",
-  EMPLOYEES: "employees",
+  EMPLOYEES: "users",
   PROFILE: "profile",
   NOTIFICATION: "notification",
 };
