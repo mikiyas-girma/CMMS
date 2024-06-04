@@ -62,12 +62,12 @@ const SidebarContent = ({ onClose, ...rest }) => {
     console.log("Linkitems: ", LinkItems);
   }
   if (role === "storeOwner") {
-    LinkItems = LinkItems.map((item) => {
-      if (item.id === 3) {
-        return { ...item, name: "Employees" };
-      }
-      return item;
-    });
+    // LinkItems = LinkItems.map((item) => {
+    //   if (item.id === 3) {
+    //     return { ...item, name: "Employees" };
+    //   }
+    //   return item;
+    // });
     console.log("Linkitems: ", LinkItems);
   }
 
