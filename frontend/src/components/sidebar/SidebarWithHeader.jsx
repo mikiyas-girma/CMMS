@@ -34,7 +34,7 @@ import { HiUsers } from "react-icons/hi2";
 import { ImProfile } from "react-icons/im";
 import { BiSolidReport } from "react-icons/bi";
 
-const LinkItems = [
+let LinkItems = [
   { name: "Dashboard", icon: MdDashboard, to: "/dashboard" },
   { name: "Materials", icon: FiTrendingUp, to: "/materials" },
   { name: "Employees", icon: HiUsers, to: "/employees" },
@@ -43,6 +43,14 @@ const LinkItems = [
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
+  const { role } = getUserAuthStatus();
+  if (role === "admin") {
+    LinkItems = LinkItems.filter(
+      (link) => link.name !== "Materials" && link.name !== "Reports"
+    );
+    console.log("Linkitems: ", LinkItems);
+  }
+
   return (
     <Box
       transition="3s ease"
@@ -64,7 +72,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       </Flex>
       {LinkItems.map((link) => (
         <Link key={link.name} to={link.to}>
-          <NavItem icon={link.icon}>{link.name}</NavItem>
+          {<NavItem icon={link.icon}>{link.name}</NavItem>}
         </Link>
       ))}
     </Box>
@@ -74,7 +82,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 const NavItem = ({ icon, children, ...rest }) => {
   return (
     <Box
-      as="a"
+      as="span"
       href="#"
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}

@@ -33,7 +33,7 @@ const SignIn = () => {
   let response = {};
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("da", email, password);
+    // console.log("da", email, password);
     setloading(true);
     response = await login(email, password);
     setloading(false);
@@ -48,7 +48,7 @@ const SignIn = () => {
     if (response?.data?.user?.role === "storeOwner") {
       navigate("/employees");
     }
-    console.log(("error", error));
+    // console.log(("error", error));
     setEmail("");
     setPassword("");
   };
