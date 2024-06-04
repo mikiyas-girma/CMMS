@@ -20,17 +20,38 @@ const routes = [
       </ProtectedRoute>
     ),
   },
-
   {
-    element: <AuthRoute />, // Apply AuthRoute to a group of routes
-    children: [
-      { path: PathConstants.EMPLOYEES, element: <Employees /> },
-      { path: PathConstants.Materials, element: <Materials /> },
-      { path: PathConstants.PROFILE, element: <Profile /> },
-      { path: PathConstants.NOTIFICATION, element: <Notification /> },
-    ],
+    path: PathConstants.EMPLOYEES,
+    element: (
+      <AuthRoute>
+        <Employees />
+      </AuthRoute>
+    ),
   },
-
+  {
+    path: PathConstants.MATERIALS,
+    element: (
+      <AuthRoute>
+        <Materials />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: PathConstants.PROFILE,
+    element: (
+      <AuthRoute>
+        <Profile />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: PathConstants.NOTIFICATION,
+    element: (
+      <AuthRoute>
+        <Notification />
+      </AuthRoute>
+    ),
+  },
   // { path: PathConstants.EMPLOYEES, element: <Employees /> },
   // { path: PathConstants.Materials, element: <Materials /> },
   // { path: PathConstants.PROFILE, element: <Profile /> },
