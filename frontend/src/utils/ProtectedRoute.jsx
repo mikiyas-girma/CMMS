@@ -1,7 +1,7 @@
 import { getUserAuthStatus } from "./login";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import PageNotFound from "./PageNotFound";
-const ProtectedRoute = ({ children, requiredRole }) => {
+export const ProtectedRoute = ({ children, requiredRole }) => {
   const { isAuth, role } = getUserAuthStatus();
 
   if (!isAuth) {
@@ -15,4 +15,13 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   return children;
 };
 
-export default ProtectedRoute;
+export const AuthRoute = ({ children }) => {
+  const navigate = useNavigate();
+  const { isAuth } = getUserAuthStatus();
+
+  if (!isAuth) {
+    navigate("/");
+  }
+
+  return children;
+};

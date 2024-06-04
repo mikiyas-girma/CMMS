@@ -1,7 +1,7 @@
 import React from "react";
 import PathConstants from "./pathConstants";
 import { element } from "prop-types";
-import ProtectedRoute from "../utils/ProtectedRoute";
+import { ProtectedRoute, AuthRoute } from "../utils/ProtectedRoute";
 
 const Home = React.lazy(() => import("../pages/Home"));
 const Materials = React.lazy(() => import("../pages/Materials"));
@@ -20,10 +20,21 @@ const routes = [
       </ProtectedRoute>
     ),
   },
-  { path: PathConstants.EMPLOYEES, element: <Employees /> },
-  { path: PathConstants.Materials, element: <Materials /> },
-  { path: PathConstants.PROFILE, element: <Profile /> },
-  { path: PathConstants.NOTIFICATION, element: <Notification /> },
+
+  {
+    element: <AuthRoute />, // Apply AuthRoute to a group of routes
+    children: [
+      { path: PathConstants.EMPLOYEES, element: <Employees /> },
+      { path: PathConstants.Materials, element: <Materials /> },
+      { path: PathConstants.PROFILE, element: <Profile /> },
+      { path: PathConstants.NOTIFICATION, element: <Notification /> },
+    ],
+  },
+
+  // { path: PathConstants.EMPLOYEES, element: <Employees /> },
+  // { path: PathConstants.Materials, element: <Materials /> },
+  // { path: PathConstants.PROFILE, element: <Profile /> },
+  // { path: PathConstants.NOTIFICATION, element: <Notification /> },
 ];
 
 export default routes;
