@@ -43,6 +43,8 @@ const SignIn = () => {
     if (response?.error) {
       setError(response?.error);
     }
+    // if storeOwner redirecting to /employees
+
     if (response?.data?.user?.role === "storeOwner") {
       navigate("/employees");
     }
