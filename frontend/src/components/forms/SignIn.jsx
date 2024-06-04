@@ -43,6 +43,9 @@ const SignIn = () => {
     if (response?.error) {
       setError(response?.error);
     }
+    if (response?.data?.user?.role === "storeOwner") {
+      navigate("/employees");
+    }
     console.log(("error", error));
     setEmail("");
     setPassword("");
