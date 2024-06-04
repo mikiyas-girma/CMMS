@@ -35,11 +35,11 @@ import { ImProfile } from "react-icons/im";
 import { BiSolidReport } from "react-icons/bi";
 
 let LinkItems = [
-  { name: "Dashboard", icon: MdDashboard, to: "/dashboard" },
-  { name: "Materials", icon: FiTrendingUp, to: "/materials" },
-  // { name: "Employees", icon: HiUsers, to: "/users" },
-  { name: "Reports", icon: BiSolidReport, to: "/reports" },
-  { name: "Settings", icon: FiSettings, to: "/settings" },
+  { name: "Dashboard", icon: MdDashboard, id: 1, to: "/dashboard" },
+  { name: "Materials", icon: FiTrendingUp, id: 2, to: "/materials" },
+  { name: "Employees", icon: HiUsers, id: 3, to: "/users" },
+  { name: "Reports", icon: BiSolidReport, id: 4, to: "/reports" },
+  { name: "Settings", icon: FiSettings, id: 5, to: "/settings" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
@@ -48,36 +48,18 @@ const SidebarContent = ({ onClose, ...rest }) => {
     LinkItems = LinkItems.filter(
       (link) => link.name !== "Materials" && link.name !== "Reports"
     );
-    const storeOwnersExists = LinkItems.some(
-      (link) => link.name === "StoreOwners"
-    );
 
-    // Insert the new item at the 1st index if it doesn't exist
-    if (!storeOwnersExists) {
-      LinkItems.splice(1, 0, {
-        name: "StoreOwners",
-        icon: HiUsers,
-        to: "/users",
-      });
-    }
+    LinkItems = LinkItems.map((item) => {
+      if (item.id === 3) {
+        return { ...item, name: "StoreOwners" };
+      }
+      return item;
+    });
 
     console.log("Linkitems: ", LinkItems);
   }
-  if (role === "storeOwner") {
-    const storeOwnersExists = LinkItems.some(
-      (link) => link.name === "Employees"
-    );
-
-    // Insert the new item at the 1st index if it doesn't exist
-    if (!storeOwnersExists) {
-      LinkItems.splice(1, 0, {
-        name: "Employees",
-        icon: HiUsers,
-        to: "/users",
-      });
-    }
-
-    console.log("Linkitems: ", LinkItems);
+  if (role === "employee") {
+    LinkItems = LinkItems.filter((link) => link.id !== 3);
   }
 
   return (
