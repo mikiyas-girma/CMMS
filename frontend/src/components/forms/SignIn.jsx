@@ -37,9 +37,20 @@ const SignIn = () => {
     setloading(true);
     response = await login(email, password);
     setloading(false);
+    if (response?.data?.user?.role === "admin") {
+      navigate("/dashboard");
+    }
+    if (response?.error) {
+      setError(response?.error);
+    }
+    // if storeOwner redirecting to /employees
 
-    navigate("/dashboard");
-
+    if (
+      response?.data?.user?.role === "storeOwner" ||
+      response?.data?.user?.role === "employee"
+    ) {
+      navigate("/users");
+    }
     // console.log(("error", error));
     setEmail("");
     setPassword("");

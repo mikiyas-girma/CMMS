@@ -34,15 +34,14 @@ import { HiUsers } from "react-icons/hi2";
 import { ImProfile } from "react-icons/im";
 import { BiSolidReport } from "react-icons/bi";
 
-let LinkItems = [
-  { name: "Dashboard", icon: MdDashboard, id: 1, to: "/dashboard" },
-  { name: "Materials", icon: FiTrendingUp, id: 2, to: "/materials" },
-  { name: "Employees", icon: HiUsers, id: 3, to: "/users" },
-  { name: "Reports", icon: BiSolidReport, id: 4, to: "/reports" },
-  { name: "Settings", icon: FiSettings, id: 5, to: "/settings" },
-];
-
 const SidebarContent = ({ onClose, ...rest }) => {
+  let LinkItems = [
+    { name: "Dashboard", icon: MdDashboard, id: 1, to: "/dashboard" },
+    { name: "Materials", icon: FiTrendingUp, id: 2, to: "/materials" },
+    { name: "Employees", icon: HiUsers, id: 3, to: "/users" },
+    { name: "Reports", icon: BiSolidReport, id: 4, to: "/reports" },
+    { name: "Settings", icon: FiSettings, id: 5, to: "/settings" },
+  ];
   const { role } = getUserAuthStatus();
   if (role === "admin") {
     LinkItems = LinkItems.filter(
@@ -60,6 +59,16 @@ const SidebarContent = ({ onClose, ...rest }) => {
   }
   if (role === "employee") {
     LinkItems = LinkItems.filter((link) => link.id !== 3);
+    console.log("Linkitems: ", LinkItems);
+  }
+  if (role === "storeOwner") {
+    LinkItems = LinkItems.map((item) => {
+      if (item.id === 3) {
+        return { ...item, name: "Employees" };
+      }
+      return item;
+    });
+    console.log("Linkitems: ", LinkItems);
   }
 
   return (
