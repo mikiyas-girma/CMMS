@@ -3,12 +3,54 @@ import { Badge } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Button, FormControl, FormLabel, Input, Table, Tbody, Td, Th, Thead, Tr, Text, Tfoot, Box, Heading } from '@chakra-ui/react';
 import SidebarWithHeader from '../components/sidebar/SidebarWithHeader';
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    HStack,
+} from "@chakra-ui/react";
+
+
+
 const EmployeesData = [
-    { id: Math.floor(Math.random() * 1000), name: 'Biniam', role: 'Store-Keeper', status: 'Inactive', date: '10:09:45 AM5/12/2024' },
-    { id: Math.floor(Math.random() * 1000), name: 'Mikias', role: 'Store-keeper', status: 'Active', date: '09:55:45 PM5/26/2024' },
-    { id: Math.floor(Math.random() * 1000), name: 'Nani', role: 'Store-Owner', status: 'Active', date: '05:21:45 AM5/29/2024' },
-    { id: Math.floor(Math.random() * 1000), name: 'Jibrel', role: 'Admin', status: 'Inactive', date: '02:26:45 AM5/06/2024' }
+    {
+        id: 1,
+        first_name: 'Mikias',
+        last_name: 'Girma',
+        email: 'mikiyasgirmaet@gmail.com',
+        role: 'Employee',
+        status: 'Active'
+    },
+    {
+        id: 2,
+        first_name: 'Jibril',
+        last_name: 'Arbicho',
+        email: 'JibrilArbicho@gmail.com',
+        role: 'Employee',
+        status: 'Active'
+    },
+    {
+        id: 3,
+        first_name: 'Biniam',
+        last_name: 'Batu',
+        email: 'Biniambatu@gmail.com',
+        role: 'Employee',
+        status: 'Active'
+    },
+    {
+        id: 4,
+        first_name: 'Nanati',
+        last_name: 'Mengistu',
+        email: 'nanatimengistu@gmail.com',
+        role: 'Employee',
+        status: 'Active'
+    },
 ]
+
+
 
 
 const Employees = () => {
@@ -21,18 +63,18 @@ const Employees = () => {
         if (edit.id) {
             const date = new Date()
             const updatedEdit = employData.map((e) => (
-                e.id === edit.id ? { id: edit.id, name: edit.name, role: edit.role, status: edit.status, date: `${date.toLocaleTimeString()}${date.toLocaleDateString()}` } : e
+                e.id === edit.id ? { id: edit.id, first_name: edit.first_name, last_name: edit.last_name, role: edit.role, status: edit.status } : e
             ))
             setEmployData(updatedEdit)
             setEdit({})
         } else {
-            const date = new Date()
+
             const Employes = {
                 id: Math.floor(Math.random() * 1000),
-                name: e.target.name.value,
+                first_name: e.target.firstname.value,
+                last_name: e.target.lastname.value,
                 role: e.target.role.value,
-                status: 'Inactive',
-                date: `${date.toLocaleTimeString()}${date.toLocaleDateString()}`
+                status: 'Active'
             }
             console.log(Employes)
             setEmployData([...employData, Employes])
@@ -52,58 +94,105 @@ const Employees = () => {
         setEdit(selected)
     }
 
+
+    const [isOpen, setIsOpen] = useState(false);
+    const onOpen = () => {
+        setIsOpen(true);
+    };
+
+    const onClose = () => {
+        setIsOpen(false);
+    };
+
+    const addNewEmployee = () => {
+        const newEmployee = {
+            id: EmployeesData.length + 1,
+            first_name: document.getElementById("firstname").value,
+            last_name: document.getElementById("lastname").value,
+            email: document.getElementById("email").value,
+            role: document.getElementById("role").value
+        };
+        EmployeesData.push(newEmployee);
+        setEmployData(EmployeesData);
+        setIsOpen(false);
+    };
+
     return (
         <SidebarWithHeader>
-            <Box borderWidth="0px" borderRadius="lg" overflow="hidden" p={4} boxShadow="sm">
-                <Heading size="md" mb={4} marginLeft='26px'>Employee Management</Heading>
-                <section>
-                    <form onSubmit={handleSubmit}  >
-                        <FormControl padding='20px 20px' marginLeft='10px'  >
-                            <FormLabel htmlFor='name'>Employee Name</FormLabel>
-                            <Input width='700px' type='text' name='name' id='name' value={edit.name || " "} onChange={e => setEdit({ ...edit, name: e.target.value })} /><br></br>
-                            <FormLabel htmlFor='role'>Role</FormLabel>
-                            <Input width='700px' type='text' name='role' id='role' value={edit.role || " "} onChange={e => setEdit({ ...edit, role: e.target.value })} /><br></br>
-                            <Button marginTop='20px' colorScheme='blue' color='white' variant='solid' type='submit'>{edit.id ? 'Update' : 'Add'}</Button>
-                        </FormControl>
-                    </form>
-                </section>
+            <HStack justify="end" mt={4} px={4}>
+                <Button onClick={onOpen} colorScheme="blue">
+                    Add Employee
+                </Button>
+            </HStack>
+                <Box borderWidth="0px" borderRadius="lg" overflow="hidden" p={4} boxShadow="sm">
+                    <Heading size="md" mb={4} marginLeft='26px'>Employee Management</Heading>
+                    <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>Add New Employee</ModalHeader>
+                            <ModalBody>
+                                <FormControl>
+                                    <FormLabel>First Name</FormLabel>
+                                    <Input id="firstname" placeholder="Enter first name" />
+                                </FormControl>
+                                <FormControl mt={4}>
+                                    <FormLabel>Last Name</FormLabel>
+                                    <Input id="lastname" placeholder="Enter last name" />
+                                </FormControl>
+                                <FormControl mt={4}>
+                                    <FormLabel>Email</FormLabel>
+                                    <Input id="email" placeholder="Enter employee's email" />
+                                </FormControl>
+                                <FormControl mt={4}>
+                                    <FormLabel>Role</FormLabel>
+                                    <Input id="role" placeholder="Enter employee's role" />
+                                </FormControl>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button colorScheme="blue" mr={3} onClick={addNewEmployee}>
+                                    Add
+                                </Button>
+                                <Button onClick={onClose}>Cancel</Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </Modal>
 
-                <Table variant="simple">
-                    <Thead>
-                        <Tr >
-                            <Th>ID</Th>
-                            <Th>Employee Name </Th>
-                            <Th>Role</Th>
-                            <Th>Date</Th>
-                            <Th>Status</Th>
-                            <Th></Th>
-                            <Th></Th>
-                        </Tr>
-                    </Thead>
-                    <Tbody >
-                        {employData.map((event) => (
-                            <Tr key={event.id}>
-                                <Td>{event.id}</Td>
-                                <Td>{event.name}</Td>
-                                <Td>{event.role}</Td>
-                                <Td >{event.date}</Td>
-                                <Td>
-                                    <Badge colorScheme={event.status === 'Active' ? 'green' : 'red'}>
-                                        {event.status}
-                                    </Badge>
-                                </Td>
+                    <Table variant="simple">
+                        <Thead>
+                            <Tr >
+                                <Th>ID</Th>
+                                <Th>First Name </Th>
+                                <Th>Last Name </Th>
+                                <Th>Role</Th>
+                                <Th>Status</Th>
+                                <Th></Th>
+                                <Th></Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody >
+                            {employData.map((event) => (
+                                <Tr key={event.id}>
+                                    <Td>{event.id}</Td>
+                                    <Td>{event.first_name}</Td>
+                                    <Td>{event.last_name}</Td>
+                                    <Td>{event.role}</Td>
+                                    <Td>
+                                        <Badge colorScheme={event.status === 'Active' ? 'green' : 'red'}>
+                                            {event.status}
+                                        </Badge>
+                                    </Td>
 
-                                <Td><EditIcon colorScheme='blue' color='blue.500' variant='solid' cursor='pointer' onClick={() => handleEdit(event.id)}>Edit</EditIcon></Td>
-                                <Td><DeleteIcon colorScheme='red' color='red.500' variant='solid' cursor='pointer' onClick={() => handleDelete(event.id)}>Delete</DeleteIcon></Td>
-                            </Tr>))}
-                    </Tbody>
-                    <Tfoot>
-                        <Td># of Employee </Td>
-                        <Td>( {employData.length} )</Td>
-                    </Tfoot>
-                </Table>
+                                    <Td><EditIcon colorScheme='blue' color='blue.500' variant='solid' cursor='pointer' onClick={() => handleEdit(event.id)}>Edit</EditIcon></Td>
+                                    <Td><DeleteIcon colorScheme='red' color='red.500' variant='solid' cursor='pointer' onClick={() => handleDelete(event.id)}>Delete</DeleteIcon></Td>
+                                </Tr>))}
+                        </Tbody>
+                        <Tfoot>
+                            <Td># of Employee </Td>
+                            <Td>( {employData.length} )</Td>
+                        </Tfoot>
+                    </Table>
 
-            </Box>
+                </Box>
 
         </SidebarWithHeader>
     )
