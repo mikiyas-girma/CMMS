@@ -1,5 +1,6 @@
 import apiInstance from "./axios";
 import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode";
 
 import Swal from "sweetalert2";
 const Toast = Swal.mixin({
@@ -38,5 +39,17 @@ export const login = async (email, password) => {
       data: null,
       error: error?.response?.data?.message || "Something went wrong",
     };
+  }
+};
+
+export const getUserAuthStatus = () => {
+  const token = Cookies.get("jwt");
+  if (!token) return { isAuth: false };
+
+  try {
+    const decodedToken = jwtDecode(token);
+    return { isAuth: true, role: decodedToken.role };
+  } catch (error) {
+    return { isAuth: false };
   }
 };
