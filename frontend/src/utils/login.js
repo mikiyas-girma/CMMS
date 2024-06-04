@@ -1,6 +1,6 @@
 import apiInstance from "./axios";
 import Cookies from "js-cookie";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 import Swal from "sweetalert2";
 const Toast = Swal.mixin({

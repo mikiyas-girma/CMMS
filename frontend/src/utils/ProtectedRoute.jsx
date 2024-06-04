@@ -1,14 +1,15 @@
 import { getUserAuthStatus } from "./login";
 import { Navigate } from "react-router-dom";
+import PageNotFound from "./PageNotFound";
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { isAuth, role } = getUserAuthStatus();
 
   if (!isAuth) {
-    return <Navigate to="/404" replace />;
+    return <PageNotFound />;
   }
 
   if (requiredRole && role !== requiredRole) {
-    return <Navigate to="/404" replace />;
+    return <PageNotFound />;
   }
 
   return children;
