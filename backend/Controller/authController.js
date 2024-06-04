@@ -43,7 +43,7 @@ export const login = asyncHandler(async (req, res, next) => {
   // 3) If everything ok, send token to client
   const user = await User.findOne({ email }).select("+password");
 
-  const correct = await user.correctPassword(password, user.password);
+  const correct = await user?.correctPassword(password, user.password);
   if (!user || !correct) {
     return next(new AppError("Incorrect email or password", 401));
   }
