@@ -1,6 +1,6 @@
 // src/components/sidebar/SidebarWithHeader.jsx
 
-import { getUserAuthStatus } from "../../utils/login";
+import { getUserAuthStatus } from "../../utils/auth";
 import {
   IconButton,
   Avatar,
