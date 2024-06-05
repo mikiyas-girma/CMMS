@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { generateRandomPassword } from "../utils/generateRandomPassword";
 import { HiOutlineXMark } from "react-icons/hi2";
-
+import { register } from "../utils/auth";
 const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
   const [password, setPassword] = useState("");
 
@@ -10,8 +10,17 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
     const newPassword = generateRandomPassword(data.email);
     setPassword(newPassword);
   }, [data.email]);
-  const handleRegiseteration = () => {};
+  const handleRegisteration = async () => {
+    const data = await register({
+      full_name: `${data.Fname} ${data.Lname}`,
+      email: data.email,
+      phone: data.phone,
+      password,
+      password2: 123,
+    });
+  };
   console.log("generated password", password);
+
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-90 z-50 overflow-hidden">
       <div className=" bg-white border border-gray-300 rounded-lg p-8 px-[100px] shadow-md relative ">
@@ -49,7 +58,7 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
           </button>
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-            onClick={handleRegiseteration}
+            onClick={handleRegisteration}
           >
             Confirm Registration
           </button>
