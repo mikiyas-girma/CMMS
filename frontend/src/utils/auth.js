@@ -54,32 +54,38 @@ export const getUserAuthStatus = () => {
   }
 };
 export const register = async (
-  full_name,
+  Fname,
+  Lname,
   email,
   phone,
   password,
-  password2
+  passwordConfirm
 ) => {
+  console.log("data", Fname, Lname, email, phone, password, passwordConfirm);
+
   try {
-    const { data } = await axios.post("user/register", {
-      full_name,
+    const { data } = await apiInstance.post("users/users/employee", {
+      Fname,
+      Lname,
       email,
       phone,
       password,
-      password2,
+      passwordConfirm,
     });
+
     Toast.fire({
       icon: "success",
       title: "Registered Successfully",
     });
-    await login(email, password); //to login automatically after registeration
+
+    await login(email, password); // Log in automatically after registration
+
     return { data, error: null };
   } catch (error) {
-    console.log("error", error.response.data);
-
+    console.log("error", error.response?.data);
     return {
       data: null,
-      error: error.response.data?.detail || "Something went wrong",
+      error: error.response?.data?.detail || "Something went wrong",
     };
   }
 };
