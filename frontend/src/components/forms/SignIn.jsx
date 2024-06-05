@@ -19,6 +19,8 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import {
+    validateEmail,
+    validatePassword,
     handleBlurEmail,
     handleBlurPassword,
 
@@ -36,6 +38,25 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+
+    const emailError = validateEmail(email) ? '' : "Please enter valid email";
+    const passwordError = validatePassword(password) ? '' : "Password should be > 5 characters";
+
+    setEmailError(emailError);
+    setPasswordError(passwordError);
+
+    if (emailError || passwordError) {
+        setTimeout(() => {
+            setEmailError('');
+            setPasswordError('');
+        }, 3000);
+        return;
+    }
+};
+
   let response = {};
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,6 +150,7 @@ const SignIn = () => {
               rounded="md"
               w="100%"
               type="submit"
+              onClick={handleSignIn}
             >
               {loading ? <PulseLoader color="#FFFFFF" /> : "Sign in"}
             </Button>
