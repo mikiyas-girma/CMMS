@@ -142,7 +142,7 @@ const Employees = () => {
                     type="text"
                     name="Fname"
                     id="name"
-                    value={edit.email}
+                    value={edit.Fname}
                     onChange={(e) =>
                       setEdit({ ...edit, Fname: e.target.value })
                     }
@@ -215,7 +215,6 @@ const Employees = () => {
                     {event.status}
                   </Badge>
                 </Td>
-                Jibril A, [6/5/24 1:08 AM]
                 <Td>
                   <EditIcon
                     colorScheme="blue"
