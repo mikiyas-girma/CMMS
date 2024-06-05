@@ -53,3 +53,33 @@ export const getUserAuthStatus = () => {
     return { isAuth: false };
   }
 };
+export const register = async (
+  full_name,
+  email,
+  phone,
+  password,
+  password2
+) => {
+  try {
+    const { data } = await axios.post("user/register", {
+      full_name,
+      email,
+      phone,
+      password,
+      password2,
+    });
+    Toast.fire({
+      icon: "success",
+      title: "Registered Successfully",
+    });
+    await login(email, password); //to login automatically after registeration
+    return { data, error: null };
+  } catch (error) {
+    console.log("error", error.response.data);
+
+    return {
+      data: null,
+      error: error.response.data?.detail || "Something went wrong",
+    };
+  }
+};

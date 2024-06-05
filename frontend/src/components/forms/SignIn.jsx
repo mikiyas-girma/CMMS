@@ -19,11 +19,10 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import {
-  validateEmail,
-  validatePassword,
-  handleBlurEmail,
-  handleBlurPassword,
-} from "../../utils/validate";
+    handleBlurEmail,
+    handleBlurPassword,
+
+} from "../../utils/validateLogin";
 
 import { login } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
