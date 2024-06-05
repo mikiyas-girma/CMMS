@@ -78,7 +78,7 @@ export const register = async (
       title: "Registered Successfully",
     });
 
-    await login(email, password); // Log in automatically after registration
+    // await login(email, password);
 
     return { data, error: null };
   } catch (error) {

@@ -19,11 +19,10 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import {
-    validateEmail,
-    validatePassword,
-    handleBlurEmail,
-    handleBlurPassword,
-
+  validateEmail,
+  validatePassword,
+  handleBlurEmail,
+  handleBlurPassword,
 } from "../../utils/validateLogin";
 
 import { login } from "../../utils/auth";
@@ -37,34 +36,39 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [backenderror, setBakendError] = useState("");
+  // const [frontVidationerror, setFrontError] = useState("");
+
   const [passwordError, setPasswordError] = useState("");
 
   const handleSignIn = (e) => {
     e.preventDefault();
 
-    const emailError = validateEmail(email) ? '' : "Please enter valid email";
-    const passwordError = validatePassword(password) ? '' : "Password should be > 5 characters";
+    const emailError = validateEmail(email) ? "" : "Please enter valid email";
+    const passwordError = validatePassword(password)
+      ? ""
+      : "Password should be > 5 characters";
 
     setEmailError(emailError);
     setPasswordError(passwordError);
 
     if (emailError || passwordError) {
-        setTimeout(() => {
-            setEmailError('');
-            setPasswordError('');
-        }, 3000);
-        return;
+      setTimeout(() => {
+        setEmailError("");
+        setPasswordError("");
+      }, 3000);
+      return;
     }
-};
+  };
 
   let response = {};
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log("da", email, password);
-    if (!validateLogin(email, password)) {
-      setError("Please enter valid email and password");
-      return;
-    }
+    // if (!validateLogin(email, password)) {
+    //   setFrontError("Please enter valid email and password");
+    //   return;
+    // }
     setloading(true);
     response = await login(email, password);
     setloading(false);
@@ -72,7 +76,7 @@ const SignIn = () => {
       navigate("/dashboard");
     }
     if (response?.error) {
-      setError(response?.error);
+      setBakendError(response?.error);
     }
     // if storeOwner redirecting to /employees
 
@@ -116,7 +120,9 @@ const SignIn = () => {
                 onBlur={(e) => handleBlurEmail(e, setEmailError)}
               />
               {emailError && (
-                <p className="text-red-700 p-2 rounded w-full">{emailError}</p>
+                <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                  {emailError}
+                </p>
               )}
             </FormControl>
             <FormControl id="password">
@@ -130,7 +136,14 @@ const SignIn = () => {
               />
             </FormControl>
             {passwordError && (
-              <p className="text-red-700 p-2 rounded w-full">{passwordError}</p>
+              <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                {passwordError}
+              </p>
+            )}
+            {backenderror && (
+              <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                {backenderror}
+              </p>
             )}
           </VStack>
           <VStack w="100%">
