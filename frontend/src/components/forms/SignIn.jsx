@@ -20,12 +20,10 @@ import {
 } from "@chakra-ui/react";
 import { login } from "../../utils/login";
 import {
-    validateEmail,
-    validatePassword,
     handleBlurEmail,
     handleBlurPassword,
 
-} from "../../utils/validate";
+} from "../../utils/validateLogin";
 
 import { PulseLoader } from "react-spinners";
 const SignIn = () => {

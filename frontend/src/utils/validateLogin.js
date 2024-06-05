@@ -1,11 +1,11 @@
 // utils/validate.js
 
-export function validateEmail(email) {
+function validateEmail(email) {
     const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return re.test(email);
 }
 
-export function validatePassword(password) {
+function validatePassword(password) {
     const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,13}$/;
     return re.test(password);
 }

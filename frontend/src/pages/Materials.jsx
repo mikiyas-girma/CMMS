@@ -27,7 +27,11 @@ import {
 } from "@chakra-ui/react";
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 import { getUserAuthStatus } from "../utils/login";
-357450470490398;
+import {
+    handleBlurName,
+    handleBlurCategory,
+    handleBlurQuantity,
+ } from "../utils/validateMaterial";
 
 const materials = [
   {
@@ -154,6 +158,7 @@ const Materials = () => {
   };
 
   const handleNewMaterial = () => {
+
     const newProduct = {
       id: materialList.length + 1,
       Name: document.getElementById("name").value,
@@ -208,6 +213,14 @@ const Materials = () => {
   const { role } = getUserAuthStatus();
   if (role === "admin") return null;
 
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [quantityError, setQuantityError] = useState("");
+
+
   return (
     <SidebarWithHeader>
       <HStack justify="end" mt={4} px={4}>
@@ -228,15 +241,37 @@ const Materials = () => {
           <ModalBody>
             <FormControl>
               <FormLabel>Name</FormLabel>
-              <Input id="name" placeholder="Enter material name" />
+              <Input id="name"
+                placeholder="Enter material name"
+                value={name}
+                onChange={(e) => {
+                    console.log(e.target.value);
+                    setName(e.target.value)}
+                }
+                onBlur={(e) => handleBlurName(e, setNameError)}
+              />
+              {nameError && <p className="text-red-700 p-2 rounded w-full">{nameError}</p>}
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Category</FormLabel>
-              <Input id="category" placeholder="Enter material category" />
+              <Input id="category"
+                placeholder="Enter material category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                onBlur={(e) => handleBlurCategory(e, setCategoryError)}
+              />
+                {categoryError && <p className="text-red-700 p-2 rounded w-full">{categoryError}</p>}
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Quantity</FormLabel>
-              <Input id="quantity" placeholder="Enter material quantity" />
+              <Input
+                id="quantity"
+                placeholder="Enter material quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                onBlur={(e) => handleBlurQuantity(e, setQuantityError)}
+                />
+                {quantityError && <p className="text-red-700 p-2 rounded w-full">{quantityError}</p>}
             </FormControl>
           </ModalBody>
           <ModalFooter>
