@@ -1,7 +1,8 @@
 import React from "react";
-
+import { generateRandomPassword } from "../utils/generateRandomPassword";
 const FormSubmitted = ({ data, onCancel, onConfirm }) => {
-  const password = AutoGeneratePassword(data.email);
+  const password = generateRandomPassword(data.email);
+  console.log("generated password", password);
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-90 z-50 overflow-hidden">
       <div className=" bg-white border border-gray-300 rounded-lg p-8 px-[100px] shadow-md relative ">

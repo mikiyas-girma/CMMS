@@ -52,7 +52,13 @@ const EmployeesData = [
 import FormSubmitted from "./FormSubmitted";
 const Employees = () => {
   const [employData, setEmployData] = useState(EmployeesData);
-  const [edit, setEdit] = useState({});
+  // const [edit, setEdit] = useState({});
+  const [edit, setEdit] = useState({
+    email: "",
+    Fname: "",
+    Lname: "",
+    phone: "",
+  });
   const { role } = getUserAuthStatus();
   const [submittedData, setSubmittedData] = useState(null);
 
