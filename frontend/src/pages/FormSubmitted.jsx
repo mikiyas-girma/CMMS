@@ -11,13 +11,14 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
     setPassword(newPassword);
   }, [data.email]);
   const handleRegisteration = async () => {
-    const data = await register({
-      full_name: `${data.Fname} ${data.Lname}`,
-      email: data.email,
-      phone: data.phone,
+    const response = await register(
+      data.Fname,
+      data.Lname,
+      data.email,
+      data.phone,
       password,
-      password2: 123,
-    });
+      password
+    );
   };
   console.log("generated password", password);
 
