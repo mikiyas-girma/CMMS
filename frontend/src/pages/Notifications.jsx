@@ -1,3 +1,5 @@
+import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
+
 const Notification = () => {
   const notifications = [
     {
@@ -63,23 +65,25 @@ const Notification = () => {
   ];
 
   return (
-    <div className="relative divide-y divide-gray-200 max-w-[900px] m-auto mt-12">
-      {notifications.map((notification, index) => (
-        <div key={index} className="p-4 cursor-pointer hover:bg-gray-100">
-          <div className="flex items-start">
-            <div className="ml-3 w-0 flex-1 pt-0.5">
-              <p className="text-sm leading-5 font-medium text-gray-900">
-                {notification.user.name}, Material {notification.materialName}{" "}
-                quantity is {notification.quantity}. Please reorder.
-              </p>
+    <SidebarWithHeader>
+      <div className="relative divide-y divide-gray-200 max-w-[900px] m-auto mt-12">
+        {notifications.map((notification, index) => (
+          <div key={index} className="p-4 cursor-pointer hover:bg-gray-100">
+            <div className="flex items-start">
+              <div className="ml-3 w-0 flex-1 pt-0.5">
+                <p className="text-sm leading-5 font-medium text-gray-900">
+                  {notification.user.name}, Material {notification.materialName}{" "}
+                  quantity is {notification.quantity}. Please reorder.
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <span className="text-sm text-gray-500">{notification.time}</span>
             </div>
           </div>
-          <div className="flex justify-end">
-            <span className="text-sm text-gray-500">{notification.time}</span>
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </SidebarWithHeader>
   );
 };
 
