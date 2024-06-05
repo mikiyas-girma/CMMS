@@ -49,45 +49,56 @@ const EmployeesData = [
     date: "02:26:45 AM5/06/2024",
   },
 ];
-
+import FormSubmitted from "./FormSubmitted";
 const Employees = () => {
   const [employData, setEmployData] = useState(EmployeesData);
-  const [edit, setEdit] = useState({});
+  // const [edit, setEdit] = useState({});
+  const [edit, setEdit] = useState({
+    email: "",
+    Fname: "",
+    Lname: "",
+    phone: "",
+  });
   const { role } = getUserAuthStatus();
+  const [submittedData, setSubmittedData] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmittedData(edit);
 
-    if (edit.id) {
-      const date = new Date();
-      const updatedEdit = employData.map((e) =>
-        e.id === edit.id
-          ? {
-              id: edit.id,
-              name: edit.name,
-              role: edit.role,
-              status: edit.status,
-              date: `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`,
-            }
-          : e
-      );
+    console.log("formData", edit);
+    return <FormSubmitted data={edit} />;
 
-      setEmployData(updatedEdit);
-      setEdit({});
-    } else {
-      const date = new Date();
-      const Employes = {
-        id: Math.floor(Math.random() * 1000),
-        name: e.target.name.value,
-        role: e.target.role.value,
-        status: "Inactive",
-        date: `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`,
-      };
+    // if (edit.id) {
+    //   const date = new Date();
+    //   const updatedEdit = employData.map((e) =>
+    //     e.id === edit.id
+    //       ? {
+    //           id: edit.id,
+    //           name: edit.name,
+    //           role: edit.role,
+    //           status: edit.status,
+    //           date: `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`,
+    //         }
+    //       : e
+    //   );
 
-      console.log(Employes);
-      setEmployData([...employData, Employes]);
-      setEdit({});
-    }
+    //   setEmployData(updatedEdit);
+    //   setEdit({});
+    // } else {
+    //   const date = new Date();
+    //   const Employes = {
+    //     id: Math.floor(Math.random() * 1000),
+    //     name: e.target.name.value,
+    //     role: e.target.role.value,
+    //     status: "Inactive",
+    //     date: `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`,
+    //   };
+
+    //   console.log(Employes);
+    //   setEmployData([...employData, Employes]);
+    //   setEdit({});
+    // }
   };
 
   const handleDelete = (id) => {
@@ -104,6 +115,12 @@ const Employees = () => {
 
   return (
     <SidebarWithHeader>
+      {submittedData && (
+        <div className="overflow-hidden">
+          <FormSubmitted data={submittedData} />
+        </div>
+      )}
+
       <Box
         borderWidth="0px"
         borderRadius="lg"
