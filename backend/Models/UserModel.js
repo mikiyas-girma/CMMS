@@ -19,11 +19,11 @@ const userSchema = new mongoose.Schema(
       unique: true,
       validate: [validator.isEmail, "Please provide a valid email"],
     },
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+    // username: {
+    //   type: String,
+    //   required: true,
+    //   unique: true,
+    // },
     password: {
       type: String,
       required: true,
@@ -65,6 +65,10 @@ const StoreOwner = User.discriminator(
       enum: ["active", "inactive"],
       default: "active",
     },
+    phone: {
+      type: String,
+      required: true,
+    },
   })
 );
 const Employee = User.discriminator(
@@ -75,6 +79,15 @@ const Employee = User.discriminator(
       required: true,
       enum: ["active", "inactive"],
       default: "active",
+    },
+    storeOwner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "StoreOwner",
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
     },
   })
 );

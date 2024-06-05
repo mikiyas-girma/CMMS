@@ -1,17 +1,17 @@
 import asyncHandler from "express-async-handler";
 import { AppError } from "../utils/AppError.js";
-import { User } from "../Models/UserModel.js";
+import { StoreOwner, User } from "../Models/UserModel.js";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
 
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const signToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
 };
 
 const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id);
+  const token = signToken(user._id, user.role);
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -27,9 +27,8 @@ const createSendToken = (user, statusCode, res) => {
   res.status(statusCode).json({
     status: "success",
     token,
-    data: {
-      user,
-    },
+
+    user,
   });
 };
 
@@ -44,19 +43,31 @@ export const login = asyncHandler(async (req, res, next) => {
   // 3) If everything ok, send token to client
   const user = await User.findOne({ email }).select("+password");
 
-  const correct = await user.correctPassword(password, user.password);
+  const correct = await user?.correctPassword(password, user.password);
   if (!user || !correct) {
     return next(new AppError("Incorrect email or password", 401));
+  }
+  if (user.role === "employee") {
+    const storeOwner = await StoreOwner.findById(user.storeOwner);
+
+    if (!storeOwner || storeOwner.status !== "active") {
+      return next(new AppError("StoreOwner is inactive. Cannot log in.", 403));
+    }
   }
   createSendToken(user, 200, res);
 });
 export const protect = asyncHandler(async (req, res, next) => {
   let token;
-  // console.log("req", req);
 
-  if (req.cookies && req.cookies.jwt) {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies && req.cookies.jwt) {
     token = req.cookies.jwt;
   }
+
   // console.log("Token:", req.cookies.jwt);
 
   if (!token) {
@@ -100,6 +111,22 @@ export const protect = asyncHandler(async (req, res, next) => {
       new AppError("The user account is disabled. Please contact support.", 403)
     );
   }
+
+  if (freshUser.role === "employee") {
+    const storeOwner = await StoreOwner.findById(freshUser.storeOwner);
+
+    if (!storeOwner || storeOwner.status !== "active") {
+      return next(new AppError("StoreOwner is inactive. Access denied.", 403));
+    }
+  }
+  // if (
+  //   (freshUser.role === "employee" && freshUser.role === "storeOwner") &&
+  //   freshUser.status !== "active"
+  // ) {
+  //   return next(
+  //     new AppError("The user account is disabled. Please contact support.", 403)
+  //   );
+  // }
 
   // Check if user changed password after the token was issued
   if (freshUser.changedPasswordAfter(decoded.iat)) {

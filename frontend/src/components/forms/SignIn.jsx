@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Container,
   FormControl,
@@ -16,22 +18,75 @@ import {
   Link,
   Flex,
 } from "@chakra-ui/react";
-import { login } from "../../utils/login";
+import {
+    validateEmail,
+    validatePassword,
+    handleBlurEmail,
+    handleBlurPassword,
+
+} from "../../utils/validateLogin";
+
+import { login } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
 const SignIn = () => {
+  const navigate = useNavigate();
+
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [loading, setloading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+
+    const emailError = validateEmail(email) ? '' : "Please enter valid email";
+    const passwordError = validatePassword(password) ? '' : "Password should be > 5 characters";
+
+    setEmailError(emailError);
+    setPasswordError(passwordError);
+
+    if (emailError || passwordError) {
+        setTimeout(() => {
+            setEmailError('');
+            setPasswordError('');
+        }, 3000);
+        return;
+    }
+};
+
+  let response = {};
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("da", email, password);
+    // console.log("da", email, password);
+    if (!validateLogin(email, password)) {
+      setError("Please enter valid email and password");
+      return;
+    }
     setloading(true);
-    const response = await login(email, password);
+    response = await login(email, password);
     setloading(false);
-    console.log("response", response);
+    if (response?.data?.user?.role === "admin") {
+      navigate("/dashboard");
+    }
+    if (response?.error) {
+      setError(response?.error);
+    }
+    // if storeOwner redirecting to /employees
+
+    if (
+      response?.data?.user?.role === "storeOwner" ||
+      response?.data?.user?.role === "employee"
+    ) {
+      navigate("/users");
+    }
+    // console.log(("error", error));
+    setEmail("");
+    setPassword("");
   };
+  // navigate("/dashboard");
 
   return (
     <Flex p={8} flex={1} align="center">
@@ -58,7 +113,11 @@ const SignIn = () => {
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={(e) => handleBlurEmail(e, setEmailError)}
               />
+              {emailError && (
+                <p className="text-red-700 p-2 rounded w-full">{emailError}</p>
+              )}
             </FormControl>
             <FormControl id="password">
               <FormLabel>Password</FormLabel>
@@ -67,14 +126,18 @@ const SignIn = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onBlur={(e) => handleBlurPassword(e, setPasswordError)}
               />
             </FormControl>
+            {passwordError && (
+              <p className="text-red-700 p-2 rounded w-full">{passwordError}</p>
+            )}
           </VStack>
           <VStack w="100%">
             <Stack direction="row" justifyContent="space-between" w="100%">
-              <Checkbox colorScheme="green" size="md">
+              {/* <Checkbox colorScheme="green" size="md">
                 Remember me
-              </Checkbox>
+              </Checkbox> */}
               <Link fontSize={{ base: "md", sm: "md" }}>Forgot password?</Link>
             </Stack>
             <Button
@@ -87,6 +150,7 @@ const SignIn = () => {
               rounded="md"
               w="100%"
               type="submit"
+              onClick={handleSignIn}
             >
               {loading ? <PulseLoader color="#FFFFFF" /> : "Sign in"}
             </Button>
