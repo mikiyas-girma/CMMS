@@ -18,7 +18,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
-import { getUserAuthStatus } from "../utils/login";
+import { getUserAuthStatus } from "../utils/auth";
 const EmployeesData = [
   {
     id: Math.floor(Math.random() * 1000),
@@ -52,13 +52,13 @@ const EmployeesData = [
 import FormSubmitted from "./FormSubmitted";
 const Employees = () => {
   const [employData, setEmployData] = useState(EmployeesData);
-  // const [edit, setEdit] = useState({});
-  const [edit, setEdit] = useState({
-    email: "",
-    Fname: "",
-    Lname: "",
-    phone: "",
-  });
+  const [edit, setEdit] = useState({});
+  // const [edit, setEdit] = useState({
+  //   email: "",
+  //   Fname: "",
+  //   Lname: "",
+  //   phone: "",
+  // });
   const { role } = getUserAuthStatus();
   const [submittedData, setSubmittedData] = useState(null);
 
@@ -112,12 +112,36 @@ const Employees = () => {
     console.log(selected);
     setEdit(selected);
   };
+  const onCancel = () => {
+    setSubmittedData(null);
+    setEdit({
+      email: "",
+      Fname: "",
+      Lname: "",
+      phone: "",
+    });
+    console.log("edit", edit);
+  };
+  const onClear = () => {
+    setSubmittedData(null);
+    setEdit({
+      email: "",
+      Fname: "",
+      Lname: "",
+      phone: "",
+    });
+    console.log("edit", edit);
+  };
 
   return (
     <SidebarWithHeader>
       {submittedData && (
         <div className="overflow-hidden">
-          <FormSubmitted data={submittedData} />
+          <FormSubmitted
+            data={submittedData}
+            onCancel={onCancel}
+            onClear={onClear}
+          />
         </div>
       )}
 

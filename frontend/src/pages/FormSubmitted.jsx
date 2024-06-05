@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { generateRandomPassword } from "../utils/generateRandomPassword";
-const FormSubmitted = ({ data, onCancel, onConfirm }) => {
-  const password = generateRandomPassword(data.email);
+import { HiOutlineXMark } from "react-icons/hi2";
+
+const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    // Generate a random password when the component mounts
+    const newPassword = generateRandomPassword(data.email);
+    setPassword(newPassword);
+  }, [data.email]);
+  const handleRegiseteration = () => {};
   console.log("generated password", password);
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-90 z-50 overflow-hidden">
       <div className=" bg-white border border-gray-300 rounded-lg p-8 px-[100px] shadow-md relative ">
+        <HiOutlineXMark
+          className="absolute top-4 right-2 cursor-pointer font-bold bg-white text-red-500 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out shadow-lg rounded-full"
+          size={30}
+          style={{ transitionProperty: "top" }}
+          onMouseOver={(e) => (e.target.style.top = "1px")}
+          onMouseOut={(e) => (e.target.style.top = "4px")}
+          onClick={onCancel}
+        />
+
         <h2 className="text-xl font-semibold mb-4">Form Submission Details</h2>
         <p className="mb-2">
           <strong>First Name:</strong> {data.Fname}
@@ -25,13 +43,13 @@ const FormSubmitted = ({ data, onCancel, onConfirm }) => {
         <div className="flex  space-x-4">
           <button
             className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-            onClick={onCancel}
+            onClick={onClear}
           >
             Cancel
           </button>
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-            onClick={onConfirm}
+            onClick={handleRegiseteration}
           >
             Confirm Registration
           </button>

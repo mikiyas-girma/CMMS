@@ -1,4 +1,4 @@
-import { getUserAuthStatus } from "./login";
+import { getUserAuthStatus } from "./auth";
 import { Navigate, useNavigate } from "react-router-dom";
 import PageNotFound from "./PageNotFound";
 import { useEffect, useState } from "react";
