@@ -68,7 +68,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     token = req.cookies.jwt;
   }
 
-  // console.log("Token:", req.cookies.jwt);
+  console.log("Token:", req);
 
   if (!token) {
     return next(

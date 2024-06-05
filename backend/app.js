@@ -9,9 +9,14 @@ import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import cors from "cors";
 
+const corsOptions = {
+  origin: "http://localhost:8000",
+  credentials: true, // Allow credentials (cookies) to be sent
+};
+
 const app = express();
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 app.use(express.json());
