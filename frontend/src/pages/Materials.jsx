@@ -26,7 +26,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
-import { getUserAuthStatus } from "../utils/login";
+import { getUserAuthStatus } from "../utils/auth";
 import {
     handleBlurName,
     handleBlurCategory,
