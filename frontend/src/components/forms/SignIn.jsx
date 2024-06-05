@@ -19,6 +19,13 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { login } from "../../utils/login";
+import {
+    validateEmail,
+    validatePassword,
+    handleBlurEmail,
+    handleBlurPassword,
+        
+    } from "../../utils/validate";
 
 import { PulseLoader } from "react-spinners";
 const SignIn = () => {
@@ -34,6 +41,10 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log("da", email, password);
+    if (!validateLogin(email, password)) {
+        setError("Please enter valid email and password");
+        return;
+    }
     setloading(true);
     response = await login(email, password);
     setloading(false);
@@ -82,6 +93,8 @@ const SignIn = () => {
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={(e) => handleBlurEmail(e, setError)}
+            
               />
             </FormControl>
             <FormControl id="password">
@@ -91,6 +104,7 @@ const SignIn = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onBlur={(e) => handleBlurPassword(e, setError)}
               />
             </FormControl>
             {error && (
@@ -101,9 +115,9 @@ const SignIn = () => {
           </VStack>
           <VStack w="100%">
             <Stack direction="row" justifyContent="space-between" w="100%">
-              <Checkbox colorScheme="green" size="md">
+              {/* <Checkbox colorScheme="green" size="md">
                 Remember me
-              </Checkbox>
+              </Checkbox> */}
               <Link fontSize={{ base: "md", sm: "md" }}>Forgot password?</Link>
             </Stack>
             <Button
