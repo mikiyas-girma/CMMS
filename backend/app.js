@@ -9,12 +9,19 @@ import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import cors from "cors";
 
+const corsOptions = {
+  credentials: true, // Allow credentials (cookies) to be sent
+  origin: "http://localhost:8000",
+};
+
 const app = express();
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsOptions));
+
 app.use(cookieParser());
 
 app.use(express.json());
+
 app.use(mongoSanitize());
 
 if (process.env.NODE_ENV === "developement") app.use(morgan("dev"));

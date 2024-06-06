@@ -165,6 +165,31 @@ const Employees = () => {
             >
               <div className="flex items-center gap-6">
                 <div>
+                  <FormLabel htmlFor="name">First Name</FormLabel>
+                  <Input
+                    width="300px"
+                    type="text"
+                    name="Fname"
+                    id="name"
+                    value={edit.Fname}
+                    onChange={(e) =>
+                      setEdit({ ...edit, Fname: e.target.value })
+                    }
+                  />
+                  <FormLabel htmlFor="role">Last Name</FormLabel>
+                  <Input
+                    width="300px"
+                    type="text"
+                    name="role"
+                    id="role"
+                    value={edit.Lname}
+                    onChange={(e) =>
+                      setEdit({ ...edit, Lname: e.target.value })
+                    }
+                  />
+                </div>
+                <br></br>
+                <div>
                   <FormLabel htmlFor="email">Email</FormLabel>
                   <Input
                     width="300px"

@@ -1,19 +1,19 @@
 
-function validateName(name) {
+export function validateName(name) {
     if (name.length < 3) {
         return "Name must be at least 3 characters long";
     }
     return "";
 }
 
-function validateCategory(category) {
+export function validateCategory(category) {
     if (category.length < 3) {
         return "Category must be at least 3 characters long";
     }
     return "";
 }
 
-function validateQuantity(quantity) {
+export function validateQuantity(quantity) {
     if (quantity < 1) {
         return "Quantity > 1";
     }
