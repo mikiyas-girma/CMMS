@@ -10,5 +10,6 @@ const apiInstance = axios.create({
     Accept: "application/json",
     Authorization: `Bearer ${token}`,
   },
+  withCredentials: true,
 });
 export default apiInstance;

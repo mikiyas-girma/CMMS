@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { promisify } from "util";
 
 const signToken = (id, role) => {
+  console.log("id", id);
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
@@ -71,7 +72,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     token = req.cookies.jwt;
   }
 
-  console.log("Token:", req);
+  console.log("Token:", req.cookies.jwt);
 
   if (!token) {
     return next(
@@ -98,6 +99,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   // });
 
   // Check if user still exists
+  console.log("decode", decoded);
   const freshUser = await User.findById(decoded?.id);
   if (!freshUser) {
     return next(

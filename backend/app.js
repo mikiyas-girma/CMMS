@@ -17,9 +17,11 @@ const corsOptions = {
 const app = express();
 app.use(helmet());
 app.use(cors(corsOptions));
+
 app.use(cookieParser());
 
 app.use(express.json());
+
 app.use(mongoSanitize());
 
 if (process.env.NODE_ENV === "developement") app.use(morgan("dev"));

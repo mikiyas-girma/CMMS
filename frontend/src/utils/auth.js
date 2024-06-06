@@ -18,19 +18,10 @@ export const setAuthUser = (token) => {
 };
 export const login = async (email, password) => {
   try {
-    const { data } = await axios.post(
-      "http://127.0.0.1:3000/cmms/api/users/login",
-      {
-        email,
-        password,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
+    const { data } = await apiInstance.post("/users/login", {
+      email,
+      password,
+    });
     // console.log("token", data?.token);
 
     if (data?.status === "success") {

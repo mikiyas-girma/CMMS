@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import { generateRandomPassword } from "../utils/generateRandomPassword";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { register } from "../utils/auth";
+import { PulseLoader } from "react-spinners";
 const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
   const [password, setPassword] = useState("");
   const [backenderror, setBakendError] = useState("");
-
+  const [Loading, setLoading] = useState("");
   useEffect(() => {
     // Generate a random password when the component mounts
-    const newPassword = generateRandomPassword(data.email);
+    const newPassword = generateRandomPassword(data?.email);
     setPassword(newPassword);
   }, [data.email]);
   const handleRegisteration = async () => {
+    setLoading(true);
     const response = await register(
       data.Fname,
       data.Lname,
@@ -20,6 +22,12 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
       password,
       password
     );
+    setLoading(false);
+    // console.log("response", response);
+    // console.log("Regsitered StoreOwner");
+    if (response?.data?.status === "success") {
+      onClear();
+    }
     if (response?.error) {
       setBakendError(response?.error);
     }
@@ -72,8 +80,13 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
               <button
                 className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
                 onClick={handleRegisteration}
+                disabled={Loading}
               >
-                Confirm Registration
+                {Loading ? (
+                  <PulseLoader color="#FFFFFF" />
+                ) : (
+                  "Confirm Registration "
+                )}
               </button>
             </div>
           )}

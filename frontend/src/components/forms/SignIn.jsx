@@ -163,6 +163,7 @@ const SignIn = () => {
               rounded="md"
               w="100%"
               type="submit"
+              disabled={loading}
             >
               {loading ? <PulseLoader color="#FFFFFF" /> : "Sign in"}
             </Button>
