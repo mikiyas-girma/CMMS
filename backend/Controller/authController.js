@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { promisify } from "util";
 
 const signToken = (id, role) => {
+  console.log("id", id);
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
@@ -12,6 +13,9 @@ const signToken = (id, role) => {
 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id, user.role);
+  // const isProduction = process.env.NODE_ENV === "production";
+  // console.log("JWT_COOKIE_EXPIRES_IN:", process.env.JWT_COOKIE_EXPIRES_IN);
+
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -68,7 +72,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     token = req.cookies.jwt;
   }
 
-  // console.log("Token:", req.cookies.jwt);
+  console.log("Token:", req.cookies.jwt);
 
   if (!token) {
     return next(
@@ -95,6 +99,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   // });
 
   // Check if user still exists
+  console.log("decode", decoded);
   const freshUser = await User.findById(decoded?.id);
   if (!freshUser) {
     return next(

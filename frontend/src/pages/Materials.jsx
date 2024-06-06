@@ -28,6 +28,9 @@ import {
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 import { getUserAuthStatus } from "../utils/auth";
 import {
+    validateName,
+    validateCategory,
+    validateQuantity,
     handleBlurName,
     handleBlurCategory,
     handleBlurQuantity,
@@ -158,6 +161,12 @@ const Materials = () => {
   };
 
   const handleNewMaterial = () => {
+
+    const nameError = validateName(name)
+    const categoryError = validateCategory(category)
+    const quantityError = validateQuantity(quantity)
+    
+    if (nameError || categoryError || quantityError) return;
 
     const newProduct = {
       id: materialList.length + 1,
