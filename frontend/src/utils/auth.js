@@ -1,7 +1,7 @@
 import apiInstance from "./axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-
+import axios from "axios";
 import Swal from "sweetalert2";
 const Toast = Swal.mixin({
   toast: true,
@@ -14,15 +14,23 @@ const Toast = Swal.mixin({
 export const setAuthUser = (token) => {
   Cookies.set("jwt", token, {
     expires: 1,
-    // secure: true,
   });
 };
 export const login = async (email, password) => {
   try {
-    const { data } = await apiInstance.post("users/login", {
-      email,
-      password,
-    });
+    const { data } = await axios.post(
+      "http://127.0.0.1:3000/cmms/api/users/login",
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
     // console.log("token", data?.token);
 
     if (data?.status === "success") {
@@ -44,6 +52,7 @@ export const login = async (email, password) => {
 
 export const getUserAuthStatus = () => {
   const token = Cookies.get("jwt");
+  // console.log("tokenfromCookies", token);
   if (!token) return { isAuth: false };
 
   try {
@@ -64,7 +73,7 @@ export const register = async (
   console.log("data", Fname, Lname, email, phone, password, passwordConfirm);
 
   try {
-    const { data } = await apiInstance.post("users/users/employee", {
+    const { data } = await apiInstance.post("/users/storeOwner", {
       Fname,
       Lname,
       email,
@@ -73,6 +82,7 @@ export const register = async (
       passwordConfirm,
     });
 
+    console.log("data", data);
     Toast.fire({
       icon: "success",
       title: "Registered Successfully",
@@ -85,7 +95,7 @@ export const register = async (
     console.log("error", error.response?.data);
     return {
       data: null,
-      error: error.response?.data?.detail || "Something went wrong",
+      error: error.response?.data?.message || "Something went wrong",
     };
   }
 };

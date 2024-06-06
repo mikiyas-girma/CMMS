@@ -4,6 +4,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { register } from "../utils/auth";
 const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
   const [password, setPassword] = useState("");
+  const [backenderror, setBakendError] = useState("");
 
   useEffect(() => {
     // Generate a random password when the component mounts
@@ -19,8 +20,12 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
       password,
       password
     );
+    if (response?.error) {
+      setBakendError(response?.error);
+    }
   };
-  console.log("generated password", password);
+
+  // console.log("generated password", password);
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-90 z-50 overflow-hidden">
@@ -50,19 +55,28 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
         <p className="mb-4">
           <strong>Password:</strong> {password}
         </p>
-        <div className="flex  space-x-4">
-          <button
-            className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-            onClick={onClear}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-            onClick={handleRegisteration}
-          >
-            Confirm Registration
-          </button>
+        <div>
+          {backenderror && (
+            <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+              {backenderror}
+            </p>
+          )}
+          {!backenderror && (
+            <div className="flex  space-x-4">
+              <button
+                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+                onClick={onClear}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                onClick={handleRegisteration}
+              >
+                Confirm Registration
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

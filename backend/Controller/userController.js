@@ -54,6 +54,11 @@ export const checkPasswordUpdate = (req, res, next) => {
 
 export const RegisterStoreOwner = asyncHandler(async (req, res, next) => {
   req.body.role = "storeOwner";
+  const existingUsers = await User.find({ email: req.body.email });
+
+  if (existingUsers) {
+    return next(new AppError(" This user already exist.", 400));
+  }
   const user = await StoreOwner.create(req.body);
   const url = `${req.protocol}://${req.get("host")}/me/${user._id}`;
   try {
@@ -150,6 +155,11 @@ export const DeleteStoreOwner = asyncHandler(async (req, res) => {
 //employee
 
 export const RegisterEmployee = asyncHandler(async (req, res, next) => {
+  const existingUsers = await User.find({ email: req.body.email });
+
+  if (existingUsers) {
+    return next(new AppError(" This user already exist.", 400));
+  }
   const password = req.body.password;
   req.body.storeOwner = req.user._id;
 

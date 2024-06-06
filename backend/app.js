@@ -10,8 +10,8 @@ import mongoSanitize from "express-mongo-sanitize";
 import cors from "cors";
 
 const corsOptions = {
-  origin: "http://localhost:8000",
   credentials: true, // Allow credentials (cookies) to be sent
+  origin: "http://localhost:8000",
 };
 
 const app = express();

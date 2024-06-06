@@ -163,7 +163,6 @@ const SignIn = () => {
               rounded="md"
               w="100%"
               type="submit"
-              onClick={handleSignIn}
             >
               {loading ? <PulseLoader color="#FFFFFF" /> : "Sign in"}
             </Button>
