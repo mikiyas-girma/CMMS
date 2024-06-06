@@ -70,10 +70,19 @@ export const register = async (
   password,
   passwordConfirm
 ) => {
-  console.log("data", Fname, Lname, email, phone, password, passwordConfirm);
+  // console.log("data", Fname, Lname, email, phone, password, passwordConfirm);
+  const { role } = getUserAuthStatus();
+  let url = "";
+
+  if (role === "admin") {
+    url = "/users/storeOwner";
+  }
+  if (role === "storeOwner") {
+    url = "/users/employee";
+  }
 
   try {
-    const { data } = await apiInstance.post("/users/storeOwner", {
+    const { data } = await apiInstance.post(url, {
       Fname,
       Lname,
       email,

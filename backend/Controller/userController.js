@@ -54,7 +54,8 @@ export const checkPasswordUpdate = (req, res, next) => {
 
 export const RegisterStoreOwner = asyncHandler(async (req, res, next) => {
   req.body.role = "storeOwner";
-  const existingUsers = await User.find({ email: req.body.email });
+  const existingUsers = await User.findOne({ email: req.body.email });
+  console.log("Found existing users", existingUsers);
 
   if (existingUsers) {
     return next(new AppError(" This user already exist.", 400));
@@ -155,7 +156,7 @@ export const DeleteStoreOwner = asyncHandler(async (req, res) => {
 //employee
 
 export const RegisterEmployee = asyncHandler(async (req, res, next) => {
-  const existingUsers = await User.find({ email: req.body.email });
+  const existingUsers = await User.findOne({ email: req.body.email });
 
   if (existingUsers) {
     return next(new AppError(" This user already exist.", 400));
