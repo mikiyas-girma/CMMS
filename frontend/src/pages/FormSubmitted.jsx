@@ -80,12 +80,6 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
                   "Confirm Registration "
                 )}
               </button>
-              <button
-                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-                onClick={onClear}
-              >
-                Cancel
-              </button>
             </div>
           )}
         </div>
