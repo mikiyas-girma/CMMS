@@ -6,7 +6,7 @@ export function validateEmail(email) {
 }
 
 export function validatePassword(password) {
-  const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,13}$/;
+  const re = /^(?=.*[A-Za-z])(?=.)[A-Za-z\d]{5,13}$/;
   return re.test(password);
 }
 
