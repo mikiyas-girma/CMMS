@@ -73,7 +73,6 @@ const Materials = () => {
     const onOpen = () => {
         setIsOpen(true);
     };
-
     const onClose = () => {
         setIsOpen(false);
     };
@@ -153,6 +152,13 @@ const Materials = () => {
   }));
 };
 
+const handleQuantityChange = (e, id) => {
+  setInputValues(prevState => ({
+    ...prevState,
+    [id]: e.target.value
+  }));
+};
+
     const { role } = getUserAuthStatus();
     if (role === "admin") return null;
 
@@ -165,6 +171,7 @@ const Materials = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [operation, setOperation] = useState("");
     const [checkedMaterials, setCheckedMaterials] = useState({});
+    const [inputValues, setInputValues] = useState({});
 
     return (
         <SidebarWithHeader>
@@ -362,6 +369,7 @@ const Materials = () => {
                                                     isChecked={checkedMaterials[data.id] || false}
                                                 />
                                             </Td>
+                                            {checkedMaterials[data.id] && (
                                             <Td>
                                                 <Input
                                                     type="number"
@@ -369,8 +377,10 @@ const Materials = () => {
                                                     w={20}
                                                     onChange={(e) => handleQuantityChange(e, data.id)}
                                                     borderColor={borderColor}
+                                                    value={inputValues[data.id] || ''}
                                                 />
                                             </Td>
+                                        )}
                                         </>
                                     )}
                                 </Tr>
@@ -412,6 +422,20 @@ const Materials = () => {
                             Next
                         </Button>
                     </HStack>
+                        {isEditing && (
+                            <Button
+                                colorScheme="blue"
+                                onClick={() => {
+                                    if (operation === "Add") {
+                                        handleAddMaterials();
+                                    } else {
+                                        handleWithdrawMaterials();
+                                    }
+                                }}
+                            >
+                                Confirm {operation}
+                            </Button>
+                        )}
                 </HStack>
             </Box>
         </SidebarWithHeader>
