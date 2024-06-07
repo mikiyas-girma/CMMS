@@ -68,7 +68,7 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
             </p>
           )}
           {!backenderror && (
-            <div className="flex  space-x-4">
+            <div className="flex  ">
               <button
                 className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
                 onClick={handleRegisteration}

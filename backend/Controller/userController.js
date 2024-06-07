@@ -54,6 +54,8 @@ export const checkPasswordUpdate = (req, res, next) => {
 
 export const RegisterStoreOwner = asyncHandler(async (req, res, next) => {
   req.body.role = "storeOwner";
+  const password = req.body.password;
+
   const existingUsers = await User.findOne({ email: req.body.email });
   console.log("Found existing users", existingUsers);
 
@@ -63,7 +65,7 @@ export const RegisterStoreOwner = asyncHandler(async (req, res, next) => {
   const user = await StoreOwner.create(req.body);
   const url = `${req.protocol}://${req.get("host")}/me/${user._id}`;
   try {
-    await new Email(user, url).sendWelcome();
+    await new Email(user, url).sendWelcome(password);
   } catch (error) {
     return next(new AppError(error.message, 500));
   }

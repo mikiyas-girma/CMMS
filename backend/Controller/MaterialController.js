@@ -43,7 +43,9 @@ export const getAllMaterials = asyncHandler(async (req, res) => {
   res.status(200).json({
     status: "success",
     results: materials.length,
-    data: {
+    data: { // console.log(
+      //   new AppError(`Can't find ${req.originalUrl} on this server!`, 404)
+      // );
       materials,
     },
   });

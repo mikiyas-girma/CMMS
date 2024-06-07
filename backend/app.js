@@ -29,9 +29,9 @@ if (process.env.NODE_ENV === "developement") app.use(morgan("dev"));
 app.use("/cmms/api/users", userRouter);
 app.use("/cmms/api/materials", MaterialRouter);
 app.all("*", (req, res, next) => {
-  console.log(
-    new AppError(`Can't find ${req.originalUrl} on this server!`, 404)
-  );
+  // console.log(
+  //   new AppError(`Can't find ${req.originalUrl} on this server!`, 404)
+  // );
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 app.use(ErrorHandler);
