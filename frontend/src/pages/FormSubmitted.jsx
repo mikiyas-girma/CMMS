@@ -42,8 +42,6 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
           className="absolute top-4 right-2 cursor-pointer font-bold bg-white text-red-500 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out shadow-lg rounded-full"
           size={30}
           style={{ transitionProperty: "top" }}
-          onMouseOver={(e) => (e.target.style.top = "1px")}
-          onMouseOut={(e) => (e.target.style.top = "4px")}
           onClick={onCancel}
         />
 
@@ -72,12 +70,6 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
           {!backenderror && (
             <div className="flex  space-x-4">
               <button
-                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-                onClick={onClear}
-              >
-                Cancel
-              </button>
-              <button
                 className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
                 onClick={handleRegisteration}
                 disabled={Loading}
@@ -87,6 +79,12 @@ const FormSubmitted = ({ data, onCancel, onConfirm, onClear }) => {
                 ) : (
                   "Confirm Registration "
                 )}
+              </button>
+              <button
+                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+                onClick={onClear}
+              >
+                Cancel
               </button>
             </div>
           )}
