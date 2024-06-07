@@ -1,109 +1,30 @@
 import { useState, useMemo } from "react";
 import {
-  Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Text,
-  Button,
-  HStack,
-  useColorMode,
-  useColorModeValue,
+    Box, Table, Thead, Tbody, Tr, Th, Td, Text, Button, HStack,
+    useColorMode, useColorModeValue,
 } from "@chakra-ui/react";
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-} from "@chakra-ui/react";
-import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
-import { getUserAuthStatus } from "../utils/auth";
-import {
-    validateName,
-    validateCategory,
-    validateQuantity,
-    handleBlurName,
-    handleBlurCategory,
-    handleBlurQuantity,
- } from "../utils/validateMaterial";
 
-const materials = [
-  {
-    id: 1,
-    Name: "Cement",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-  {
-    id: 4,
-    Name: "Paint",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-  {
-    id: 8,
-    Name: "Windows",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-  {
-    id: 9,
-    Name: "Doors",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-  {
-    id: 10,
-    Name: "Ceramic",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-  {
-    id: 11,
-    Name: "Steel",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-  {
-    id: 12,
-    Name: "Bricks",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-  {
-    id: 14,
-    Name: "Pipes",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-  {
-    id: 16,
-    Name: "Wood",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-  {
-    id: 18,
-    Name: "Plaster",
-    Category: "Building Materials",
-    Quantity: 999,
-  },
-];
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody,
+         ModalFooter, FormControl, FormLabel, Input, Select
+} from "@chakra-ui/react";
+
+import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
+
+import { getUserAuthStatus } from "../utils/auth";
+
+import { validateName, validateCategory, validateQuantity,
+         handleBlurName, handleBlurCategory, handleBlurQuantity
+} from "../utils/validateMaterial";
+
+import materialslist from "../components/materials/materialsData";
+
+
 
 const Materials = () => {
   const bg = useColorModeValue("white", "gray.800");
   const text = useColorModeValue("gray.900", "white");
 
-  const [materialList] = useState(materials);
+  const [materialList] = useState(materialslist);
   const [rowsLimit] = useState(5);
   const [rowsToShow, setRowsToShow] = useState(
     materialList.slice(0, rowsLimit)
@@ -114,21 +35,21 @@ const Materials = () => {
   const nextPage = () => {
     const startIndex = rowsLimit * (currentPage + 1);
     const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materials.slice(startIndex, endIndex));
+    setRowsToShow(materialslist.slice(startIndex, endIndex));
     setCurrentPage(currentPage + 1);
   };
 
   const changePage = (value) => {
     const startIndex = value * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materials.slice(startIndex, endIndex));
+    setRowsToShow(materialslist.slice(startIndex, endIndex));
     setCurrentPage(value);
   };
 
   const previousPage = () => {
     const startIndex = (currentPage - 1) * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materials.slice(startIndex, endIndex));
+    setRowsToShow(materialslist.slice(startIndex, endIndex));
     setCurrentPage(currentPage > 1 ? currentPage - 1 : 0);
   };
 
@@ -309,7 +230,14 @@ const Materials = () => {
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Quantity</FormLabel>
-              <Input id="withdrawQuantity" placeholder="Enter quantity" />
+              <Input
+                id="withdrawQuantity"
+                placeholder="Enter quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                onBlur={(e) => handleBlurQuantity(e, setQuantityError)}
+              />
+                {quantityError && <p className="text-red-700 p-2 rounded w-full">{quantityError}</p>}
             </FormControl>
           </ModalBody>
           <ModalFooter>
@@ -338,7 +266,14 @@ const Materials = () => {
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Quantity</FormLabel>
-              <Input id="addQuantity" placeholder="Enter quantity" />
+              <Input
+                id="addQuantity"
+                placeholder="Enter quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                onBlur={(e) => handleBlurQuantity(e, setQuantityError)}
+             />
+                {quantityError && <p className="text-red-700 p-2 rounded w-full">{quantityError}</p>}
             </FormControl>
           </ModalBody>
           <ModalFooter>

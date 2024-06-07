@@ -56,7 +56,7 @@ const SignIn = () => {
       setTimeout(() => {
         setEmailError("");
         setPasswordError("");
-      }, 3000);
+      }, 1500);
       return;
     }
   };
@@ -77,6 +77,10 @@ const SignIn = () => {
     }
     if (response?.error) {
       setBakendError(response?.error);
+      setTimeout(() => {
+        setBakendError("");
+      }
+        , 1500);
     }
     // if storeOwner redirecting to /employees
 
@@ -120,7 +124,7 @@ const SignIn = () => {
                 onBlur={(e) => handleBlurEmail(e, setEmailError)}
               />
               {emailError && (
-                <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                <p className="mt-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
                   {emailError}
                 </p>
               )}
