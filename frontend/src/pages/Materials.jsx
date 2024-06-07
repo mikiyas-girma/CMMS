@@ -145,6 +145,14 @@ const Materials = () => {
         ]);
         setIsWithdrawOpen(false);
     };
+
+    const handleCheckboxChange = (e, id) => {
+  setCheckedMaterials(prevState => ({
+    ...prevState,
+    [id]: e.target.checked
+  }));
+};
+
     const { role } = getUserAuthStatus();
     if (role === "admin") return null;
 
@@ -156,17 +164,16 @@ const Materials = () => {
     const [quantityError, setQuantityError] = useState("");
     const [isEditing, setIsEditing] = useState(false);
     const [operation, setOperation] = useState("");
-
+    const [checkedMaterials, setCheckedMaterials] = useState({});
 
     return (
         <SidebarWithHeader>
             <HStack justify="end" mt={4} px={4}>
-                <Button onClick={onOpen} colorScheme="blue">
+                <Button onClick={onOpen} colorScheme="blue" mr={2}>
                     New Material
                 </Button>
                 <Button
                     colorScheme="yellow"
-                    mr={2}
                     onClick={() => {
                         if (operation === "Add") {
                             setIsEditing(false);
@@ -348,14 +355,18 @@ const Materials = () => {
                                     {isEditing && (
                                         <>
                                             <Td>
-                                                <Checkbox onChange={(e) => handleCheckboxChange(e, data.id)} />
+                                                <Checkbox
+                                                    id={data.id}
+                                                    borderColor={borderColor}
+                                                    onChange={(e) => handleCheckboxChange(e, data.id)} 
+                                                    isChecked={checkedMaterials[data.id] || false}
+                                                />
                                             </Td>
                                             <Td>
                                                 <Input
                                                     type="number"
                                                     min="0"
                                                     w={20}
-                                                    borderRadius="md"
                                                     onChange={(e) => handleQuantityChange(e, data.id)}
                                                     borderColor={borderColor}
                                                 />
