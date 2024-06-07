@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
     Box, Table, Thead, Tbody, Tr, Th, Td, Text, Button, HStack,
     useColorMode, useColorModeValue,
@@ -29,7 +29,7 @@ const Materials = () => {
     const { colorMode } = useColorMode();
     const borderColor = colorMode === "light" ? "gray.800" : "gray.600";
 
-    const [materialList] = useState(materialslist);
+    const [materialList, setMaterialList] = useState(materialslist);
     const [rowsLimit] = useState(5);
     const [rowsToShow, setRowsToShow] = useState(
         materialList.slice(0, rowsLimit)
@@ -73,7 +73,6 @@ const Materials = () => {
     const onOpen = () => {
         setIsOpen(true);
     };
-
     const onClose = () => {
         setIsOpen(false);
     };
@@ -108,43 +107,105 @@ const Materials = () => {
         setIsOpen(false);
     };
 
-    const handleAddMaterial = () => {
-        const addMaterial = document.getElementById("addMaterial").value;
-        const addQuantity = parseInt(document.getElementById("addQuantity").value);
-        const materialIndex = materialList.findIndex(
-            (material) => material.Name === addMaterial
-        );
-        const updatedMaterial = { ...materialList[materialIndex] };
-        updatedMaterial.Quantity += addQuantity;
-        materialList[materialIndex] = updatedMaterial;
-        setRowsToShow([
-            ...materialList.slice(
-                currentPage * rowsLimit,
-                (currentPage + 1) * rowsLimit
-            ),
-        ]);
-        setIsWithdrawOpen(false);
-    };
+    // const handleAddMaterial = () => {
+    //     const addMaterial = document.getElementById("addMaterial").value;
+    //     const addQuantity = parseInt(document.getElementById("addQuantity").value);
+    //     const materialIndex = materialList.findIndex(
+    //         (material) => material.Name === addMaterial
+    //     );
+    //     const updatedMaterial = { ...materialList[materialIndex] };
+    //     updatedMaterial.Quantity += addQuantity;
+    //     materialList[materialIndex] = updatedMaterial;
+    //     setRowsToShow([
+    //         ...materialList.slice(
+    //             currentPage * rowsLimit,
+    //             (currentPage + 1) * rowsLimit
+    //         ),
+    //     ]);
+        // setIsWithdrawOpen(false);
+    // };
 
-    const handleWithdrawMaterial = () => {
-        const withdrawMaterial = document.getElementById("withdrawMaterial").value;
-        const withdrawQuantity = parseInt(
-            document.getElementById("withdrawQuantity").value
-        );
-        const materialIndex = materialList.findIndex(
-            (material) => material.Name === withdrawMaterial
-        );
-        const updatedMaterial = { ...materialList[materialIndex] };
-        updatedMaterial.Quantity -= withdrawQuantity;
-        materialList[materialIndex] = updatedMaterial;
-        setRowsToShow([
-            ...materialList.slice(
-                currentPage * rowsLimit,
-                (currentPage + 1) * rowsLimit
-            ),
-        ]);
-        setIsWithdrawOpen(false);
-    };
+    // const handleWithdrawMaterial = () => {
+    //     const withdrawMaterial = document.getElementById("withdrawMaterial").value;
+    //     const withdrawQuantity = parseInt(
+    //         document.getElementById("withdrawQuantity").value
+    //     );
+    //     const materialIndex = materialList.findIndex(
+    //         (material) => material.Name === withdrawMaterial
+    //     );
+    //     const updatedMaterial = { ...materialList[materialIndex] };
+    //     updatedMaterial.Quantity -= withdrawQuantity;
+    //     materialList[materialIndex] = updatedMaterial;
+    //     setRowsToShow([
+    //         ...materialList.slice(
+    //             currentPage * rowsLimit,
+    //             (currentPage + 1) * rowsLimit
+    //         ),
+    //     ]);
+    //     setIsWithdrawOpen(false);
+    // };
+
+    const handleCheckboxChange = (e, id) => {
+  setCheckedMaterials(prevState => ({
+    ...prevState,
+    [id]: e.target.checked
+  }));
+};
+
+const handleQuantityChange = (e, id) => {
+  setInputValues(prevState => ({
+    ...prevState,
+    [id]: e.target.value
+  }));
+};
+
+const handleAddMaterials = () => {
+    const updatedMaterialsList = [...materialslist];
+  // Loop over the inputValues object
+  for (let id in inputValues) {
+    // If the material is checked
+    if (checkedMaterials[id]) {
+      // Add the input value to the total quantity of the material
+      let material = updatedMaterialsList.find(material => material.id === Number(id));
+      material.Quantity += Number(inputValues[id]);
+    }
+  }
+
+    // Update the materialslist state
+    setMaterialList(updatedMaterialsList);
+
+  // Reset the inputValues and checkedMaterials states
+  setInputValues({});
+  setCheckedMaterials({});
+};
+
+const handleWithdrawMaterials = () => {
+    const updatedMaterialsList = [...materialslist];
+
+  // Loop over the inputValues object
+  for (let id in inputValues) {
+    // If the material is checked
+    if (checkedMaterials[id]) {
+      // Subtract the input value from the total quantity of the material
+      let material = updatedMaterialsList.find(material => material.id === Number(id));
+      material.Quantity -= Number(inputValues[id]);
+    }
+  }
+
+    // Update the materialslist state
+    setMaterialList(updatedMaterialsList);
+
+  // Reset the inputValues and checkedMaterials states
+  setInputValues({});
+  setCheckedMaterials({});
+};
+
+    useEffect(() => {
+        console.log("Material List Updated");
+        console.log(materialList);
+    }, [materialList]);
+
+
     const { role } = getUserAuthStatus();
     if (role === "admin") return null;
 
@@ -156,17 +217,17 @@ const Materials = () => {
     const [quantityError, setQuantityError] = useState("");
     const [isEditing, setIsEditing] = useState(false);
     const [operation, setOperation] = useState("");
-
+    const [checkedMaterials, setCheckedMaterials] = useState({});
+    const [inputValues, setInputValues] = useState({});
 
     return (
         <SidebarWithHeader>
             <HStack justify="end" mt={4} px={4}>
-                <Button onClick={onOpen} colorScheme="blue">
+                <Button onClick={onOpen} colorScheme="blue" mr={2}>
                     New Material
                 </Button>
                 <Button
                     colorScheme="yellow"
-                    mr={2}
                     onClick={() => {
                         if (operation === "Add") {
                             setIsEditing(false);
@@ -246,78 +307,6 @@ const Materials = () => {
                 </ModalContent>
             </Modal>
 
-            <Modal isOpen={isAddOpen} onClose={onAddClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Increment Material Quantity</ModalHeader>
-                    <ModalBody>
-                        <FormControl>
-                            <FormLabel>Material</FormLabel>
-                            <Select id="addMaterial" placeholder="Select material">
-                                {materialList.map((material) => (
-                                    <option key={material.id} value={material.Name}>
-                                        {material.Name}
-                                    </option>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl mt={4}>
-                            <FormLabel>Quantity</FormLabel>
-                            <Input
-                                id="addQuantity"
-                                placeholder="Enter quantity"
-                                value={quantity}
-                                onChange={(e) => setQuantity(e.target.value)}
-                                onBlur={(e) => handleBlurQuantity(e, setQuantityError)}
-                            />
-                            {quantityError && <p className="text-red-700 p-2 rounded w-full">{quantityError}</p>}
-                        </FormControl>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button colorScheme="yellow" mr={3} onClick={handleAddMaterial}>
-                            Add
-                        </Button>
-                        <Button onClick={onAddClose}>Cancel</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-
-            <Modal isOpen={isWithdrawOpen} onClose={onWithdrawClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Withdraw Material</ModalHeader>
-                    <ModalBody>
-                        <FormControl>
-                            <FormLabel>Material</FormLabel>
-                            <Select id="withdrawMaterial" placeholder="Select material">
-                                {materialList.map((material) => (
-                                    <option key={material.id} value={material.Name}>
-                                        {material.Name}
-                                    </option>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl mt={4}>
-                            <FormLabel>Quantity</FormLabel>
-                            <Input
-                                id="withdrawQuantity"
-                                placeholder="Enter quantity"
-                                value={quantity}
-                                onChange={(e) => setQuantity(e.target.value)}
-                                onBlur={(e) => handleBlurQuantity(e, setQuantityError)}
-                            />
-                            {quantityError && <p className="text-red-700 p-2 rounded w-full">{quantityError}</p>}
-                        </FormControl>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button colorScheme="red" mr={3} onClick={handleWithdrawMaterial}>
-                            Withdraw
-                        </Button>
-                        <Button onClick={onWithdrawClose}>Cancel</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-
             <Box bg={bg} minH="100vh" pt={10} pb={4} maxW="4xl" mx="auto">
                 <Text fontSize="2xl" fontWeight="medium">
                     Materials in Stock
@@ -348,18 +337,25 @@ const Materials = () => {
                                     {isEditing && (
                                         <>
                                             <Td>
-                                                <Checkbox onChange={(e) => handleCheckboxChange(e, data.id)} />
+                                                <Checkbox
+                                                    id={data.id}
+                                                    borderColor={borderColor}
+                                                    onChange={(e) => handleCheckboxChange(e, data.id)} 
+                                                    isChecked={checkedMaterials[data.id] || false}
+                                                />
                                             </Td>
+                                            {checkedMaterials[data.id] && (
                                             <Td>
                                                 <Input
                                                     type="number"
                                                     min="0"
                                                     w={20}
-                                                    borderRadius="md"
                                                     onChange={(e) => handleQuantityChange(e, data.id)}
                                                     borderColor={borderColor}
+                                                    value={inputValues[data.id] || ''}
                                                 />
                                             </Td>
+                                        )}
                                         </>
                                     )}
                                 </Tr>
@@ -401,6 +397,20 @@ const Materials = () => {
                             Next
                         </Button>
                     </HStack>
+                        {isEditing && (
+                            <Button
+                                colorScheme="blue"
+                                onClick={() => {
+                                    if (operation === "Add") {
+                                        handleAddMaterials();
+                                    } else {
+                                        handleWithdrawMaterials();
+                                    }
+                                }}
+                            >
+                                Confirm {operation}
+                            </Button>
+                        )}
                 </HStack>
             </Box>
         </SidebarWithHeader>
