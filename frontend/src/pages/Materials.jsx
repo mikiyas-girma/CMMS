@@ -59,16 +59,6 @@ const Materials = () => {
     };
 
     const [isOpen, setIsOpen] = useState(false);
-    const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
-    const [isAddOpen, setIsAddOpen] = useState(false);
-
-    const onWithdrawOpen = () => {
-        setIsWithdrawOpen(true);
-    };
-
-    const onWithdrawClose = () => {
-        setIsWithdrawOpen(false);
-    };
 
     const onOpen = () => {
         setIsOpen(true);
@@ -77,13 +67,6 @@ const Materials = () => {
         setIsOpen(false);
     };
 
-    const onAddOpen = () => {
-        setIsAddOpen(true);
-    };
-
-    const onAddClose = () => {
-        setIsAddOpen(false);
-    };
 
     const handleNewMaterial = () => {
 
@@ -107,43 +90,6 @@ const Materials = () => {
         setIsOpen(false);
     };
 
-    // const handleAddMaterial = () => {
-    //     const addMaterial = document.getElementById("addMaterial").value;
-    //     const addQuantity = parseInt(document.getElementById("addQuantity").value);
-    //     const materialIndex = materialList.findIndex(
-    //         (material) => material.Name === addMaterial
-    //     );
-    //     const updatedMaterial = { ...materialList[materialIndex] };
-    //     updatedMaterial.Quantity += addQuantity;
-    //     materialList[materialIndex] = updatedMaterial;
-    //     setRowsToShow([
-    //         ...materialList.slice(
-    //             currentPage * rowsLimit,
-    //             (currentPage + 1) * rowsLimit
-    //         ),
-    //     ]);
-        // setIsWithdrawOpen(false);
-    // };
-
-    // const handleWithdrawMaterial = () => {
-    //     const withdrawMaterial = document.getElementById("withdrawMaterial").value;
-    //     const withdrawQuantity = parseInt(
-    //         document.getElementById("withdrawQuantity").value
-    //     );
-    //     const materialIndex = materialList.findIndex(
-    //         (material) => material.Name === withdrawMaterial
-    //     );
-    //     const updatedMaterial = { ...materialList[materialIndex] };
-    //     updatedMaterial.Quantity -= withdrawQuantity;
-    //     materialList[materialIndex] = updatedMaterial;
-    //     setRowsToShow([
-    //         ...materialList.slice(
-    //             currentPage * rowsLimit,
-    //             (currentPage + 1) * rowsLimit
-    //         ),
-    //     ]);
-    //     setIsWithdrawOpen(false);
-    // };
 
     const handleCheckboxChange = (e, id) => {
   setCheckedMaterials(prevState => ({
@@ -286,6 +232,17 @@ const handleWithdrawMaterials = () => {
                             />
                             {categoryError && <p className="text-red-700 p-2 rounded w-full">{categoryError}</p>}
                         </FormControl>
+                        <FormControl mt={4}>
+                            <FormLabel>Image</FormLabel>
+                            <Input
+                                type="file"
+                                capture="environment"
+                                accept="image/*"
+                                padding={2}
+                                onChange={(e) => handleImageChange(e)}
+                            />
+                        </FormControl>
+                        
                         <FormControl mt={4}>
                             <FormLabel>Quantity</FormLabel>
                             <Input
