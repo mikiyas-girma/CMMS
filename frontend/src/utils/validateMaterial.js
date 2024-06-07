@@ -27,7 +27,7 @@ export function validateQuantity(quantity) {
 export function handleBlurName(e, setNameError) {
     if (validateName(e.target.value)) {
         setNameError(validateName(e.target.value));
-        setTimeout(() => setNameError(''), 3000);
+        setTimeout(() => setNameError(''), 1500);
     } else {
         setNameError('');
     }
@@ -36,7 +36,7 @@ export function handleBlurName(e, setNameError) {
 export function handleBlurCategory(e, setCategoryError) {
     if (validateCategory(e.target.value)) {
         setCategoryError(validateCategory(e.target.value));
-        setTimeout(() => setCategoryError(''), 3000);
+        setTimeout(() => setCategoryError(''), 1500);
     } else {
         setCategoryError('');
     }
@@ -46,7 +46,7 @@ export function handleBlurQuantity(e, setQuantityError) {
     const quantity = parseInt(e.target.value);
     if (validateQuantity(quantity)) {
         setQuantityError(validateQuantity(quantity));
-        setTimeout(() => setQuantityError(''), 3000);
+        setTimeout(() => setQuantityError(''), 1500);
     } else {
         setQuantityError('');
     }
