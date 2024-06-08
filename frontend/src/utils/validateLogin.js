@@ -13,7 +13,7 @@ export function validatePassword(password) {
 export function handleBlurEmail(e, setEmailError) {
   if (!validateEmail(e.target.value)) {
     setEmailError("Please enter valid email");
-    setTimeout(() => setEmailError(""), 3000);
+    setTimeout(() => setEmailError(""), 2000);
   } else {
     setEmailError("");
   }
@@ -22,7 +22,7 @@ export function handleBlurEmail(e, setEmailError) {
 export function handleBlurPassword(e, setPasswordError) {
   if (!validatePassword(e.target.value)) {
     setPasswordError("Password should be > 5 characters");
-    setTimeout(() => setPasswordError(""), 3000);
+    setTimeout(() => setPasswordError(""), 2000);
   } else {
     setPasswordError("");
   }

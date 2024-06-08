@@ -24,6 +24,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  useBreakpointValue
 } from "@chakra-ui/react";
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
@@ -31,12 +32,15 @@ import { getUserAuthStatus } from "../utils/auth";
 
 import FormSubmitted from "./FormSubmitted";
 import apiInstance from "../utils/axios";
+
+
 const Employees = () => {
   // const [employData, setEmployData] = useState(EmployeesData);
   const [edit, setEdit] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
+  const isMediumScreen = useBreakpointValue({ base: false, md: true });
   // const [edit, setEdit] = useState({
   //   email: "",
   //   Fname: "",
@@ -87,15 +91,15 @@ const Employees = () => {
   };
 
   const handleDelete = (id) => {
-    const selected = employData.filter((e) => e.id !== id);
-    console.log(selected);
-    setEmployData(selected);
+    const selectedUser = employData.filter((e) => e.id !== id);
+    console.log(selectedUser);
+    setEmployData(selectedUser);
   };
   const handleEdit = (id) => {
     // setEmployData(employData.filter((e) => e.id !== id))
-    const selected = employData.find((e) => e.id === id);
-    console.log(selected);
-    setEdit(selected);
+    const selectedUser = employData.find((e) => e.id === id);
+    console.log(selectedUser);
+    setEdit(selectedUser);
   };
   const onCancel = () => {
     setSubmittedData(null);
@@ -233,12 +237,12 @@ const Employees = () => {
             <Tr>
               <Th>ID</Th>
               <Th>First Name </Th>
-              <Th>Last Name </Th>
+              {isMediumScreen && <Th>Last Name </Th>}
               <Th>Role</Th>
-              <Th>Email</Th>
+              {isMediumScreen && <Th>Email</Th>}
 
               <Th>Status</Th>
-              <Th>Phone</Th>
+              {isMediumScreen && <Th>Phone</Th>}
               <Th></Th>
             </Tr>
           </Thead>
@@ -247,14 +251,14 @@ const Employees = () => {
               <Tr key={user._id}>
                 <Td>{i}</Td>
                 <Td>{user.Fname}</Td>
-                <Td>{user.Lname}</Td>
+                {isMediumScreen && <Td>{user.Lname}</Td>}
                 <Td>{user.role}</Td>
-                <Td>{user.email}</Td>
+                {isMediumScreen && <Td>{user.email}</Td>}
                 <Td>{user.status}</Td>
-                <Td>{user.phone}</Td>
+                {isMediumScreen && <Td>{user.phone}</Td>}
                 <Td>
                   <Badge
-                    colorScheme={user.status === "Active" ? "green" : "red"}
+                    colorScheme={user.status === "active" ? "green" : "red"}
                   >
                     {user.status}
                   </Badge>
@@ -270,22 +274,11 @@ const Employees = () => {
                     Edit
                   </EditIcon>
                 </Td>
-                <Td>
-                  <DeleteIcon
-                    colorScheme="red"
-                    color="red.500"
-                    variant="solid"
-                    cursor="pointer"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Delete
-                  </DeleteIcon>
-                </Td>
               </Tr>
             ))}
           </Tbody>
           <Tfoot>
-            <Td>
+            <Td colSpan={isMediumScreen ? 7 : 4}>
               {numberofuser} of {role === "admin" && " StoreOwner"}
               {role === "storeOwner" && " Employee"}
             </Td>

@@ -56,7 +56,7 @@ const SignIn = () => {
       setTimeout(() => {
         setEmailError("");
         setPasswordError("");
-      }, 1500);
+      }, 100);
       return;
     }
   };

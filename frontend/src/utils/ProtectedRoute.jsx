@@ -26,7 +26,7 @@ export const AuthRoute = ({ children }) => {
       setShowMessage(true);
       const timer = setTimeout(() => {
         navigate("/");
-      }, 5000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [isAuth, navigate]);
