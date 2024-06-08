@@ -32,12 +32,14 @@ import { getUserAuthStatus } from "../utils/auth";
 
 import FormSubmitted from "./FormSubmitted";
 import apiInstance from "../utils/axios";
+import EditUserModal from "../components/employee/EditUserModal"
 
 
 const Employees = () => {
   // const [employData, setEmployData] = useState(EmployeesData);
   const [edit, setEdit] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
   const isMediumScreen = useBreakpointValue({ base: false, md: true });
@@ -52,6 +54,7 @@ const Employees = () => {
   const [userData, setUserData] = useState([]);
   const [error, setError] = useState("");
   const [numberofuser, setNumberofUsers] = useState("");
+  const [selectedUserForEdit, setSelectedUserForEdit] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -129,6 +132,11 @@ const Employees = () => {
   //     </div>
   //   );
   // }
+
+  const handleEditClick = (user) => {
+    setSelectedUserForEdit(user);
+    setIsEditModalOpen(true);
+  }
 
   return (
     <SidebarWithHeader>
@@ -269,7 +277,7 @@ const Employees = () => {
                     color="blue.500"
                     variant="solid"
                     cursor="pointer"
-                    onClick={() => handleEdit(user._id)}
+                    onClick={() => handleEditClick(user)}
                   >
                     Edit
                   </EditIcon>
@@ -286,6 +294,27 @@ const Employees = () => {
           </Tfoot>
         </Table>
       </Box>
+
+      {selectedUserForEdit && (
+        <EditUserModal
+        user={selectedUserForEdit}
+        isOpen={isEditModalOpen}
+        onClose={() => {
+            setIsEditModalOpen(false);
+            setSelectedUserForEdit(null);
+        }}
+        onSave={(updatedUser) => {
+            setUserData((prev) =>
+            prev.map((user) =>
+                user._id === updatedUser._id ? updatedUser : user
+            )
+            );
+            setSelectedUserForEdit(null);
+        }}
+        />
+      )
+        }
+
     </SidebarWithHeader>
   );
 };
