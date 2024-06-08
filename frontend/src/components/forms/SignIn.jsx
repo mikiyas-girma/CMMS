@@ -79,8 +79,7 @@ const SignIn = () => {
       setBakendError(response?.error);
       setTimeout(() => {
         setBakendError("");
-      }
-        , 1500);
+      }, 1500);
     }
     // if storeOwner redirecting to /employees
 

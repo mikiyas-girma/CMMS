@@ -21,9 +21,9 @@ const createSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    secure: true, // httpOnly: true,
+    sameSite: "None",
   };
-
-  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
 
@@ -63,15 +63,17 @@ export const login = asyncHandler(async (req, res, next) => {
 export const protect = asyncHandler(async (req, res, next) => {
   let token;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
-  } else if (req.cookies && req.cookies.jwt) {
+  // if (
+  //   req.headers.authorization &&
+  //   req.headers.authorization.startsWith("Bearer")
+  // ) {
+  //   token = req.headers.authorization.split(" ")[1];
+  // } else
+
+  if (req.cookies && req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-
+  console.log("Token", token);
   console.log("Token:", req.cookies.jwt);
 
   if (!token) {

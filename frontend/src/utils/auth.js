@@ -42,8 +42,10 @@ export const login = async (email, password) => {
 };
 
 export const getUserAuthStatus = () => {
+  // console.log("tokenfromCookies", Cookies);
+
   const token = Cookies.get("jwt");
-  // console.log("tokenfromCookies", token);
+  console.log("tokenfromCookies", token);
   if (!token) return { isAuth: false };
 
   try {
