@@ -34,6 +34,8 @@ import { HiUsers } from "react-icons/hi2";
 import { ImProfile } from "react-icons/im";
 import { BiSolidReport } from "react-icons/bi";
 import { capitalize } from "../../utils/capitalize";
+import { useEffect, useState } from "react";
+import apiInstance from "../../utils/axios";
 
 const SidebarContent = ({ onClose, ...rest }) => {
   let LinkItems = [
@@ -140,6 +142,27 @@ const NavItem = ({ icon, children, ...rest }) => {
 const MobileNav = ({ onOpen, ...rest }) => {
   const { role } = getUserAuthStatus();
 
+  const [user, setUser] = useState("");
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await apiInstance.get("/users/me");
+        console.log("res", res);
+        if (res?.data?.status === "success") {
+          setUser(res.data.data.user);
+        } else {
+          setError("Failed to fetch user");
+        }
+      } catch (error) {
+        setError(error.response?.data?.message || "Something went wrong");
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  console.log("user", user);
   const navigate = useNavigate();
   return (
     <Flex
@@ -186,14 +209,14 @@ const MobileNav = ({ onOpen, ...rest }) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar size={"sm"} src={"https://imgur.com/ijpmXRn.jpg"} />
+                <Avatar size={"sm"} src={user.image} />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Mikias Girma</Text>
+                  <Text fontSize="sm">{user.Fname + " " + user.Lname}</Text>
                   <Text fontSize="xs" color="gray.600">
                     {capitalize(role)}
                   </Text>

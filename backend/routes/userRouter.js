@@ -28,7 +28,7 @@ userRouter.route("/forgotPassword").post(forgotPassword);
 
 userRouter.use(protect);
 userRouter.route("/updateMypassword").post(updatePassword);
-userRouter.route("/me").post(getme, getUserById);
+userRouter.route("/me").get(getme, getUserById);
 
 userRouter
   .route("/updateMe")
