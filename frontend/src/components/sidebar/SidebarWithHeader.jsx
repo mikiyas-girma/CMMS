@@ -28,7 +28,8 @@ import {
   FiBell,
   FiChevronDown,
 } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { HiUsers } from "react-icons/hi2";
 import { ImProfile } from "react-icons/im";
@@ -164,6 +165,15 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
   console.log("user", user);
   const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    try {
+      Cookies.remove("jwt");
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -235,7 +245,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               </MenuItem>
               <MenuItem>Settings</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

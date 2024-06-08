@@ -31,7 +31,6 @@ import { getUserAuthStatus } from "../utils/auth";
 
 import FormSubmitted from "./FormSubmitted";
 import apiInstance from "../utils/axios";
-import { capitalize } from "../utils/capitalize";
 const Employees = () => {
   // const [employData, setEmployData] = useState(EmployeesData);
   const [edit, setEdit] = useState({});
@@ -266,7 +265,7 @@ const Employees = () => {
                     color="blue.500"
                     variant="solid"
                     cursor="pointer"
-                    onClick={() => handleEdit(user.id)}
+                    onClick={() => handleEdit(user._id)}
                   >
                     Edit
                   </EditIcon>
