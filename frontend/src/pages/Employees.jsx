@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+
 import {
   Button,
   FormControl,
@@ -58,6 +59,8 @@ const EmployeesData = [
   },
 ];
 import FormSubmitted from "./FormSubmitted";
+import apiInstance from "../utils/axios";
+import { formatDate } from "../utils/formatDate";
 const Employees = () => {
   const [employData, setEmployData] = useState(EmployeesData);
   const [edit, setEdit] = useState({});
@@ -72,6 +75,37 @@ const Employees = () => {
   // });
   const { role } = getUserAuthStatus();
   const [submittedData, setSubmittedData] = useState(null);
+  const [userData, setUserData] = useState([]);
+  const [error, setError] = useState("");
+  const [numberofuser, setNumberofUsers] = useState("");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        let url = "";
+
+        if (role === "admin") {
+          url = "/storeOwner";
+        } else if (role === "storeOwner") {
+          url = "/employee";
+        }
+
+        if (url) {
+          const response = await apiInstance.get(`/users/${url}`);
+          console.log("response", response);
+          setUserData(response?.data?.data?.users);
+          setNumberofUsers(response?.data?.results);
+        } else {
+          setError("Invalid role");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setError("Failed to fetch user data");
+      }
+    };
+
+    fetchUserData();
+  }, [role]);
 
   const handleSubmit = (e) => {
     onClose();
@@ -113,6 +147,14 @@ const Employees = () => {
     });
     console.log("edit", edit);
   };
+  // if (error) {
+  //   return (
+  //     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+  //       <strong className="font-bold">Error!</strong>
+  //       <span className="block sm:inline">{error}</span>
+  //     </div>
+  //   );
+  // }
 
   return (
     <SidebarWithHeader>
@@ -220,21 +262,26 @@ const Employees = () => {
           <Thead>
             <Tr>
               <Th>ID</Th>
-              <Th>Employee Name </Th>
+              <Th>First Name </Th>
+              <Th>Last Name </Th>
               <Th>Role</Th>
-              <Th>Date</Th>
+              <Th>Email</Th>
+
               <Th>Status</Th>
-              <Th></Th>
+              <Th>Phone</Th>
               <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
-            {employData.map((event) => (
-              <Tr key={event.id}>
-                <Td>{event.id}</Td>
-                <Td>{event.name}</Td>
-                <Td>{event.role}</Td>
-                <Td>{event.date}</Td>
+            {userData?.map((user, i) => (
+              <Tr key={user._id}>
+                <Td>{i}</Td>
+                <Td>{user.Fname}</Td>
+                <Td>{user.Lname}</Td>
+                <Td>{user.role}</Td>
+                <Td>{user.email}</Td>
+                <Td>{user.status}</Td>
+                <Td>{user.phone}</Td>
                 <Td>
                   <Badge
                     colorScheme={event.status === "Active" ? "green" : "red"}
@@ -269,7 +316,7 @@ const Employees = () => {
           </Tbody>
           <Tfoot>
             <Td>
-              # of {role === "admin" && " StoreOwner"}
+              {numberofuser} of {role === "admin" && " StoreOwner"}
               {role === "storeOwner" && " Employee"}
             </Td>
             <Td>( {employData.length} )</Td>
