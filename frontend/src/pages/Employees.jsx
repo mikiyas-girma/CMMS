@@ -255,9 +255,9 @@ const Employees = () => {
                 <Td>{user.phone}</Td>
                 <Td>
                   <Badge
-                    colorScheme={event.status === "Active" ? "green" : "red"}
+                    colorScheme={user.status === "Active" ? "green" : "red"}
                   >
-                    {event.status}
+                    {user.status}
                   </Badge>
                 </Td>
                 <Td>
@@ -266,7 +266,7 @@ const Employees = () => {
                     color="blue.500"
                     variant="solid"
                     cursor="pointer"
-                    onClick={() => handleEdit(event.id)}
+                    onClick={() => handleEdit(user.id)}
                   >
                     Edit
                   </EditIcon>
@@ -277,7 +277,7 @@ const Employees = () => {
                     color="red.500"
                     variant="solid"
                     cursor="pointer"
-                    onClick={() => handleDelete(event.id)}
+                    onClick={() => handleDelete(user.id)}
                   >
                     Delete
                   </DeleteIcon>
