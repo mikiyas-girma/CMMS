@@ -46,7 +46,10 @@ const userSchema = new mongoose.Schema(
       required: [true, "please enter user role"],
       enum: ["admin", "storeOwner", "employee"],
     },
-    image: String,
+    image: {
+      type: String,
+      default: "defaultUser.png",
+    },
     passwordChangedAt: Date,
     passwordResetExpires: Date,
     passwordResetToken: String,

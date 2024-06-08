@@ -13,6 +13,7 @@ import {
   checkPasswordUpdate,
   resizePhoto,
   UpdateMe,
+  getme,
 } from "../Controller/userController.js";
 import {
   login,
@@ -27,6 +28,8 @@ userRouter.route("/forgotPassword").post(forgotPassword);
 
 userRouter.use(protect);
 userRouter.route("/updateMypassword").post(updatePassword);
+userRouter.route("/me").post(getme, getUserById);
+
 userRouter
   .route("/updateMe")
   .patch(checkPasswordUpdate, uploadUserPhoto, resizePhoto, UpdateMe);

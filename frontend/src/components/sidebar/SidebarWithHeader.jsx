@@ -33,6 +33,7 @@ import { MdDashboard } from "react-icons/md";
 import { HiUsers } from "react-icons/hi2";
 import { ImProfile } from "react-icons/im";
 import { BiSolidReport } from "react-icons/bi";
+import { capitalize } from "../../utils/capitalize";
 
 const SidebarContent = ({ onClose, ...rest }) => {
   let LinkItems = [
@@ -137,6 +138,8 @@ const NavItem = ({ icon, children, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const { role } = getUserAuthStatus();
+
   const navigate = useNavigate();
   return (
     <Flex
@@ -192,7 +195,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 >
                   <Text fontSize="sm">Mikias Girma</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {capitalize(role)}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>

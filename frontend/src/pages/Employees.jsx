@@ -28,41 +28,12 @@ import {
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 import { getUserAuthStatus } from "../utils/auth";
-const EmployeesData = [
-  {
-    id: Math.floor(Math.random() * 1000),
-    name: "Biniam",
-    role: "Store-Keeper",
-    status: "Inactive",
-    date: "10:09:45 AM5/12/2024",
-  },
-  {
-    id: Math.floor(Math.random() * 1000),
-    name: "Mikias",
-    role: "Store-keeper",
-    status: "Active",
-    date: "09:55:45 PM5/26/2024",
-  },
-  {
-    id: Math.floor(Math.random() * 1000),
-    name: "Nani",
-    role: "Store-Owner",
-    status: "Active",
-    date: "05:21:45 AM5/29/2024",
-  },
-  {
-    id: Math.floor(Math.random() * 1000),
-    name: "Jibrel",
-    role: "Admin",
-    status: "Inactive",
-    date: "02:26:45 AM5/06/2024",
-  },
-];
+
 import FormSubmitted from "./FormSubmitted";
 import apiInstance from "../utils/axios";
-import { formatDate } from "../utils/formatDate";
+import { capitalize } from "../utils/capitalize";
 const Employees = () => {
-  const [employData, setEmployData] = useState(EmployeesData);
+  // const [employData, setEmployData] = useState(EmployeesData);
   const [edit, setEdit] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const onOpen = () => setIsOpen(true);
@@ -319,7 +290,7 @@ const Employees = () => {
               {numberofuser} of {role === "admin" && " StoreOwner"}
               {role === "storeOwner" && " Employee"}
             </Td>
-            <Td>( {employData.length} )</Td>
+            <Td>( {numberofuser} )</Td>
           </Tfoot>
         </Table>
       </Box>

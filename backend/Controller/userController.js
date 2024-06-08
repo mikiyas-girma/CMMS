@@ -209,6 +209,10 @@ export const UpdateMe = asyncHandler(async (req, res, next) => {
     },
   });
 });
+export const getme = asyncHandler(async (req, res, next) => {
+  req.params = { id: req.user._id };
+  next();
+});
 
 // export const RegisterStoreOwner = async (req, res) => {
 //   req.body.role = "storeOwner";
