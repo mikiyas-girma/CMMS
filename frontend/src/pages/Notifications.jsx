@@ -19,13 +19,14 @@ import {
 import { useToast } from "@chakra-ui/react";
 import { MdReceipt, MdSend, MdOutlineCancel } from "react-icons/md";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 
 const Notification = () => {
     const [selectedNotification, setSelectedNotification] = useState(null);
     const [isDetailVisible, setIsDetailVisible] = useState(false);
     const [showSendForm, setShowSendForm] = useState(false);
+    const detailRef = useRef(null);
 
     const toast = useToast();
     const notifications = [
@@ -94,8 +95,19 @@ const Notification = () => {
     const handleNotificationClick = (notification) => {
         setSelectedNotification(notification);
         setIsDetailVisible(true);
-        setShowSendForm(false);
+
+        if (detailRef.current) {
+            detailRef.current.scrollIntoView({ behavior: "smooth"});
+        }
     };
+
+    useEffect(() => {
+        if (isDetailVisible && detailRef.current) {
+            detailRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [selectedNotification, isDetailVisible]);
+
+    
 
     const handleSendNotificationClick = () => {
         setIsDetailVisible(false);
@@ -147,6 +159,7 @@ const Notification = () => {
                 </Card>
                 <Card
                     display={isDetailVisible ? 'block' : 'none'}
+                    ref={detailRef}
                     height='max-content'>
                     {selectedNotification && (
                         <CardBody>
