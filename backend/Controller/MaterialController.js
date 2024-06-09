@@ -19,7 +19,9 @@ export const uploadMaterialPhoto = upload.single("image");
 export const resizeMaterialPhoto = async (req, res, next) => {
   // console.log(req.file);
   if (!req.file) return next();
-  req.file.filename = `material-${req.body.name}-${req.user.username}-${Date.now()}.jpeg`;
+  req.file.filename = `material-${req.body.name}-${req.user.Fname}${req.user.Lname}-${Date.now()}.jpeg`;
+
+  // req.file.filename = `material-${req.body.name}-${req.user.Fname + req.user.Lname}-${Date.now()}.jpeg`;
   await sharp(req.file.buffer)
     .resize(700, 900)
     .toFormat("jpeg")
@@ -43,7 +45,8 @@ export const getAllMaterials = asyncHandler(async (req, res) => {
   res.status(200).json({
     status: "success",
     results: materials.length,
-    data: { // console.log(
+    data: {
+      // console.log(
       //   new AppError(`Can't find ${req.originalUrl} on this server!`, 404)
       // );
       materials,
@@ -52,6 +55,7 @@ export const getAllMaterials = asyncHandler(async (req, res) => {
 });
 
 export const createMaterial = asyncHandler(async (req, res) => {
+  console.log("file", req.file);
   req.body.user = req.user._id;
   if (req.file) req.body.image = req.file.filename;
   const material = await Material.create(req.body);

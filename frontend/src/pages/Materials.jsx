@@ -40,8 +40,10 @@ import {
   handleBlurCategory,
   handleBlurQuantity,
 } from "../utils/validateMaterial";
-
 import materialslist from "../components/materials/materialsData";
+import { registerMaterial } from "../utils/material";
+import { PulseLoader } from "react-spinners";
+import { HiOutlineXMark } from "react-icons/hi2";
 
 const Materials = () => {
   const bg = useColorModeValue("white", "gray.800");
@@ -56,6 +58,20 @@ const Materials = () => {
   );
   const [totalPage] = useState(Math.ceil(materialList.length / rowsLimit));
   const [currentPage, setCurrentPage] = useState(0);
+
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [quantityError, setQuantityError] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [operation, setOperation] = useState("");
+  const [checkedMaterials, setCheckedMaterials] = useState({});
+  const [inputValues, setInputValues] = useState({});
+  const [image, setImage] = useState("");
+  const [backenderror, setBakendError] = useState("");
+  const [Loading, setLoading] = useState("");
 
   const nextPage = () => {
     const startIndex = rowsLimit * (currentPage + 1);
@@ -87,25 +103,37 @@ const Materials = () => {
     setIsOpen(false);
   };
 
-  const handleNewMaterial = () => {
+  const handleNewMaterial = async (e) => {
+    e.preventDefault();
     const nameError = validateName(name);
     const categoryError = validateCategory(category);
     const quantityError = validateQuantity(quantity);
+    console.log("Material");
+    console.log("data", name, category, quantity, image);
+    // if (nameError || categoryError || quantityError) return;
+    setLoading(true);
+    const response = await registerMaterial(name, category, image, quantity);
+    setLoading(false);
+    if (response?.data?.status === "success") {
+      onClose();
+    }
+    if (response?.error) {
+      setBakendError(response?.error);
+    }
+    console.log("response", response);
 
-    if (nameError || categoryError || quantityError) return;
+    // const newProduct = {
+    //   id: materialList.length + 1,
+    //   Name: document.getElementById("name").value,
+    //   Category: document.getElementById("category").value,
+    //   Quantity: parseInt(document.getElementById("quantity").value),
+    // };
+    // materialList.push(newProduct);
 
-    const newProduct = {
-      id: materialList.length + 1,
-      Name: document.getElementById("name").value,
-      Category: document.getElementById("category").value,
-      Quantity: parseInt(document.getElementById("quantity").value),
-    };
-    materialList.push(newProduct);
+    // const totalPage = Math.ceil(materialList.length / rowsLimit);
 
-    const totalPage = Math.ceil(materialList.length / rowsLimit);
-
-    setRowsToShow([...rowsToShow, newProduct]);
-    setIsOpen(false);
+    // setRowsToShow([...rowsToShow, newProduct]);
+    // setIsOpen(false);
   };
 
   const handleCheckboxChange = (e, id) => {
@@ -175,17 +203,6 @@ const Materials = () => {
   const { role } = getUserAuthStatus();
   if (role === "admin") return null;
 
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [categoryError, setCategoryError] = useState("");
-  const [quantityError, setQuantityError] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const [operation, setOperation] = useState("");
-  const [checkedMaterials, setCheckedMaterials] = useState({});
-  const [inputValues, setInputValues] = useState({});
-
   return (
     <SidebarWithHeader>
       <HStack justify="end" mt={4} px={4}>
@@ -225,14 +242,16 @@ const Materials = () => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent className="relative">
+          <HiOutlineXMark
+            className="absolute top-4 right-2 cursor-pointer font-bold bg-white text-red-500 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out shadow-lg rounded-full"
+            size={30}
+            style={{ transitionProperty: "top" }}
+            onClick={onClose}
+          />
           <ModalHeader>Add New Material</ModalHeader>
           <ModalBody>
-            <form
-              action="/upload_files"
-              encType="multipart/form-data"
-              onSubmit={handleNewMaterial}
-            >
+            <form encType="multipart/form-data" onSubmit={handleNewMaterial}>
               <FormControl>
                 <FormLabel>Name</FormLabel>
                 <Input
@@ -268,7 +287,7 @@ const Materials = () => {
                   capture="environment"
                   accept="image/*"
                   padding={2}
-                  onChange={(e) => handleImageChange(e)}
+                  onChange={(e) => setImage(e.target.files[0])}
                 />
               </FormControl>
               <FormControl mt={4}>
@@ -287,12 +306,21 @@ const Materials = () => {
                 )}
               </FormControl>
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} type="submit">
-                  Add
-                </Button>
-                <Button type="button" onClick={onClose}>
-                  Cancel
-                </Button>
+                {backenderror && (
+                  <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                    {backenderror}
+                  </p>
+                )}
+                {!backenderror && (
+                  <>
+                    <Button colorScheme="blue" mr={3} type="submit">
+                      {Loading ? <PulseLoader color="#FFFFFF" /> : "Add"}
+                    </Button>
+                    <Button type="button" onClick={onClose}>
+                      Cancel
+                    </Button>
+                  </>
+                )}
               </ModalFooter>
             </form>
           </ModalBody>

@@ -8,7 +8,11 @@ import MaterialRouter from "./routes/MaterialRouter.js";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 app.use(helmet());
 
@@ -23,6 +27,8 @@ app.use(
 );
 
 app.use(mongoSanitize());
+
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 if (process.env.NODE_ENV === "developement") app.use(morgan("dev"));
 
