@@ -95,6 +95,7 @@ const Notification = () => {
     const handleNotificationClick = (notification) => {
         setSelectedNotification(notification);
         setIsDetailVisible(true);
+        setShowSendForm(false);
 
         if (detailRef.current) {
             detailRef.current.scrollIntoView({ behavior: "smooth"});
@@ -118,10 +119,11 @@ const Notification = () => {
         e.preventDefault();
         toast({
             title: "Notification Sent",
-            description: `Notification sent to ${selectedNotification.user.name}`,
+            description: `Notification sent `,
             status: "success",
-            duration: 5000,
+            duration: 3000,
             isClosable: true,
+            position: "top-center",
         });
         setShowSendForm(false);
     }
