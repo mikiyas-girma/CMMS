@@ -42,6 +42,8 @@ import {
 } from "../utils/validateMaterial";
 import materialslist from "../components/materials/materialsData";
 import { registerMaterial } from "../utils/material";
+import { PulseLoader } from "react-spinners";
+import { HiOutlineXMark } from "react-icons/hi2";
 
 const Materials = () => {
   const bg = useColorModeValue("white", "gray.800");
@@ -68,6 +70,8 @@ const Materials = () => {
   const [checkedMaterials, setCheckedMaterials] = useState({});
   const [inputValues, setInputValues] = useState({});
   const [image, setImage] = useState("");
+  const [backenderror, setBakendError] = useState("");
+  const [Loading, setLoading] = useState("");
 
   const nextPage = () => {
     const startIndex = rowsLimit * (currentPage + 1);
@@ -107,8 +111,15 @@ const Materials = () => {
     console.log("Material");
     console.log("data", name, category, quantity, image);
     // if (nameError || categoryError || quantityError) return;
-
+    setLoading(true);
     const response = await registerMaterial(name, category, image, quantity);
+    setLoading(false);
+    if (response?.data?.status === "success") {
+      onClose();
+    }
+    if (response?.error) {
+      setBakendError(response?.error);
+    }
     console.log("response", response);
 
     // const newProduct = {
@@ -231,7 +242,13 @@ const Materials = () => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent className="relative">
+          <HiOutlineXMark
+            className="absolute top-4 right-2 cursor-pointer font-bold bg-white text-red-500 hover:bg-red-500 hover:text-white transition duration-300 ease-in-out shadow-lg rounded-full"
+            size={30}
+            style={{ transitionProperty: "top" }}
+            onClick={onClose}
+          />
           <ModalHeader>Add New Material</ModalHeader>
           <ModalBody>
             <form encType="multipart/form-data" onSubmit={handleNewMaterial}>
@@ -289,12 +306,21 @@ const Materials = () => {
                 )}
               </FormControl>
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} type="submit">
-                  Add
-                </Button>
-                <Button type="button" onClick={onClose}>
-                  Cancel
-                </Button>
+                {backenderror && (
+                  <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                    {backenderror}
+                  </p>
+                )}
+                {!backenderror && (
+                  <>
+                    <Button colorScheme="blue" mr={3} type="submit">
+                      {Loading ? <PulseLoader color="#FFFFFF" /> : "Add"}
+                    </Button>
+                    <Button type="button" onClick={onClose}>
+                      Cancel
+                    </Button>
+                  </>
+                )}
               </ModalFooter>
             </form>
           </ModalBody>
