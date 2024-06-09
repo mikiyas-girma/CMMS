@@ -22,7 +22,11 @@ export const registerMaterial = async (
       totalQuantity,
     };
 
-    const { data } = await apiInstance.post("/materials", requestData);
+    const { data } = await apiInstance.post("/materials", requestData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     console.log("data", data);
     Toast.fire({
