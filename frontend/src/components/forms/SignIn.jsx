@@ -83,12 +83,12 @@ const SignIn = () => {
     }
     // if storeOwner redirecting to /employees
 
-    if (
-      response?.data?.user?.role === "storeOwner" ||
-      response?.data?.user?.role === "employee"
-    ) {
+    if (response?.data?.user?.role === "employee") {
+      navigate("/dashboard");
+    } else if (response?.data?.user?.role === "storeOwner") {
       navigate("/users");
     }
+
     // console.log(("error", error));
     setEmail("");
     setPassword("");

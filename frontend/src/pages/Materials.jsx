@@ -1,13 +1,31 @@
 import { useState, useMemo, useEffect } from "react";
 import {
-    Box, Table, Thead, Tbody, Tr, Th, Td, Text, Button, HStack,
-    useColorMode, useColorModeValue,
+  Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Text,
+  Button,
+  HStack,
+  useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import {
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody,
-    ModalFooter, FormControl, FormLabel, Input, Select,
-    Checkbox
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Checkbox,
 } from "@chakra-ui/react";
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
@@ -15,363 +33,380 @@ import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 import { getUserAuthStatus } from "../utils/auth";
 
 import {
-    validateName, validateCategory, validateQuantity,
-    handleBlurName, handleBlurCategory, handleBlurQuantity
+  validateName,
+  validateCategory,
+  validateQuantity,
+  handleBlurName,
+  handleBlurCategory,
+  handleBlurQuantity,
 } from "../utils/validateMaterial";
 
 import materialslist from "../components/materials/materialsData";
 
-
-
 const Materials = () => {
-    const bg = useColorModeValue("white", "gray.800");
-    const text = useColorModeValue("gray.900", "white");
-    const { colorMode } = useColorMode();
-    const borderColor = colorMode === "light" ? "gray.800" : "gray.600";
+  const bg = useColorModeValue("white", "gray.800");
+  const text = useColorModeValue("gray.900", "white");
+  const { colorMode } = useColorMode();
+  const borderColor = colorMode === "light" ? "gray.800" : "gray.600";
 
-    const [materialList, setMaterialList] = useState(materialslist);
-    const [rowsLimit] = useState(5);
-    const [rowsToShow, setRowsToShow] = useState(
-        materialList.slice(0, rowsLimit)
-    );
-    const [totalPage] = useState(Math.ceil(materialList.length / rowsLimit));
-    const [currentPage, setCurrentPage] = useState(0);
+  const [materialList, setMaterialList] = useState(materialslist);
+  const [rowsLimit] = useState(5);
+  const [rowsToShow, setRowsToShow] = useState(
+    materialList.slice(0, rowsLimit)
+  );
+  const [totalPage] = useState(Math.ceil(materialList.length / rowsLimit));
+  const [currentPage, setCurrentPage] = useState(0);
 
-    const nextPage = () => {
-        const startIndex = rowsLimit * (currentPage + 1);
-        const endIndex = startIndex + rowsLimit;
-        setRowsToShow(materialslist.slice(startIndex, endIndex));
-        setCurrentPage(currentPage + 1);
+  const nextPage = () => {
+    const startIndex = rowsLimit * (currentPage + 1);
+    const endIndex = startIndex + rowsLimit;
+    setRowsToShow(materialslist.slice(startIndex, endIndex));
+    setCurrentPage(currentPage + 1);
+  };
+
+  const changePage = (value) => {
+    const startIndex = value * rowsLimit;
+    const endIndex = startIndex + rowsLimit;
+    setRowsToShow(materialslist.slice(startIndex, endIndex));
+    setCurrentPage(value);
+  };
+
+  const previousPage = () => {
+    const startIndex = (currentPage - 1) * rowsLimit;
+    const endIndex = startIndex + rowsLimit;
+    setRowsToShow(materialslist.slice(startIndex, endIndex));
+    setCurrentPage(currentPage > 1 ? currentPage - 1 : 0);
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onOpen = () => {
+    setIsOpen(true);
+  };
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
+  const handleNewMaterial = () => {
+    const nameError = validateName(name);
+    const categoryError = validateCategory(category);
+    const quantityError = validateQuantity(quantity);
+
+    if (nameError || categoryError || quantityError) return;
+
+    const newProduct = {
+      id: materialList.length + 1,
+      Name: document.getElementById("name").value,
+      Category: document.getElementById("category").value,
+      Quantity: parseInt(document.getElementById("quantity").value),
     };
+    materialList.push(newProduct);
 
-    const changePage = (value) => {
-        const startIndex = value * rowsLimit;
-        const endIndex = startIndex + rowsLimit;
-        setRowsToShow(materialslist.slice(startIndex, endIndex));
-        setCurrentPage(value);
-    };
+    const totalPage = Math.ceil(materialList.length / rowsLimit);
 
-    const previousPage = () => {
-        const startIndex = (currentPage - 1) * rowsLimit;
-        const endIndex = startIndex + rowsLimit;
-        setRowsToShow(materialslist.slice(startIndex, endIndex));
-        setCurrentPage(currentPage > 1 ? currentPage - 1 : 0);
-    };
+    setRowsToShow([...rowsToShow, newProduct]);
+    setIsOpen(false);
+  };
 
-    const [isOpen, setIsOpen] = useState(false);
+  const handleCheckboxChange = (e, id) => {
+    setCheckedMaterials((prevState) => ({
+      ...prevState,
+      [id]: e.target.checked,
+    }));
+  };
 
-    const onOpen = () => {
-        setIsOpen(true);
-    };
-    const onClose = () => {
-        setIsOpen(false);
-    };
+  const handleQuantityChange = (e, id) => {
+    setInputValues((prevState) => ({
+      ...prevState,
+      [id]: e.target.value,
+    }));
+  };
 
-
-    const handleNewMaterial = () => {
-
-        const nameError = validateName(name)
-        const categoryError = validateCategory(category)
-        const quantityError = validateQuantity(quantity)
-
-        if (nameError || categoryError || quantityError) return;
-
-        const newProduct = {
-            id: materialList.length + 1,
-            Name: document.getElementById("name").value,
-            Category: document.getElementById("category").value,
-            Quantity: parseInt(document.getElementById("quantity").value),
-        };
-        materialList.push(newProduct);
-
-        const totalPage = Math.ceil(materialList.length / rowsLimit);
-
-        setRowsToShow([...rowsToShow, newProduct]);
-        setIsOpen(false);
-    };
-
-
-    const handleCheckboxChange = (e, id) => {
-  setCheckedMaterials(prevState => ({
-    ...prevState,
-    [id]: e.target.checked
-  }));
-};
-
-const handleQuantityChange = (e, id) => {
-  setInputValues(prevState => ({
-    ...prevState,
-    [id]: e.target.value
-  }));
-};
-
-const handleAddMaterials = () => {
+  const handleAddMaterials = () => {
     const updatedMaterialsList = [...materialslist];
-  // Loop over the inputValues object
-  for (let id in inputValues) {
-    // If the material is checked
-    if (checkedMaterials[id]) {
-      // Add the input value to the total quantity of the material
-      let material = updatedMaterialsList.find(material => material.id === Number(id));
-      material.Quantity += Number(inputValues[id]);
+    // Loop over the inputValues object
+    for (let id in inputValues) {
+      // If the material is checked
+      if (checkedMaterials[id]) {
+        // Add the input value to the total quantity of the material
+        let material = updatedMaterialsList.find(
+          (material) => material.id === Number(id)
+        );
+        material.Quantity += Number(inputValues[id]);
+      }
     }
-  }
 
     // Update the materialslist state
     setMaterialList(updatedMaterialsList);
 
-  // Reset the inputValues and checkedMaterials states
-  setInputValues({});
-  setCheckedMaterials({});
-};
+    // Reset the inputValues and checkedMaterials states
+    setInputValues({});
+    setCheckedMaterials({});
+  };
 
-const handleWithdrawMaterials = () => {
+  const handleWithdrawMaterials = () => {
     const updatedMaterialsList = [...materialslist];
 
-  // Loop over the inputValues object
-  for (let id in inputValues) {
-    // If the material is checked
-    if (checkedMaterials[id]) {
-      // Subtract the input value from the total quantity of the material
-      let material = updatedMaterialsList.find(material => material.id === Number(id));
-      material.Quantity -= Number(inputValues[id]);
+    // Loop over the inputValues object
+    for (let id in inputValues) {
+      // If the material is checked
+      if (checkedMaterials[id]) {
+        // Subtract the input value from the total quantity of the material
+        let material = updatedMaterialsList.find(
+          (material) => material.id === Number(id)
+        );
+        material.Quantity -= Number(inputValues[id]);
+      }
     }
-  }
 
     // Update the materialslist state
     setMaterialList(updatedMaterialsList);
 
-  // Reset the inputValues and checkedMaterials states
-  setInputValues({});
-  setCheckedMaterials({});
-};
+    // Reset the inputValues and checkedMaterials states
+    setInputValues({});
+    setCheckedMaterials({});
+  };
 
-    useEffect(() => {
-        console.log("Material List Updated");
-        console.log(materialList);
-    }, [materialList]);
+  useEffect(() => {
+    console.log("Material List Updated");
+    console.log(materialList);
+  }, [materialList]);
 
+  const { role } = getUserAuthStatus();
+  if (role === "admin") return null;
 
-    const { role } = getUserAuthStatus();
-    if (role === "admin") return null;
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [quantityError, setQuantityError] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [operation, setOperation] = useState("");
+  const [checkedMaterials, setCheckedMaterials] = useState({});
+  const [inputValues, setInputValues] = useState({});
 
-    const [name, setName] = useState("");
-    const [category, setCategory] = useState("");
-    const [quantity, setQuantity] = useState("");
-    const [nameError, setNameError] = useState("");
-    const [categoryError, setCategoryError] = useState("");
-    const [quantityError, setQuantityError] = useState("");
-    const [isEditing, setIsEditing] = useState(false);
-    const [operation, setOperation] = useState("");
-    const [checkedMaterials, setCheckedMaterials] = useState({});
-    const [inputValues, setInputValues] = useState({});
+  return (
+    <SidebarWithHeader>
+      <HStack justify="end" mt={4} px={4}>
+        <Button onClick={onOpen} colorScheme="blue" mr={2}>
+          New Material
+        </Button>
+        <Button
+          colorScheme="yellow"
+          onClick={() => {
+            if (operation === "Add") {
+              setIsEditing(false);
+              setOperation("");
+            } else {
+              setIsEditing(true);
+              setOperation("Add");
+            }
+          }}
+        >
+          Add Material
+        </Button>
+        <Button
+          colorScheme="red"
+          m={2}
+          onClick={() => {
+            if (operation === "Withdraw") {
+              setIsEditing(false);
+              setOperation("");
+            } else {
+              setIsEditing(true);
+              setOperation("Withdraw");
+            }
+          }}
+        >
+          Withdraw Material
+        </Button>
+      </HStack>
 
-    return (
-        <SidebarWithHeader>
-            <HStack justify="end" mt={4} px={4}>
-                <Button onClick={onOpen} colorScheme="blue" mr={2}>
-                    New Material
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add New Material</ModalHeader>
+          <ModalBody>
+            <form
+              action="/upload_files"
+              encType="multipart/form-data"
+              onSubmit={handleNewMaterial}
+            >
+              <FormControl>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  id="name"
+                  placeholder="Enter material name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onBlur={(e) => handleBlurName(e, setNameError)}
+                />
+                {nameError && (
+                  <p className="text-red-700 p-2 rounded w-full">{nameError}</p>
+                )}
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Category</FormLabel>
+                <Input
+                  id="category"
+                  placeholder="Enter material category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  onBlur={(e) => handleBlurCategory(e, setCategoryError)}
+                />
+                {categoryError && (
+                  <p className="text-red-700 p-2 rounded w-full">
+                    {categoryError}
+                  </p>
+                )}
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Image</FormLabel>
+                <Input
+                  type="file"
+                  capture="environment"
+                  accept="image/*"
+                  padding={2}
+                  onChange={(e) => handleImageChange(e)}
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Quantity</FormLabel>
+                <Input
+                  id="quantity"
+                  placeholder="Enter material quantity"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  onBlur={(e) => handleBlurQuantity(e, setQuantityError)}
+                />
+                {quantityError && (
+                  <p className="text-red-700 p-2 rounded w-full">
+                    {quantityError}
+                  </p>
+                )}
+              </FormControl>
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} type="submit">
+                  Add
                 </Button>
-                <Button
-                    colorScheme="yellow"
-                    onClick={() => {
-                        if (operation === "Add") {
-                            setIsEditing(false);
-                            setOperation("");
-                        } else {
-                            setIsEditing(true);
-                            setOperation("Add");
-                    }
-                    }}
-                >
-                    Add Material
+                <Button type="button" onClick={onClose}>
+                  Cancel
                 </Button>
-                <Button
-                    colorScheme="red"
-                    m={2}
-                    onClick={() => {
-                        if (operation === "Withdraw") {
-                            setIsEditing(false);
-                            setOperation("");
-                        } else {
-                            setIsEditing(true);
-                            setOperation("Withdraw");
-                        }
-                    }
-                    }
-                >
-                    Withdraw Material
-                </Button>
-            </HStack>
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Add New Material</ModalHeader>
-                    <ModalBody>
-                        <FormControl>
-                            <FormLabel>Name</FormLabel>
-                            <Input id="name"
-                                placeholder="Enter material name"
-                                value={name}
-                                onChange={(e) => {
-                                    console.log(e.target.value);
-                                    setName(e.target.value)
-                                }
-                                }
-                                onBlur={(e) => handleBlurName(e, setNameError)}
-                            />
-                            {nameError && <p className="text-red-700 p-2 rounded w-full">{nameError}</p>}
-                        </FormControl>
-                        <FormControl mt={4}>
-                            <FormLabel>Category</FormLabel>
-                            <Input id="category"
-                                placeholder="Enter material category"
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
-                                onBlur={(e) => handleBlurCategory(e, setCategoryError)}
-                            />
-                            {categoryError && <p className="text-red-700 p-2 rounded w-full">{categoryError}</p>}
-                        </FormControl>
-                        <FormControl mt={4}>
-                            <FormLabel>Image</FormLabel>
-                            <Input
-                                type="file"
-                                capture="environment"
-                                accept="image/*"
-                                padding={2}
-                                onChange={(e) => handleImageChange(e)}
-                            />
-                        </FormControl>
-                        
-                        <FormControl mt={4}>
-                            <FormLabel>Quantity</FormLabel>
-                            <Input
-                                id="quantity"
-                                placeholder="Enter material quantity"
-                                value={quantity}
-                                onChange={(e) => setQuantity(e.target.value)}
-                                onBlur={(e) => handleBlurQuantity(e, setQuantityError)}
-                            />
-                            {quantityError && <p className="text-red-700 p-2 rounded w-full">{quantityError}</p>}
-                        </FormControl>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={handleNewMaterial}>
-                            Add
-                        </Button>
-                        <Button onClick={onClose}>Cancel</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+              </ModalFooter>
+            </form>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
 
-            <Box bg={bg} minH="100vh" pt={10} pb={4} maxW="4xl" mx="auto">
-                <Text fontSize="2xl" fontWeight="medium">
-                    Materials in Stock
-                </Text>
-                <Box mt={2} overflowX="auto">
-                    <Table variant="simple">
-                        <Thead>
-                            <Tr>
-                                <Th>ID</Th>
-                                <Th>Name</Th>
-                                <Th>Category</Th>
-                                <Th>Quantity</Th>
-                                {isEditing && (
-                                    <>
-                                        <Th>Select</Th>
-                                        <Th>{operation}</Th>
-                                    </>
-                                )}
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            {rowsToShow.map((data, index) => (
-                                <Tr key={index} bg={bg}>
-                                    <Td>{data.id}</Td>
-                                    <Td>{data.Name}</Td>
-                                    <Td>{data.Category}</Td>
-                                    <Td>{data.Quantity}</Td>
-                                    {isEditing && (
-                                        <>
-                                            <Td>
-                                                <Checkbox
-                                                    id={data.id}
-                                                    borderColor={borderColor}
-                                                    onChange={(e) => handleCheckboxChange(e, data.id)} 
-                                                    isChecked={checkedMaterials[data.id] || false}
-                                                />
-                                            </Td>
-                                            {checkedMaterials[data.id] && (
-                                            <Td>
-                                                <Input
-                                                    type="number"
-                                                    min="0"
-                                                    w={20}
-                                                    onChange={(e) => handleQuantityChange(e, data.id)}
-                                                    borderColor={borderColor}
-                                                    value={inputValues[data.id] || ''}
-                                                />
-                                            </Td>
-                                        )}
-                                        </>
-                                    )}
-                                </Tr>
-                            ))}
-                        </Tbody>
-                    </Table>
-                </Box>
-                <HStack justify="space-between" mt={2} px={1}>
-                    <Text>
-                        Showing {currentPage === 0 ? 1 : currentPage * rowsLimit + 1} to{" "}
-                        {currentPage === totalPage - 1
-                            ? materialList.length
-                            : (currentPage + 1) * rowsLimit}{" "}
-                        of {materialList.length} entries
-                    </Text>
-                    <HStack spacing={2}>
-                        <Button
-                            onClick={previousPage}
-                            isDisabled={currentPage === 0}
-                            variant="outline"
-                        >
-                            Previous
-                        </Button>
-                        {Array.from({ length: totalPage }).map((_, index) => (
-                            <Button
-                                key={index}
-                                onClick={() => changePage(index)}
-                                variant={currentPage === index ? "solid" : "outline"}
-                                colorScheme={currentPage === index ? "blue" : "gray"}
-                            >
-                                {index + 1}
-                            </Button>
-                        ))}
-                        <Button
-                            onClick={nextPage}
-                            isDisabled={currentPage === totalPage - 1}
-                            variant="outline"
-                        >
-                            Next
-                        </Button>
-                    </HStack>
-                        {isEditing && (
-                            <Button
-                                colorScheme="blue"
-                                onClick={() => {
-                                    if (operation === "Add") {
-                                        handleAddMaterials();
-                                    } else {
-                                        handleWithdrawMaterials();
-                                    }
-                                }}
-                            >
-                                Confirm {operation}
-                            </Button>
-                        )}
-                </HStack>
-            </Box>
-        </SidebarWithHeader>
-    );
+      <Box bg={bg} minH="100vh" pt={10} pb={4} maxW="4xl" mx="auto">
+        <Text fontSize="2xl" fontWeight="medium">
+          Materials in Stock
+        </Text>
+        <Box mt={2} overflowX="auto">
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>ID</Th>
+                <Th>Name</Th>
+                <Th>Category</Th>
+                <Th>Quantity</Th>
+                {isEditing && (
+                  <>
+                    <Th>Select</Th>
+                    <Th>{operation}</Th>
+                  </>
+                )}
+              </Tr>
+            </Thead>
+            <Tbody>
+              {rowsToShow.map((data, index) => (
+                <Tr key={index} bg={bg}>
+                  <Td>{data.id}</Td>
+                  <Td>{data.Name}</Td>
+                  <Td>{data.Category}</Td>
+                  <Td>{data.Quantity}</Td>
+                  {isEditing && (
+                    <>
+                      <Td>
+                        <Checkbox
+                          id={data.id}
+                          borderColor={borderColor}
+                          onChange={(e) => handleCheckboxChange(e, data.id)}
+                          isChecked={checkedMaterials[data.id] || false}
+                        />
+                      </Td>
+                      {checkedMaterials[data.id] && (
+                        <Td>
+                          <Input
+                            type="number"
+                            min="0"
+                            w={20}
+                            onChange={(e) => handleQuantityChange(e, data.id)}
+                            borderColor={borderColor}
+                            value={inputValues[data.id] || ""}
+                          />
+                        </Td>
+                      )}
+                    </>
+                  )}
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </Box>
+        <HStack justify="space-between" mt={2} px={1}>
+          <Text>
+            Showing {currentPage === 0 ? 1 : currentPage * rowsLimit + 1} to{" "}
+            {currentPage === totalPage - 1
+              ? materialList.length
+              : (currentPage + 1) * rowsLimit}{" "}
+            of {materialList.length} entries
+          </Text>
+          <HStack spacing={2}>
+            <Button
+              onClick={previousPage}
+              isDisabled={currentPage === 0}
+              variant="outline"
+            >
+              Previous
+            </Button>
+            {Array.from({ length: totalPage }).map((_, index) => (
+              <Button
+                key={index}
+                onClick={() => changePage(index)}
+                variant={currentPage === index ? "solid" : "outline"}
+                colorScheme={currentPage === index ? "blue" : "gray"}
+              >
+                {index + 1}
+              </Button>
+            ))}
+            <Button
+              onClick={nextPage}
+              isDisabled={currentPage === totalPage - 1}
+              variant="outline"
+            >
+              Next
+            </Button>
+          </HStack>
+          {isEditing && (
+            <Button
+              colorScheme="blue"
+              onClick={() => {
+                if (operation === "Add") {
+                  handleAddMaterials();
+                } else {
+                  handleWithdrawMaterials();
+                }
+              }}
+            >
+              Confirm {operation}
+            </Button>
+          )}
+        </HStack>
+      </Box>
+    </SidebarWithHeader>
+  );
 };
 
 export default Materials;

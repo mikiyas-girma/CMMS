@@ -2,14 +2,14 @@ import { getUserAuthStatus } from "./auth";
 import { Navigate, useNavigate } from "react-router-dom";
 import PageNotFound from "./PageNotFound";
 import { useEffect, useState } from "react";
-export const ProtectedRoute = ({ children, requiredRole }) => {
+export const ProtectedRoute = ({ children, requiredRoles }) => {
   const { isAuth, role } = getUserAuthStatus();
 
   if (!isAuth) {
     return <PageNotFound />;
   }
 
-  if (requiredRole && role !== requiredRole) {
+  if (requiredRoles && !requiredRoles?.includes(role)) {
     return <PageNotFound />;
   }
 

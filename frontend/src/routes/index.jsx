@@ -25,9 +25,9 @@ const routes = [
   {
     path: PathConstants.EMPLOYEES,
     element: (
-      <AuthRoute>
+      <ProtectedRoute requiredRoles={["admin", "storeOwner"]}>
         <Employees />
-      </AuthRoute>
+      </ProtectedRoute>
     ),
   },
   {
