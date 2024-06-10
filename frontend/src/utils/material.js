@@ -79,3 +79,30 @@ export const addMaterials = async (url, materials) => {
     };
   }
 };
+
+export const generatereport = async (url, start, upto) => {
+  try {
+    const { data } = await apiInstance.post(`/materials/${url}`, {
+      start,
+      upto,
+    });
+
+    console.log("data", data);
+    if (data?.status === "success") {
+      Toast.fire({
+        icon: "success",
+        title: ` ${
+          url === "addedmaterialreport" ? "Added" : "Withdrawn"
+        } Material Report Generated Successfully`,
+      });
+    }
+
+    return { data, error: null };
+  } catch (error) {
+    console.log("error", error.response?.data);
+    return {
+      data: null,
+      error: error.response?.data?.message || "Something went wrong",
+    };
+  }
+};

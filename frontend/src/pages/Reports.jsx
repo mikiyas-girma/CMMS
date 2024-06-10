@@ -17,7 +17,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { BeatLoader } from "react-spinners";
+import { BeatLoader, PulseLoader } from "react-spinners";
+import { generatereport } from "../utils/material";
 <script src="../path/to/flowbite/dist/datepicker.js"></script>;
 const Reports = () => {
   const reportData = [
@@ -62,7 +63,9 @@ const Reports = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const today = new Date().toISOString().split("T")[0];
-
+  const [selectedOption, setSelectedOption] = useState("");
+  const [backenderror, setBakendError] = useState("");
+  const [Loading, setLoading] = useState("");
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
   };
@@ -71,8 +74,34 @@ const Reports = () => {
     setEndDate(e.target.value);
   };
 
-  const handleGenerateReport = async () => {};
-  console.log("dates", startDate, endDate);
+  const handleSelectChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  const handleGenerateReport = async () => {
+    let url = "";
+    if (selectedOption === "option1") {
+      url = "addedmaterialreport";
+    }
+    if (selectedOption === "option2") {
+      url = "removedmaterialreport";
+    }
+
+    setLoading(true);
+    const response = await generatereport(url, startDate, endDate);
+    console.log("report generated", response);
+    setLoading(false);
+    console.log("response", response);
+    if (response?.error) {
+      setBakendError(response?.error);
+    }
+
+    // if (response?.data?.status === "success") {
+    //   Navigate("/materials");
+    // }
+  };
+  //   console.log("dates", startDate, endDate);
+  console.log("selected", selectedOption);
   return (
     <div>
       <SidebarWithHeader>
@@ -85,10 +114,11 @@ const Reports = () => {
           <Select
             placeholder="Inventory Reports"
             width={{ base: "100%", sm: "auto" }}
+            value={selectedOption}
+            onChange={handleSelectChange}
           >
-            <option value="option1">Material Stock Report</option>
-            <option value="option2">Material Usage Report</option>
-            <option value="option3">Low Stock Report</option>
+            <option value="option1">Added Material Report</option>
+            <option value="option2">Withdrawn Material Report</option>
           </Select>
 
           <Input
@@ -108,14 +138,30 @@ const Reports = () => {
             onChange={handleEndDateChange}
             width={{ base: "100%", sm: "auto" }}
           />
-          <Button
-            onClick={handleGenerateReport}
-            colorScheme="teal"
-            variant="solid"
-            width={{ base: "100%", sm: "auto" }}
-          >
-            Generate Report
-          </Button>
+          <>
+            {backenderror && (
+              <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                {backenderror}
+              </p>
+            )}
+            {!backenderror && (
+              <div className="flex">
+                <Button
+                  onClick={handleGenerateReport}
+                  colorScheme="teal"
+                  variant="solid"
+                  width={{ base: "100%", sm: "auto" }}
+                  disabled={Loading}
+                >
+                  {Loading ? (
+                    <PulseLoader color="#FFFFFF" />
+                  ) : (
+                    " Generate Report"
+                  )}
+                </Button>
+              </div>
+            )}
+          </>
         </HStack>
         <div>
           <TableContainer marginTop="50px">
