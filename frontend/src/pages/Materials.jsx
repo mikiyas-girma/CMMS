@@ -54,12 +54,12 @@ const Materials = () => {
   const borderColor = colorMode === "light" ? "gray.800" : "gray.600";
 
   const [materialList, setMaterialList] = useState([]);
-  const [rowsLimit] = useState(6);
+  const [rowsLimit] = useState(5);
   const [rowsToShow, setRowsToShow] = useState(
     materialList.slice(0, rowsLimit)
   );
   const [totalPage, settotalPage] = useState(Math.ceil(materialList.length / rowsLimit));
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
@@ -81,7 +81,7 @@ const Materials = () => {
 
     if (currentPage >= totalPages) {
         setCurrentPage(totalPages - 1);
-        changePage(totalPages - 1);
+        changePage(totalPages);
         }
   }, [materialList, rowsLimit]);
 
