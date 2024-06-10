@@ -26,11 +26,11 @@ const Materials = () => {
   const borderColor = colorMode === "light" ? "gray.800" : "gray.600";
 
   const [materialList, setMaterialList] = useState([]);
-  const [rowsLimit] = useState(5);
+  const [rowsLimit] = useState(6);
   const [rowsToShow, setRowsToShow] = useState(
     materialList.slice(0, rowsLimit)
   );
-  const [totalPage] = useState(Math.ceil(materialList.length / rowsLimit));
+  const [totalPage, settotalPage] = useState(Math.ceil(materialList.length / rowsLimit));
   const [currentPage, setCurrentPage] = useState(0);
 
   const [name, setName] = useState("");
@@ -47,11 +47,23 @@ const Materials = () => {
   const [backenderror, setBakendError] = useState("");
   const [Loading, setLoading] = useState("");
 
+  useEffect(() => {
+    const totalPages = Math.ceil(materialList.length / rowsLimit);
+    settotalPage(totalPages);
+
+    if (currentPage >= totalPages) {
+        setCurrentPage(totalPages - 1);
+        changePage(totalPages - 1);
+        }
+  }, [materialList, rowsLimit]);
+
   const nextPage = () => {
-    const startIndex = rowsLimit * (currentPage + 1);
-    const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materialList.slice(startIndex, endIndex));
-    setCurrentPage(currentPage + 1);
+    if (currentPage < totalPage - 1) {
+      const startIndex = (currentPage + 1) * rowsLimit;
+      const endIndex = startIndex + rowsLimit;
+      setRowsToShow(materialList.slice(startIndex, endIndex));
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const changePage = (value) => {
@@ -62,10 +74,12 @@ const Materials = () => {
   };
 
   const previousPage = () => {
-    const startIndex = (currentPage - 1) * rowsLimit;
-    const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materialList.slice(startIndex, endIndex));
-    setCurrentPage(currentPage > 1 ? currentPage - 1 : 0);
+    if (currentPage > 0) {
+      const startIndex = (currentPage - 1) * rowsLimit;
+      const endIndex = startIndex + rowsLimit;
+      setRowsToShow(materialList.slice(startIndex, endIndex));
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -391,19 +405,10 @@ const Materials = () => {
             >
               Previous
             </Button>
-            {Array.from({ length: totalPage }).map((_, index) => (
-              <Button
-                key={index}
-                onClick={() => changePage(index)}
-                variant={currentPage === index ? "solid" : "outline"}
-                colorScheme={currentPage === index ? "blue" : "gray"}
-              >
-                {index + 1}
-              </Button>
-            ))}
+            <Text>Page {currentPage + 1} of {totalPage}</Text>
             <Button
               onClick={nextPage}
-              isDisabled={currentPage === totalPage - 1}
+              isDisabled={currentPage >= totalPage - 1}
               variant="outline"
             >
               Next
