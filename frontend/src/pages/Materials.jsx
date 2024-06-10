@@ -69,8 +69,8 @@ const Materials = () => {
   const [quantityError, setQuantityError] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [operation, setOperation] = useState("");
-  const [checkedMaterials, setCheckedMaterials] = useState({});
-  const [inputValues, setInputValues] = useState({});
+  const [checkedMaterials, setCheckedMaterials] = useState([]);
+  const [inputValues, setInputValues] = useState([]);
   const [image, setImage] = useState("");
   const [backenderror, setBakendError] = useState("");
   const [Loading, setLoading] = useState("");
@@ -140,27 +140,46 @@ const Materials = () => {
     //   Category: document.getElementById("category").value,
     //   Quantity: parseInt(document.getElementById("quantity").value),
     // };
-    // materialList.push(newProduct);
-
-    // const totalPage = Math.ceil(materialList.length / rowsLimit);
-
-    // setRowsToShow([...rowsToShow, newProduct]);
-    // setIsOpen(false);
   };
 
+  // const handleCheckboxChange = (e, id) => {
+  //   setCheckedMaterials((prevState) => ({
+  //     ...prevState,
+  //     [id]: e.target.checked,
+  //   }));
+  // };
   const handleCheckboxChange = (e, id) => {
-    setCheckedMaterials((prevState) => ({
-      ...prevState,
-      [id]: e.target.checked,
-    }));
+    const isChecked = checkedMaterials.includes(id);
+    if (isChecked) {
+      setCheckedMaterials(checkedMaterials.filter((item) => item !== id));
+      setInputValues(inputValues.filter((item) => item.id !== id));
+    } else {
+      setCheckedMaterials([...checkedMaterials, id]);
+    }
   };
 
   const handleQuantityChange = (e, id) => {
-    setInputValues((prevState) => ({
-      ...prevState,
-      [id]: e.target.value,
-    }));
+    const { value } = e.target;
+
+    setInputValues((prevState) => {
+      const existingItem = prevState.find((item) => item.id === id);
+      if (existingItem) {
+        return prevState.map((item) =>
+          item.id === id ? { ...item, quantity: value } : item
+        );
+      } else {
+        return [...prevState, { id, quantity: value }];
+      }
+    });
   };
+
+  const getQuantityValue = (id) => {
+    const item = inputValues.find((value) => value.id === id);
+    return item ? item.quantity : "";
+  };
+
+  console.log("checkedMaterial", checkedMaterials);
+  console.log("Input", inputValues);
 
   const handleAddMaterials = () => {
     const updatedMaterialsList = [...materialList];
@@ -396,21 +415,21 @@ const Materials = () => {
                     <>
                       <Td>
                         <Checkbox
-                          id={data.id}
+                          id={data._id}
                           borderColor={borderColor}
-                          onChange={(e) => handleCheckboxChange(e, data.id)}
-                          isChecked={checkedMaterials[data.id] || false}
+                          onChange={(e) => handleCheckboxChange(e, data._id)}
                         />
                       </Td>
-                      {checkedMaterials[data.id] && (
+
+                      {checkedMaterials.includes(data._id.toString()) && (
                         <Td>
                           <Input
                             type="number"
                             min="0"
                             w={20}
-                            onChange={(e) => handleQuantityChange(e, data.id)}
+                            onChange={(e) => handleQuantityChange(e, data._id)}
                             borderColor={borderColor}
-                            value={inputValues[data.id] || ""}
+                            value={getQuantityValue(data._id)}
                           />
                         </Td>
                       )}
@@ -461,7 +480,7 @@ const Materials = () => {
               onClick={() => {
                 if (operation === "Add") {
                   handleAddMaterials();
-                } else {
+                } else if (operation === "Withdraw") {
                   handleWithdrawMaterials();
                 }
               }}

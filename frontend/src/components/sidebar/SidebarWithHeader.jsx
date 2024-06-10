@@ -227,7 +227,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{user.Fname + " " + user.Lname}</Text>
+                  <Text fontSize="sm">{user?.Fname + " " + user?.Lname}</Text>
                   <Text fontSize="xs" color="gray.600">
                     {capitalize(role)}
                   </Text>
