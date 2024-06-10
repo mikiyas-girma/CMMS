@@ -106,7 +106,7 @@ const SignIn = () => {
           spacing={8}
           boxSize={{ base: "xs", sm: "sm", md: "sm" }}
           h="max-content !important"
-          bg={useColorModeValue("white", "gray.700")}
+          bg={useColorModeValue("rgba(255,235,245,.2)", "gray.700")}
           rounded="lg"
           boxShadow="lg"
           p={{ base: 5, sm: 10 }}

@@ -46,7 +46,7 @@ import { PulseLoader } from "react-spinners";
 import { HiOutlineXMark } from "react-icons/hi2";
 
 const Materials = () => {
-  const bg = useColorModeValue("white", "gray.800");
+  const bg = useColorModeValue("#fefefb", "gray.800");
   const text = useColorModeValue("gray.900", "white");
   const { colorMode } = useColorMode();
   const borderColor = colorMode === "light" ? "gray.800" : "gray.600";

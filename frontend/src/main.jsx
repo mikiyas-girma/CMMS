@@ -26,7 +26,7 @@ const theme = extendTheme({
   styles: {
     global: (props) => ({
       body: {
-        bg: props.colorMode === 'dark' ? 'gray.800' : '#F4F9E9',
+        bg: props.colorMode === 'dark' ? 'gray.800' : '#fefefb',
       },
     }),
   },
@@ -39,3 +39,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </ChakraProvider>
   </React.StrictMode>,
 );
+
+// color main 1:  F3F8FF
