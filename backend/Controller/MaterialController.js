@@ -117,6 +117,7 @@ export const insertAndUpdateQuantities = asyncHandler(async (req, res) => {
   const changes = req.body;
   for (const change of changes) {
     change.user = req.user._id;
+
     change.changeType = "add";
   }
 

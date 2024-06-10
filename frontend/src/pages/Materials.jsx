@@ -41,7 +41,11 @@ import {
   handleBlurQuantity,
 } from "../utils/validateMaterial";
 // import materialslist from "../components/materials/materialsData";
-import { getMaterials, registerMaterial } from "../utils/material";
+import {
+  addMaterials,
+  getMaterials,
+  registerMaterial,
+} from "../utils/material";
 import { PulseLoader } from "react-spinners";
 import { HiOutlineXMark } from "react-icons/hi2";
 
@@ -74,7 +78,8 @@ const Materials = () => {
   const [image, setImage] = useState("");
   const [backenderror, setBakendError] = useState("");
   const [Loading, setLoading] = useState("");
-
+  const [AddMaterialbackenderror, setAddMaterialBakendError] = useState("");
+  const [AddMaterialLoading, setAddMaterialLoading] = useState("");
   useEffect(() => {
     const totalPages = Math.ceil(materialList.length / rowsLimit);
     settotalPage(totalPages);
@@ -152,55 +157,66 @@ const Materials = () => {
     const isChecked = checkedMaterials.includes(id);
     if (isChecked) {
       setCheckedMaterials(checkedMaterials.filter((item) => item !== id));
-      setInputValues(inputValues.filter((item) => item.id !== id));
+      setInputValues(inputValues.filter((item) => item.material !== id));
     } else {
       setCheckedMaterials([...checkedMaterials, id]);
     }
   };
 
-  const handleQuantityChange = (e, id) => {
+  const handleQuantityChange = (e, material) => {
     const { value } = e.target;
 
     setInputValues((prevState) => {
-      const existingItem = prevState.find((item) => item.id === id);
+      const existingItem = prevState.find((item) => item.material === material);
       if (existingItem) {
         return prevState.map((item) =>
-          item.id === id ? { ...item, quantity: value } : item
+          item.material === material ? { ...item, quantity: value } : item
         );
       } else {
-        return [...prevState, { id, quantity: value }];
+        return [...prevState, { material, quantity: value }];
       }
     });
   };
 
   const getQuantityValue = (id) => {
-    const item = inputValues.find((value) => value.id === id);
+    const item = inputValues.find((value) => value.material === id);
     return item ? item.quantity : "";
   };
 
   console.log("checkedMaterial", checkedMaterials);
   console.log("Input", inputValues);
 
-  const handleAddMaterials = () => {
-    const updatedMaterialsList = [...materialList];
-    // Loop over the inputValues object
-    for (let id in inputValues) {
-      // If the material is checked
-      if (checkedMaterials[id]) {
-        // Add the input value to the total quantity of the material
-        let material = updatedMaterialsList.find(
-          (material) => material.id === Number(id)
-        );
-        material.Quantity += Number(inputValues[id]);
-      }
+  const handleAddMaterials = async () => {
+    setAddMaterialLoading(true);
+    const response = await addMaterials(inputValues);
+    setAddMaterialLoading(false);
+    console.log("response", response);
+
+    // if (response?.data?.status === "success") {
+    //   onClear();
+    // }
+    if (response?.error) {
+      setAddMaterialBakendError(response?.error);
     }
+    // const updatedMaterialsList = [...materialList];
+    // Loop over the inputValues object
+    // for (let id in inputValues) {
+    //   // If the material is checked
+    //   if (checkedMaterials[id]) {
+    //     // Add the input value to the total quantity of the material
+    //     let material = updatedMaterialsList.find(
+    //       (material) => material.id === Number(id)
+    //     );
+    //     material.Quantity += Number(inputValues[id]);
+    //   }
+    // }
 
-    // Update the materialslist state
-    setMaterialList(updatedMaterialsList);
+    //   // Update the materialslist state
+    //   setMaterialList(updatedMaterialsList);
 
-    // Reset the inputValues and checkedMaterials states
-    setInputValues({});
-    setCheckedMaterials({});
+    //   // Reset the inputValues and checkedMaterials states
+    //   setInputValues([]);
+    //   setCheckedMaterials([]);
   };
 
   const handleWithdrawMaterials = () => {
@@ -474,19 +490,35 @@ const Materials = () => {
               Next
             </Button>
           </HStack>
+
           {isEditing && (
-            <Button
-              colorScheme="blue"
-              onClick={() => {
-                if (operation === "Add") {
-                  handleAddMaterials();
-                } else if (operation === "Withdraw") {
-                  handleWithdrawMaterials();
-                }
-              }}
-            >
-              Confirm {operation}
-            </Button>
+            <>
+              {AddMaterialbackenderror ? (
+                <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                  {AddMaterialbackenderror}
+                </p>
+              ) : (
+                <div className="flex">
+                  <Button
+                    colorScheme="blue"
+                    onClick={() => {
+                      if (operation === "Add") {
+                        handleAddMaterials();
+                      } else if (operation === "Withdraw") {
+                        handleWithdrawMaterials();
+                      }
+                    }}
+                    disabled={AddMaterialLoading}
+                  >
+                    {AddMaterialLoading ? (
+                      <PulseLoader color="#FFFFFF" />
+                    ) : (
+                      `Confirm ${operation}`
+                    )}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </HStack>
       </Box>

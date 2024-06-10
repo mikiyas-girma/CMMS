@@ -44,17 +44,39 @@ export const registerMaterial = async (
   }
 };
 
-
 export const getMaterials = async () => {
-    try {
-        const { data } = await apiInstance.get("/materials");
-        return { data, error: null };
-    } catch (error) {
-        return {
-        data: null,
-        error: error.response?.data?.message || "Something went wrong",
-        };
-    }
+  try {
+    const { data } = await apiInstance.get("/materials");
+    return { data, error: null };
+  } catch (error) {
+    return {
+      data: null,
+      error: error.response?.data?.message || "Something went wrong",
     };
+  }
+};
 
+export const addMaterials = async (materials) => {
+  try {
+    const { data } = await apiInstance.post(
+      "/materials/addmaterial",
+      materials
+    );
 
+    console.log("data", data);
+    if (data?.status === "success") {
+      Toast.fire({
+        icon: "success",
+        title: "Material added and  totalQuantities updated Successfully",
+      });
+    }
+
+    return { data, error: null };
+  } catch (error) {
+    console.log("error", error.response?.data);
+    return {
+      data: null,
+      error: error.response?.data?.message || "Something went wrong",
+    };
+  }
+};
