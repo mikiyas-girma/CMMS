@@ -27,6 +27,7 @@ import {
   Input,
   Select,
   Checkbox,
+  Image
 } from "@chakra-ui/react";
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
@@ -352,7 +353,6 @@ const Materials = () => {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th>ID</Th>
                 <Th>image</Th>
 
                 <Th>Name</Th>
@@ -369,6 +369,7 @@ const Materials = () => {
             <Tbody>
               {rowsToShow.map((material) => (
                 <Tr key={material._id} bg={bg}>
+                  <Td><Image src={material.image}></Image></Td>
                   <Td>{material.name}</Td>
                   <Td>{material.category}</Td>
                   <Td>{material.totalQuantity}</Td>
