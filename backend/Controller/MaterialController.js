@@ -42,6 +42,7 @@ export const checkMaterialExists = asyncHandler(async (req, res, next) => {
 
 export const getAllMaterials = asyncHandler(async (req, res) => {
   const materials = await Material.find();
+
   res.status(200).json({
     status: "success",
     results: materials.length,
