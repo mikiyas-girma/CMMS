@@ -1,49 +1,23 @@
 import { useState, useMemo, useEffect } from "react";
-import {
-  Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Text,
-  Button,
-  HStack,
-  useColorMode,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Table, Thead, Tbody, Tr, Th, Td, Text, Button,
+         HStack, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { HiOutlineXMark } from "react-icons/hi2";
 
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Checkbox,
-} from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody,
+         ModalFooter, FormControl, FormLabel, Input, Select, Checkbox } from "@chakra-ui/react";
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
-
+import { PulseLoader } from "react-spinners";
 import { getUserAuthStatus } from "../utils/auth";
 
 import {
-  validateName,
-  validateCategory,
-  validateQuantity,
-  handleBlurName,
-  handleBlurCategory,
-  handleBlurQuantity,
-} from "../utils/validateMaterial";
-import materialslist from "../components/materials/materialsData";
+        validateName, validateCategory, validateQuantity,
+        handleBlurName, handleBlurCategory, handleBlurQuantity } from "../utils/validateMaterial";
+
+// import materialslist from "../components/materials/materialsData";
 import { registerMaterial } from "../utils/material";
-import { PulseLoader } from "react-spinners";
-import { HiOutlineXMark } from "react-icons/hi2";
+import { getMaterials } from "../utils/material";
+
 
 const Materials = () => {
   const bg = useColorModeValue("#F4F9E9", "gray.800");
@@ -51,7 +25,7 @@ const Materials = () => {
   const { colorMode } = useColorMode();
   const borderColor = colorMode === "light" ? "gray.800" : "gray.600";
 
-  const [materialList, setMaterialList] = useState(materialslist);
+  const [materialList, setMaterialList] = useState([]);
   const [rowsLimit] = useState(5);
   const [rowsToShow, setRowsToShow] = useState(
     materialList.slice(0, rowsLimit)
@@ -76,21 +50,21 @@ const Materials = () => {
   const nextPage = () => {
     const startIndex = rowsLimit * (currentPage + 1);
     const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materialslist.slice(startIndex, endIndex));
+    setRowsToShow(materialList.slice(startIndex, endIndex));
     setCurrentPage(currentPage + 1);
   };
 
   const changePage = (value) => {
     const startIndex = value * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materialslist.slice(startIndex, endIndex));
+    setRowsToShow(materialList.slice(startIndex, endIndex));
     setCurrentPage(value);
   };
 
   const previousPage = () => {
     const startIndex = (currentPage - 1) * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materialslist.slice(startIndex, endIndex));
+    setRowsToShow(materialList.slice(startIndex, endIndex));
     setCurrentPage(currentPage > 1 ? currentPage - 1 : 0);
   };
 
@@ -102,6 +76,8 @@ const Materials = () => {
   const onClose = () => {
     setIsOpen(false);
   };
+
+
 
   const handleNewMaterial = async (e) => {
     e.preventDefault();
@@ -199,6 +175,24 @@ const Materials = () => {
     console.log("Material List Updated");
     console.log(materialList);
   }, [materialList]);
+
+    useEffect(() => {
+        const fetchMaterials = async () => {
+            const { data, error } = await getMaterials();
+            if (data && data.status === "success") {
+                console.log("my datas : ", data.data.materials);
+                const materials = data.data.materials;
+                setMaterialList(materials);
+                setRowsToShow(materials.slice(0, rowsLimit));
+
+            }
+            if (error) {
+                console.log("error", error);
+            }
+        }
+        fetchMaterials();
+    }, [rowsLimit]);
+
 
   const { role } = getUserAuthStatus();
   if (role === "admin") return null;
@@ -335,7 +329,6 @@ const Materials = () => {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th>ID</Th>
                 <Th>Name</Th>
                 <Th>Category</Th>
                 <Th>Quantity</Th>
@@ -348,31 +341,30 @@ const Materials = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {rowsToShow.map((data, index) => (
-                <Tr key={index} bg={bg}>
-                  <Td>{data.id}</Td>
-                  <Td>{data.Name}</Td>
-                  <Td>{data.Category}</Td>
-                  <Td>{data.Quantity}</Td>
+              {rowsToShow.map((material) => (
+                <Tr key={material._id} bg={bg}>
+                  <Td>{material.name}</Td>
+                  <Td>{material.category}</Td>
+                  <Td>{material.totalQuantity}</Td>
                   {isEditing && (
                     <>
                       <Td>
                         <Checkbox
-                          id={data.id}
+                          id={material._id}
                           borderColor={borderColor}
-                          onChange={(e) => handleCheckboxChange(e, data.id)}
-                          isChecked={checkedMaterials[data.id] || false}
+                          onChange={(e) => handleCheckboxChange(e, material._id)}
+                          isChecked={checkedMaterials[material._id] || false}
                         />
                       </Td>
-                      {checkedMaterials[data.id] && (
+                      {checkedMaterials[material._id] && (
                         <Td>
                           <Input
                             type="number"
                             min="0"
                             w={20}
-                            onChange={(e) => handleQuantityChange(e, data.id)}
+                            onChange={(e) => handleQuantityChange(e, material._id)}
                             borderColor={borderColor}
-                            value={inputValues[data.id] || ""}
+                            value={inputValues[material._id] || ""}
                           />
                         </Td>
                       )}

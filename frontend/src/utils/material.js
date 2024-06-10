@@ -43,3 +43,18 @@ export const registerMaterial = async (
     };
   }
 };
+
+
+export const getMaterials = async () => {
+    try {
+        const { data } = await apiInstance.get("/materials");
+        return { data, error: null };
+    } catch (error) {
+        return {
+        data: null,
+        error: error.response?.data?.message || "Something went wrong",
+        };
+    }
+    };
+
+
