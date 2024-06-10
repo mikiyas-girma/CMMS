@@ -13,7 +13,6 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { HiOutlineXMark } from "react-icons/hi2";
 
 import {
   Modal,
@@ -27,11 +26,10 @@ import {
   Input,
   Select,
   Checkbox,
-  Image
 } from "@chakra-ui/react";
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
-import { PulseLoader } from "react-spinners";
+
 import { getUserAuthStatus } from "../utils/auth";
 
 import {
@@ -42,13 +40,13 @@ import {
   handleBlurCategory,
   handleBlurQuantity,
 } from "../utils/validateMaterial";
-
 // import materialslist from "../components/materials/materialsData";
-import { registerMaterial } from "../utils/material";
-import { getMaterials } from "../utils/material";
+import { getMaterials, registerMaterial } from "../utils/material";
+import { PulseLoader } from "react-spinners";
+import { HiOutlineXMark } from "react-icons/hi2";
 
 const Materials = () => {
-  const bg = useColorModeValue("#F4F9E9", "gray.800");
+  const bg = useColorModeValue("white", "gray.800");
   const text = useColorModeValue("gray.900", "white");
   const { colorMode } = useColorMode();
   const borderColor = colorMode === "light" ? "gray.800" : "gray.600";
@@ -58,7 +56,9 @@ const Materials = () => {
   const [rowsToShow, setRowsToShow] = useState(
     materialList.slice(0, rowsLimit)
   );
-  const [totalPage, settotalPage] = useState(Math.ceil(materialList.length / rowsLimit));
+  const [totalPage, settotalPage] = useState(
+    Math.ceil(materialList.length / rowsLimit)
+  );
   const [currentPage, setCurrentPage] = useState(1);
 
   const [name, setName] = useState("");
@@ -80,18 +80,16 @@ const Materials = () => {
     settotalPage(totalPages);
 
     if (currentPage >= totalPages) {
-        setCurrentPage(totalPages - 1);
-        changePage(totalPages);
-        }
+      setCurrentPage(totalPages - 1);
+      changePage(totalPages);
+    }
   }, [materialList, rowsLimit]);
 
   const nextPage = () => {
-    if (currentPage < totalPage - 1) {
-      const startIndex = (currentPage + 1) * rowsLimit;
-      const endIndex = startIndex + rowsLimit;
-      setRowsToShow(materialList.slice(startIndex, endIndex));
-      setCurrentPage(currentPage + 1);
-    }
+    const startIndex = rowsLimit * (currentPage + 1);
+    const endIndex = startIndex + rowsLimit;
+    setRowsToShow(materialList.slice(startIndex, endIndex));
+    setCurrentPage(currentPage + 1);
   };
 
   const changePage = (value) => {
@@ -102,12 +100,10 @@ const Materials = () => {
   };
 
   const previousPage = () => {
-    if (currentPage > 0) {
-      const startIndex = (currentPage - 1) * rowsLimit;
-      const endIndex = startIndex + rowsLimit;
-      setRowsToShow(materialList.slice(startIndex, endIndex));
-      setCurrentPage(currentPage - 1);
-    }
+    const startIndex = (currentPage - 1) * rowsLimit;
+    const endIndex = startIndex + rowsLimit;
+    setRowsToShow(materialList.slice(startIndex, endIndex));
+    setCurrentPage(currentPage > 1 ? currentPage - 1 : 0);
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -167,7 +163,7 @@ const Materials = () => {
   };
 
   const handleAddMaterials = () => {
-    const updatedMaterialsList = [...materialslist];
+    const updatedMaterialsList = [...materialList];
     // Loop over the inputValues object
     for (let id in inputValues) {
       // If the material is checked
@@ -189,7 +185,7 @@ const Materials = () => {
   };
 
   const handleWithdrawMaterials = () => {
-    const updatedMaterialsList = [...materialslist];
+    const updatedMaterialsList = [...materialList];
 
     // Loop over the inputValues object
     for (let id in inputValues) {
@@ -211,10 +207,10 @@ const Materials = () => {
     setCheckedMaterials({});
   };
 
-  useEffect(() => {
-    console.log("Material List Updated");
-    console.log(materialList);
-  }, [materialList]);
+  // useEffect(() => {
+  //   console.log("Material List Updated");
+  //   console.log(materialList);
+  // }, [materialList]);
 
   useEffect(() => {
     const fetchMaterials = async () => {
@@ -367,7 +363,8 @@ const Materials = () => {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th>image</Th>
+                <Th>ID</Th>
+                <Th>Image</Th>
 
                 <Th>Name</Th>
                 <Th>Category</Th>
@@ -381,35 +378,39 @@ const Materials = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {rowsToShow.map((material) => (
-                <Tr key={material._id} bg={bg}>
-                  <Td><Image src={material.image}></Image></Td>
-                  <Td>{material.name}</Td>
-                  <Td>{material.category}</Td>
-                  <Td>{material.totalQuantity}</Td>
+              {rowsToShow.map((data, index) => (
+                <Tr key={index} bg={bg}>
+                  <Td>{index + 1}</Td>
+                  <Td className="w-32 h-20">
+                    <img
+                      src={`http://127.0.0.1:3000/public/img/materials/${data.image}`}
+                      alt={data.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </Td>
+
+                  <Td>{data.name}</Td>
+                  <Td>{data.category}</Td>
+                  <Td>{data.totalQuantity}</Td>
                   {isEditing && (
                     <>
                       <Td>
                         <Checkbox
-                          id={material._id}
+                          id={data.id}
                           borderColor={borderColor}
-                          onChange={(e) =>
-                            handleCheckboxChange(e, material._id)
-                          }
-                          isChecked={checkedMaterials[material._id] || false}
+                          onChange={(e) => handleCheckboxChange(e, data.id)}
+                          isChecked={checkedMaterials[data.id] || false}
                         />
                       </Td>
-                      {checkedMaterials[material._id] && (
+                      {checkedMaterials[data.id] && (
                         <Td>
                           <Input
                             type="number"
                             min="0"
                             w={20}
-                            onChange={(e) =>
-                              handleQuantityChange(e, material._id)
-                            }
+                            onChange={(e) => handleQuantityChange(e, data.id)}
                             borderColor={borderColor}
-                            value={inputValues[material._id] || ""}
+                            value={inputValues[data.id] || ""}
                           />
                         </Td>
                       )}
@@ -436,10 +437,19 @@ const Materials = () => {
             >
               Previous
             </Button>
-            <Text>Page {currentPage + 1} of {totalPage}</Text>
+            {Array.from({ length: totalPage }).map((_, index) => (
+              <Button
+                key={index}
+                onClick={() => changePage(index)}
+                variant={currentPage === index ? "solid" : "outline"}
+                colorScheme={currentPage === index ? "blue" : "gray"}
+              >
+                {index + 1}
+              </Button>
+            ))}
             <Button
               onClick={nextPage}
-              isDisabled={currentPage >= totalPage - 1}
+              isDisabled={currentPage === totalPage - 1}
               variant="outline"
             >
               Next

@@ -219,7 +219,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar size={"sm"} src={user.image} alt={`${user.Fname}`} />
+                <Avatar size={"sm"} src={user.image} />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
