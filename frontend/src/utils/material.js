@@ -56,18 +56,17 @@ export const getMaterials = async () => {
   }
 };
 
-export const addMaterials = async (materials) => {
+export const addMaterials = async (url, materials) => {
   try {
-    const { data } = await apiInstance.post(
-      "/materials/addmaterial",
-      materials
-    );
+    const { data } = await apiInstance.post(`/materials/${url}`, materials);
 
     console.log("data", data);
     if (data?.status === "success") {
       Toast.fire({
         icon: "success",
-        title: "Material added and  totalQuantities updated Successfully",
+        title: `Material ${
+          url === "withdrawmaterial" ? "withdrawn" : "added"
+        } and  totalQuantities updated Successfully`,
       });
     }
 

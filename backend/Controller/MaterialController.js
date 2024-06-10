@@ -162,7 +162,7 @@ export const withdrawAndUpdateQuantities = asyncHandler(
       if (material.totalQuantity < change.quantity) {
         return next(
           new AppError(
-            ` Cannot withdraw ${change.quantity} units from Material with ID ${change.material} because totalQuantity < quantity`,
+            ` Cannot withdraw ${change.quantity} units from Material with name ${material.name} because totalQuantity < quantity`,
             400
           )
         );

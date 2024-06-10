@@ -48,6 +48,7 @@ import {
 } from "../utils/material";
 import { PulseLoader } from "react-spinners";
 import { HiOutlineXMark } from "react-icons/hi2";
+import { Navigate } from "react-router-dom";
 
 const Materials = () => {
   const bg = useColorModeValue("#fefefb", "gray.800");
@@ -187,17 +188,19 @@ const Materials = () => {
   console.log("Input", inputValues);
 
   const handleAddMaterials = async () => {
+    const url = "addmaterial";
     setAddMaterialLoading(true);
-    const response = await addMaterials(inputValues);
+    const response = await addMaterials(url, inputValues);
     setAddMaterialLoading(false);
     console.log("response", response);
-
-    // if (response?.data?.status === "success") {
-    //   onClear();
-    // }
     if (response?.error) {
       setAddMaterialBakendError(response?.error);
     }
+
+    if (response?.data?.status === "success") {
+      Navigate("/materials");
+    }
+
     // const updatedMaterialsList = [...materialList];
     // Loop over the inputValues object
     // for (let id in inputValues) {
@@ -219,27 +222,41 @@ const Materials = () => {
     //   setCheckedMaterials([]);
   };
 
-  const handleWithdrawMaterials = () => {
-    const updatedMaterialsList = [...materialList];
+  const handleWithdrawMaterials = async () => {
+    const url = "withdrawmaterial";
 
-    // Loop over the inputValues object
-    for (let id in inputValues) {
-      // If the material is checked
-      if (checkedMaterials[id]) {
-        // Subtract the input value from the total quantity of the material
-        let material = updatedMaterialsList.find(
-          (material) => material.id === Number(id)
-        );
-        material.Quantity -= Number(inputValues[id]);
-      }
+    setAddMaterialLoading(true);
+    const response = await addMaterials(url, inputValues);
+    setAddMaterialLoading(false);
+    console.log("response", response);
+    if (response?.error) {
+      setAddMaterialBakendError(response?.error);
     }
 
-    // Update the materialslist state
-    setMaterialList(updatedMaterialsList);
+    if (response?.data?.status === "success") {
+      Navigate("/materials");
+    }
 
-    // Reset the inputValues and checkedMaterials states
-    setInputValues({});
-    setCheckedMaterials({});
+    // const updatedMaterialsList = [...materialList];
+
+    // // Loop over the inputValues object
+    // for (let id in inputValues) {
+    //   // If the material is checked
+    //   if (checkedMaterials[id]) {
+    //     // Subtract the input value from the total quantity of the material
+    //     let material = updatedMaterialsList.find(
+    //       (material) => material.id === Number(id)
+    //     );
+    //     material.Quantity -= Number(inputValues[id]);
+    //   }
+    // }
+
+    // // Update the materialslist state
+    // setMaterialList(updatedMaterialsList);
+
+    // // Reset the inputValues and checkedMaterials states
+    // setInputValues({});
+    // setCheckedMaterials({});
   };
 
   // useEffect(() => {
