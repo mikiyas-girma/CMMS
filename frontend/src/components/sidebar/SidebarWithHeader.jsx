@@ -162,6 +162,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
     fetchUser();
   }, []);
+  console.log("userimage", user.image);
 
   const navigate = useNavigate();
 
@@ -218,7 +219,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar size={"sm"} src={user.image} />
+                <Avatar size={"sm"} src={user.image} alt={`${user.Fname}`} />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"

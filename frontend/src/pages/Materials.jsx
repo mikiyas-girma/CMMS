@@ -1,23 +1,50 @@
 import { useState, useMemo, useEffect } from "react";
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Text, Button,
-         HStack, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Text,
+  Button,
+  HStack,
+  useColorMode,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { HiOutlineXMark } from "react-icons/hi2";
 
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody,
-         ModalFooter, FormControl, FormLabel, Input, Select, Checkbox } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Checkbox,
+} from "@chakra-ui/react";
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 import { PulseLoader } from "react-spinners";
 import { getUserAuthStatus } from "../utils/auth";
 
 import {
-        validateName, validateCategory, validateQuantity,
-        handleBlurName, handleBlurCategory, handleBlurQuantity } from "../utils/validateMaterial";
+  validateName,
+  validateCategory,
+  validateQuantity,
+  handleBlurName,
+  handleBlurCategory,
+  handleBlurQuantity,
+} from "../utils/validateMaterial";
 
 // import materialslist from "../components/materials/materialsData";
 import { registerMaterial } from "../utils/material";
 import { getMaterials } from "../utils/material";
-
 
 const Materials = () => {
   const bg = useColorModeValue("#F4F9E9", "gray.800");
@@ -76,8 +103,6 @@ const Materials = () => {
   const onClose = () => {
     setIsOpen(false);
   };
-
-
 
   const handleNewMaterial = async (e) => {
     e.preventDefault();
@@ -176,23 +201,21 @@ const Materials = () => {
     console.log(materialList);
   }, [materialList]);
 
-    useEffect(() => {
-        const fetchMaterials = async () => {
-            const { data, error } = await getMaterials();
-            if (data && data.status === "success") {
-                console.log("my datas : ", data.data.materials);
-                const materials = data.data.materials;
-                setMaterialList(materials);
-                setRowsToShow(materials.slice(0, rowsLimit));
-
-            }
-            if (error) {
-                console.log("error", error);
-            }
-        }
-        fetchMaterials();
-    }, [rowsLimit]);
-
+  useEffect(() => {
+    const fetchMaterials = async () => {
+      const { data, error } = await getMaterials();
+      if (data && data.status === "success") {
+        console.log("my datas : ", data.data.materials);
+        const materials = data.data.materials;
+        setMaterialList(materials);
+        setRowsToShow(materials.slice(0, rowsLimit));
+      }
+      if (error) {
+        console.log("error", error);
+      }
+    };
+    fetchMaterials();
+  }, [rowsLimit]);
 
   const { role } = getUserAuthStatus();
   if (role === "admin") return null;
@@ -329,6 +352,9 @@ const Materials = () => {
           <Table variant="simple">
             <Thead>
               <Tr>
+                <Th>ID</Th>
+                <Th>image</Th>
+
                 <Th>Name</Th>
                 <Th>Category</Th>
                 <Th>Quantity</Th>
@@ -352,7 +378,9 @@ const Materials = () => {
                         <Checkbox
                           id={material._id}
                           borderColor={borderColor}
-                          onChange={(e) => handleCheckboxChange(e, material._id)}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, material._id)
+                          }
                           isChecked={checkedMaterials[material._id] || false}
                         />
                       </Td>
@@ -362,7 +390,9 @@ const Materials = () => {
                             type="number"
                             min="0"
                             w={20}
-                            onChange={(e) => handleQuantityChange(e, material._id)}
+                            onChange={(e) =>
+                              handleQuantityChange(e, material._id)
+                            }
                             borderColor={borderColor}
                             value={inputValues[material._id] || ""}
                           />

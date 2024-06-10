@@ -29,7 +29,8 @@ export const uploadUserPhoto = upload.single("image");
 export const resizePhoto = async (req, res, next) => {
   console.log(req.file);
   if (!req.file) return next();
-  req.file.filename = `user-${req.user.username}-${Date.now()}.jpeg`;
+
+  req.file.filename = `user-${req.user.Fname}${req.user.Lname}-${Date.now()}.jpeg`;
   await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat("jpeg")
@@ -91,9 +92,10 @@ export const getAllStoreOwner = asyncHandler(async (req, res) => {
 });
 export const getUserById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  const user = await User.findById(id);
+  let user = await User.findById(id);
 
   if (!user) return next(new AppError("User not found", 404));
+  user.image = `${req.protocol}://${req.get("host")}/public/img/users/${user.image}`;
 
   res.status(200).json({
     status: "success",
