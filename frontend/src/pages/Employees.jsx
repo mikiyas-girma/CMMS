@@ -271,27 +271,16 @@ const Employees = () => {
                     {user.status}
                   </Badge>
                 </Td>
-                <Td>
-                  <EditIcon
-                    colorScheme="blue"
-                    color="blue.500"
-                    variant="solid"
-                    cursor="pointer"
-                    onClick={() => handleEditClick(user)}
-                  >
-                    Edit
-                  </EditIcon>
-                </Td>
               </Tr>
             ))}
-          </Tbody>
-          <Tfoot>
+          <Tr>
             <Td colSpan={isMediumScreen ? 7 : 4}>
               {numberofuser} of {role === "admin" && " StoreOwner"}
               {role === "storeOwner" && " Employee"}
             </Td>
             <Td>( {numberofuser} )</Td>
-          </Tfoot>
+          </Tr>
+          </Tbody>
         </Table>
       </Box>
 

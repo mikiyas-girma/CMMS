@@ -149,7 +149,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
     const fetchUser = async () => {
       try {
         const res = await apiInstance.get("/users/me");
-        console.log("res", res);
+        console.log("users res", res);
         if (res?.data?.status === "success") {
           setUser(res.data.data.user);
         } else {
@@ -163,7 +163,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
     fetchUser();
   }, []);
 
-  console.log("user", user);
   const navigate = useNavigate();
 
   const handleSignOut = () => {

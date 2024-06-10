@@ -30,7 +30,7 @@ The Construction and Machinery Material Management System (CMMMS) is a comprehen
 ## Usage
 
 1. Navigate to backend directory && Start the backend server: `npm run start`.
-2. the backend server will start on port 5000. check it by going to ` http://localhost:5000/ ` on your browser
+2. the backend server will start on port 3000. check it by going to ` http://localhost:3000/ ` on your browser
 3. Navigate to frontend directory && Start the frontend development server: `npm run dev`.
 4. Open your browser and visit `http://localhost:8000` to view the application.
 
