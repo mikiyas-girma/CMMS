@@ -435,7 +435,7 @@ const Materials = () => {
               {rowsToShow.map((data, index) => (
                 <Tr key={index} bg={bg}>
                   <Td>{index + 1}</Td>
-                  <Td className="w-32 h-20">
+                  <Td className="w-36 h-20">
                     <img
                       src={`http://127.0.0.1:3000/public/img/materials/${data.image}`}
                       alt={data.name}
