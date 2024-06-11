@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 import {
   Button,
@@ -105,6 +105,31 @@ const Reports = () => {
   //   console.log("dates", startDate, endDate);
   // console.log("selected", selectedOption);
   console.log("reports", reports);
+  useEffect(() => {
+    const fetchInitialReport = async () => {
+      const past30Days = new Date();
+      past30Days.setDate(past30Days.getDate() - 30);
+
+      const formattedStartDate = past30Days.toISOString().split("T")[0];
+      setStartDate(formattedStartDate);
+      setEndDate(today);
+
+      const url = "addedmaterialreport"; // Default option for initial load
+
+      setLoading(true);
+
+      const { data } = await generatereport(url, formattedStartDate, today);
+      setLoading(false);
+
+      console.log("report generated", data);
+      setReport(data?.data?.report || []);
+      if (data?.error) {
+        setBakendError(data?.error);
+      }
+    };
+
+    fetchInitialReport();
+  }, []);
 
   return (
     <div>
@@ -190,7 +215,7 @@ const Reports = () => {
                       <img
                         src={`http://127.0.0.1:3000/public/img/materials/${report.image}`}
                         alt={report.name}
-                        className="w-full h-full object-cover"
+                        className="w-1/2 h-full object-cover"
                       />
                     </Td>
                     <Td>{report.name}</Td>
