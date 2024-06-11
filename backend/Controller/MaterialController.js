@@ -207,11 +207,33 @@ export const GetReportOfHowManyMaterialsAdded = asyncHandler(
         },
       },
       {
+        $lookup: {
+          from: "materials",
+          localField: "_id",
+          foreignField: "_id",
+          as: "materialDetails",
+        },
+      },
+      {
+        $unwind: "$materialDetails",
+      },
+      {
+        $project: {
+          _id: 0,
+          material: "$_id",
+          totalQuantity: 1,
+          name: "$materialDetails.name",
+          image: "$materialDetails.image",
+          category: "$materialDetails.category",
+        },
+      },
+      {
         $sort: {
           totalQuantity: -1,
         },
       },
     ]);
+    console.log("reports", report);
     res.status(200).json({
       status: "success",
       data: {
@@ -235,6 +257,27 @@ export const GetReportOfHowManyMaterialsRemoved = asyncHandler(
         $group: {
           _id: "$material",
           totalQuantity: { $sum: "$quantity" },
+        },
+      },
+      {
+        $lookup: {
+          from: "materials",
+          localField: "_id",
+          foreignField: "_id",
+          as: "materialDetails",
+        },
+      },
+      {
+        $unwind: "$materialDetails",
+      },
+      {
+        $project: {
+          _id: 0,
+          material: "$_id",
+          totalQuantity: 1,
+          name: "$materialDetails.name",
+          image: "$materialDetails.image",
+          category: "$materialDetails.category",
         },
       },
       {

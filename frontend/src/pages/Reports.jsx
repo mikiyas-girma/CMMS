@@ -21,45 +21,45 @@ import { BeatLoader, PulseLoader } from "react-spinners";
 import { generatereport } from "../utils/material";
 <script src="../path/to/flowbite/dist/datepicker.js"></script>;
 const Reports = () => {
-  const reportData = [
-    {
-      id: Math.floor(Math.random() * 10000),
-      name: "Cement",
-      quantity: "340 pcs",
-      description: "The rusty swing creaked a melancholic ...",
-    },
-    {
-      id: Math.floor(Math.random() * 10000),
-      name: "Ceramic",
-      quantity: "678 pcs",
-      description: "Neon signs bled into the twilight, paint...",
-    },
-    {
-      id: Math.floor(Math.random() * 10000),
-      name: "Steel",
-      quantity: "90 pcs",
-      description: "The rusty swing creaked a melancholic tun...",
-    },
-    {
-      id: Math.floor(Math.random() * 10000),
-      name: "Pipes",
-      quantity: "310 pcs",
-      description: "whispering secrets of forgotten childhood la... ",
-    },
-    {
-      id: Math.floor(Math.random() * 10000),
-      name: "Windows",
-      quantity: "909 pcs",
-      description: "The abandoned library held its breath, its... ",
-    },
-    {
-      id: Math.floor(Math.random() * 10000),
-      name: "Bricks",
-      quantity: "1100 pcs",
-      description: "Its dusty shelves pregnant with untold sto.... ",
-    },
-  ];
-  const [report, setReport] = useState(reportData);
+  // const reportData = [
+  //   {
+  //     id: Math.floor(Math.random() * 10000),
+  //     name: "Cement",
+  //     quantity: "340 pcs",
+  //     description: "The rusty swing creaked a melancholic ...",
+  //   },
+  //   {
+  //     id: Math.floor(Math.random() * 10000),
+  //     name: "Ceramic",
+  //     quantity: "678 pcs",
+  //     description: "Neon signs bled into the twilight, paint...",
+  //   },
+  //   {
+  //     id: Math.floor(Math.random() * 10000),
+  //     name: "Steel",
+  //     quantity: "90 pcs",
+  //     description: "The rusty swing creaked a melancholic tun...",
+  //   },
+  //   {
+  //     id: Math.floor(Math.random() * 10000),
+  //     name: "Pipes",
+  //     quantity: "310 pcs",
+  //     description: "whispering secrets of forgotten childhood la... ",
+  //   },
+  //   {
+  //     id: Math.floor(Math.random() * 10000),
+  //     name: "Windows",
+  //     quantity: "909 pcs",
+  //     description: "The abandoned library held its breath, its... ",
+  //   },
+  //   {
+  //     id: Math.floor(Math.random() * 10000),
+  //     name: "Bricks",
+  //     quantity: "1100 pcs",
+  //     description: "Its dusty shelves pregnant with untold sto.... ",
+  //   },
+  // ];
+  const [reports, setReport] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const today = new Date().toISOString().split("T")[0];
@@ -88,12 +88,14 @@ const Reports = () => {
     }
 
     setLoading(true);
-    const response = await generatereport(url, startDate, endDate);
-    console.log("report generated", response);
+    const { data } = await generatereport(url, startDate, endDate);
+    console.log("report generated", data);
     setLoading(false);
-    console.log("response", response);
-    if (response?.error) {
-      setBakendError(response?.error);
+    console.log("response", data);
+    setReport(data?.data?.report);
+
+    if (data?.error) {
+      setBakendError(data?.error);
     }
 
     // if (response?.data?.status === "success") {
@@ -101,7 +103,9 @@ const Reports = () => {
     // }
   };
   //   console.log("dates", startDate, endDate);
-  console.log("selected", selectedOption);
+  // console.log("selected", selectedOption);
+  console.log("reports", reports);
+
   return (
     <div>
       <SidebarWithHeader>
@@ -172,24 +176,27 @@ const Reports = () => {
               <Thead>
                 <Tr>
                   <Th>ID</Th>
-                  <Th>Item</Th>
+                  <Th>Image</Th>
+                  <Th>Name</Th>
+                  <Th>Category</Th>
                   <Th isNumeric>Quantity</Th>
-                  <Th>Description</Th>
-                  <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {report.map((event) => (
-                  <Tr key={event.id}>
-                    <Td>{event.id}</Td>
-                    <Td>{event.name}</Td>
-                    <Td isNumeric>{event.quantity}</Td>
-                    <Td>
-                      <button>{event.description}see more</button>
+                {reports?.map((report, i) => (
+                  <Tr key={report.material}>
+                    <Td>{i + 1}</Td>
+                    <Td className="w-32 h-20">
+                      <img
+                        src={`http://127.0.0.1:3000/public/img/materials/${report.image}`}
+                        alt={report.name}
+                        className="w-full h-full object-cover"
+                      />
                     </Td>
-                    <Td>
-                      <Button>See Comments</Button>
-                    </Td>
+                    <Td>{report.name}</Td>
+                    <Td>{report.category}</Td>
+
+                    <Td isNumeric>{report.totalQuantity}</Td>
                   </Tr>
                 ))}
               </Tbody>
