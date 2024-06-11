@@ -43,6 +43,7 @@ const Employees = () => {
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
   const isMediumScreen = useBreakpointValue({ base: false, md: true });
+  const tableMaxWidth = useBreakpointValue({ base: 'auto', md: 'calc(100vw - 250px)' });
   // const [edit, setEdit] = useState({
   //   email: "",
   //   Fname: "",
@@ -240,13 +241,18 @@ const Employees = () => {
           </Modal>
         </Box>
 
-        <Table variant="simple">
+        <Box
+            overflowX='auto'
+            maxWidth={tableMaxWidth}
+        >
+        <Table
+        >
           <Thead>
             <Tr>
               <Th>ID</Th>
               <Th>First Name </Th>
               {isMediumScreen && <Th>Last Name </Th>}
-              <Th>Role</Th>
+              {/* <Th>Role</Th> */}
               {isMediumScreen && <Th>Email</Th>}
 
               <Th>Status</Th>
@@ -257,10 +263,10 @@ const Employees = () => {
           <Tbody>
             {userData?.map((user, i) => (
               <Tr key={user._id}>
-                <Td>{i}</Td>
+                <Td maxWidth={'max-content'}>{i}</Td>
                 <Td>{user.Fname}</Td>
                 {isMediumScreen && <Td>{user.Lname}</Td>}
-                <Td>{user.role}</Td>
+                {/* <Td>{user.role}</Td> */}
                 {isMediumScreen && <Td>{user.email}</Td>}
                 <Td>{user.status}</Td>
                 {isMediumScreen && <Td>{user.phone}</Td>}
@@ -270,6 +276,13 @@ const Employees = () => {
                   >
                     {user.status}
                   </Badge>
+                </Td>
+                <Td>
+                    <EditIcon
+                        colorScheme="blue"
+                        color="blue.500"
+                        onClick={() => handleEditClick(user)}
+                    />
                 </Td>
               </Tr>
             ))}
@@ -282,6 +295,7 @@ const Employees = () => {
           </Tr>
           </Tbody>
         </Table>
+        </Box>
       </Box>
 
       {selectedUserForEdit && (
