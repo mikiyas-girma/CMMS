@@ -132,7 +132,6 @@ const Reports = () => {
   }, []);
 
   return (
-    <div>
       <SidebarWithHeader>
         <Text as="b">Generate Report</Text>
         <HStack
@@ -192,12 +191,11 @@ const Reports = () => {
             )}
           </>
         </HStack>
-        <div>
-          <TableContainer marginTop="50px">
+          <TableContainer
+            marginTop="50px"
+            maxWidth={{ base: "100%", md: "90%" }}
+          >
             <Table variant="simple">
-              <TableCaption>
-                <button>Back To Top</button>
-              </TableCaption>
               <Thead>
                 <Tr>
                   <Th>ID</Th>
@@ -227,9 +225,7 @@ const Reports = () => {
               </Tbody>
             </Table>
           </TableContainer>
-        </div>
       </SidebarWithHeader>
-    </div>
   );
 };
 
