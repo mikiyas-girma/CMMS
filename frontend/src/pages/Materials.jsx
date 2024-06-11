@@ -285,40 +285,42 @@ const Materials = () => {
 
   return (
     <SidebarWithHeader>
-      <HStack justify="end" mt={4} px={4}>
-        <Button onClick={onOpen} colorScheme="blue" mr={2}>
-          New Material
-        </Button>
-        <Button
-          colorScheme="yellow"
-          onClick={() => {
-            if (operation === "Add") {
-              setIsEditing(false);
-              setOperation("");
-            } else {
-              setIsEditing(true);
-              setOperation("Add");
-            }
-          }}
-        >
-          Add Material
-        </Button>
-        <Button
-          colorScheme="red"
-          m={2}
-          onClick={() => {
-            if (operation === "Withdraw") {
-              setIsEditing(false);
-              setOperation("");
-            } else {
-              setIsEditing(true);
-              setOperation("Withdraw");
-            }
-          }}
-        >
-          Withdraw Material
-        </Button>
-      </HStack>
+      {role === "employee" && (
+        <HStack justify="end" mt={4} px={4}>
+          <Button onClick={onOpen} colorScheme="blue" mr={2}>
+            New Material
+          </Button>
+          <Button
+            colorScheme="yellow"
+            onClick={() => {
+              if (operation === "Add") {
+                setIsEditing(false);
+                setOperation("");
+              } else {
+                setIsEditing(true);
+                setOperation("Add");
+              }
+            }}
+          >
+            Add Material
+          </Button>
+          <Button
+            colorScheme="red"
+            m={2}
+            onClick={() => {
+              if (operation === "Withdraw") {
+                setIsEditing(false);
+                setOperation("");
+              } else {
+                setIsEditing(true);
+                setOperation("Withdraw");
+              }
+            }}
+          >
+            Withdraw Material
+          </Button>
+        </HStack>
+      )}
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
