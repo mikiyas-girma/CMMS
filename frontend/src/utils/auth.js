@@ -101,3 +101,58 @@ export const register = async (
     };
   }
 };
+
+export const blockUser = async (url, user) => {
+  let ur = "";
+  if (user.role === "storeOwner") {
+    ur = `/storeOwner/${url}`;
+  } else if (user.role === "employee") {
+    ur = `/employee/${url}`;
+  }
+  try {
+    const { data } = await apiInstance.patch(`/users${ur}`);
+    // console.log("token", data?.token);
+
+    if (data?.status === "success") {
+      Toast.fire({
+        icon: "success",
+        title: `${
+          url.startsWith("block")
+            ? "User Blocked Successfully"
+            : "User Activated Successfully"
+        } `,
+      });
+    }
+    return { data, error: null };
+  } catch (error) {
+    // console.log("er", error);
+    return {
+      data: null,
+      error: error?.response?.data?.message || "Something went wrong",
+    };
+  }
+};
+// export const unblockUser = async (email, password) => {
+//   try {
+//     const { data } = await apiInstance.post("/users/login", {
+//       email,
+//       password,
+//     });
+//     // console.log("token", data?.token);
+
+//     if (data?.status === "success") {
+//       setAuthUser(data?.token);
+//       Toast.fire({
+//         icon: "success",
+//         title: "Login Successfully",
+//       });
+//     }
+//     return { data, error: null };
+//   } catch (error) {
+//     // console.log("er", error);
+//     return {
+//       data: null,
+//       error: error?.response?.data?.message || "Something went wrong",
+//     };
+//   }
+// };

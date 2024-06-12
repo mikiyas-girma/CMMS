@@ -12,9 +12,14 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
+import { blockUser } from "../../utils/auth";
+import { PulseLoader } from "react-spinners";
+import { Navigate } from "react-router-dom";
 
 const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
   const [editedUser, setEditedUser] = useState(user);
+  const [Loading, setLoading] = useState("");
+  const [backenderror, setBakendError] = useState("");
 
   useEffect(() => {
     setEditedUser(user); // Update the state when the user prop changes
@@ -32,7 +37,24 @@ const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
     onSave(editedUser);
     onClose();
   };
-  const handleButtonClick = () => {};
+  const handleButtonClick = async () => {
+    let url = "";
+    if (user.status === "active") {
+      url = `block/${user._id}`;
+    } else if (user.status === "inactive") {
+      url = `unblock/${user._id}`;
+    }
+    setLoading(true);
+    const response = await blockUser(url, user);
+    setLoading(false);
+    console.log("response", response);
+    if (response?.error) {
+      setBakendError(response?.error);
+    }
+    if (response?.data?.status === "success") {
+      onClose();
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -97,9 +119,28 @@ const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
         </ModalBody>
 
         <ModalFooter display="flex" justifyContent="space-between">
-          <Button onClick={handleButtonClick} colorScheme="red" mr={3}>
-            {user.status === "active" ? "Block" : "UnBlock"}
-          </Button>
+          {backenderror && (
+            <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+              {backenderror}
+            </p>
+          )}
+          {!backenderror && (
+            <Button
+              onClick={handleButtonClick}
+              colorScheme="red"
+              mr={3}
+              disabled={Loading}
+            >
+              {Loading ? (
+                <PulseLoader color="#FFFFFF" />
+              ) : user.status === "active" ? (
+                "Block"
+              ) : (
+                "UnBlock"
+              )}
+            </Button>
+          )}
+
           <div>
             <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
               Save

@@ -58,6 +58,10 @@ export const login = asyncHandler(async (req, res, next) => {
       return next(new AppError("StoreOwner is inactive. Cannot log in.", 403));
     }
   }
+  if (user.role !== "admin" && user.status === "inactive") {
+    return next(new AppError("Your account is blocked. Cannot log in.", 403));
+  }
+
   createSendToken(user, 200, res);
 });
 export const protect = asyncHandler(async (req, res, next) => {
@@ -110,9 +114,10 @@ export const protect = asyncHandler(async (req, res, next) => {
   }
 
   // Check if user account is active
+  console.log("freshUser", freshUser);
   if (
     (freshUser.role === "employee" || freshUser.role === "storeOwner") &&
-    freshUser.status !== "active"
+    freshUser.status === "inactive"
   ) {
     return next(
       new AppError("The user account is disabled. Please contact support.", 403)
