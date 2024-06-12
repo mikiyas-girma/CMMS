@@ -116,12 +116,9 @@ export const blockUser = async (url, user) => {
     if (data?.status === "success") {
       Toast.fire({
         icon: "success",
-        title: `${
-          url.startsWith("block")
-            ? "User Blocked Successfully"
-            : "User Activated Successfully"
-        } `,
+        title: "User Updated Successfully",
       });
+  
     }
     return { data, error: null };
   } catch (error) {
@@ -140,12 +137,11 @@ export const updateUser = async (url, editedUser) => {
     if (data?.status === "success") {
       Toast.fire({
         icon: "success",
-        title: `${
-          url.startsWith("block")
+        title: `
             ? "User Blocked Successfully"
             : "User Activated Successfully"
         } `,
-      });
+      );
     }
     return { data, error: null };
   } catch (error) {
