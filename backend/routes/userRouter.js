@@ -14,6 +14,10 @@ import {
   resizePhoto,
   UpdateMe,
   getme,
+  UpdateEmployee,
+  DeleteEmployee,
+  BlockEmployee,
+  UnBlockEmployee,
 } from "../Controller/userController.js";
 import {
   login,
@@ -55,5 +59,17 @@ userRouter
   .route("/employee")
   .get(restrictTo("storeOwner"), getAllEmployee)
   .post(restrictTo("storeOwner"), RegisterEmployee);
+
+userRouter
+  .route("/employee/:id")
+  .patch(restrictTo("admin"), checkPasswordUpdate, UpdateEmployee)
+  .delete(restrictTo("admin"), DeleteEmployee)
+  .get(restrictTo("storeOwner"), getUserById);
+userRouter
+  .route("/employee/block/:id")
+  .patch(restrictTo("admin"), checkPasswordUpdate, BlockEmployee);
+userRouter
+  .route("/employee/unblock/:id")
+  .patch(restrictTo("admin"), checkPasswordUpdate, UnBlockEmployee);
 
 export default userRouter;
