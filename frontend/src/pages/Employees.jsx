@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, Suspense } from "react";
 import { Badge } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 
 import {
   Button,
