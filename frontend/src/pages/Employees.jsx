@@ -248,8 +248,7 @@ const Employees = () => {
             <Thead>
               <Tr>
                 <Th>ID</Th>
-                <Th>First Name </Th>
-                {isMediumScreen && <Th>Last Name </Th>}
+                <Th>Full Name </Th>
                 {/* <Th>Role</Th> */}
                 {isMediumScreen && <Th>Email</Th>}
 
@@ -261,9 +260,8 @@ const Employees = () => {
             <Tbody>
               {userData?.map((user, i) => (
                 <Tr key={user._id}>
-                  <Td maxWidth={"max-content"}>{i + 1}</Td>
-                  <Td>{user.Fname}</Td>
-                  {isMediumScreen && <Td>{user.Lname}</Td>}
+                  <Td>{i + 1}</Td>
+                  <Td>{user.Fname}  {user.Lname}</Td>
                   {/* <Td>{user.role}</Td> */}
                   {isMediumScreen && <Td>{user.email}</Td>}
                   <Td>{user.status}</Td>

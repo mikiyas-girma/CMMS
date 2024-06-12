@@ -241,8 +241,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
               bg={useColorModeValue("gray.50", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>
-                <Link to="/profile">Profile</Link>{" "}
+              <MenuItem as={Link} to='/profile'>
+                Profile
               </MenuItem>
               <MenuItem>Settings</MenuItem>
               <MenuDivider />
