@@ -528,8 +528,8 @@ const Materials = () => {
                   <Td>{data.name}</Td>
                   <Td>{data.category}</Td>
                   <Td>{data.totalQuantity}</Td>
+                  <Td>
                   <EditIcon
-                      colorScheme="blue"
                       color="blue.500"
                       onClick={() => {
                             setEditedMaterial(data);
@@ -537,6 +537,7 @@ const Materials = () => {
                         }
                     }
                     />
+                    </Td>
                   {isEditing && (
                     <>
                       <Td>
