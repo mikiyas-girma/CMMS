@@ -35,11 +35,9 @@ import apiInstance from "../utils/axios";
 const EditUserModal = React.lazy(() =>
   import("../components/employee/EditUserModal")
 );
-// import EditUserModal from "../components/employee/EditUserModal";
-// import EditUserModal from "../components/employee/EditUserModal";
 
 const Employees = () => {
-  // const [employData, setEmployData] = useState(EmployeesData);
+
   const [edit, setEdit] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -50,12 +48,7 @@ const Employees = () => {
     base: "auto",
     md: "calc(100vw - 250px)",
   });
-  // const [edit, setEdit] = useState({
-  //   email: "",
-  //   Fname: "",
-  //   Lname: "",
-  //   phone: "",
-  // });
+
   const { role } = getUserAuthStatus();
   const [submittedData, setSubmittedData] = useState(null);
   const [userData, setUserData] = useState([]);
@@ -131,14 +124,7 @@ const Employees = () => {
     });
     console.log("edit", edit);
   };
-  // if (error) {
-  //   return (
-  //     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-  //       <strong className="font-bold">Error!</strong>
-  //       <span className="block sm:inline">{error}</span>
-  //     </div>
-  //   );
-  // }
+
 
   const handleEditClick = (user) => {
     setSelectedUserForEdit(user);
@@ -252,13 +238,11 @@ const Employees = () => {
             <Thead>
               <Tr>
                 <Th>ID</Th>
-                <Th>First Name </Th>
-                {isMediumScreen && <Th>Last Name </Th>}
-                {/* <Th>Role</Th> */}
+                <Th>Full Name </Th>
                 {isMediumScreen && <Th>Email</Th>}
 
-                <Th>Status</Th>
                 {isMediumScreen && <Th>Phone</Th>}
+                <Th>Status</Th>
                 <Th></Th>
               </Tr>
             </Thead>
@@ -267,14 +251,9 @@ const Employees = () => {
                 <Tr key={user._id}>
                   <Td>{i + 1}</Td>
                   <Td>
-                    {user.Fname} {user.Lname}
+                    {user.Fname}    {user.Lname}
                   </Td>
-                  <Td maxWidth={"max-content"}>{i + 1}</Td>
-                  <Td>{user.Fname}</Td>
-                  {isMediumScreen && <Td>{user.Lname}</Td>}
-                  {/* <Td>{user.role}</Td> */}
                   {isMediumScreen && <Td>{user.email}</Td>}
-                  <Td>{user.status}</Td>
                   {isMediumScreen && <Td>{user.phone}</Td>}
                   <Td>
                     <Badge
