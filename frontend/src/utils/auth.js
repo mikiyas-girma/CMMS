@@ -132,20 +132,17 @@ export const blockUser = async (url, user) => {
 export const updateUser = async (url, editedUser) => {
   try {
     const { data } = await apiInstance.patch(url, editedUser);
-    // console.log("token", data?.token);
 
     if (data?.status === "success") {
       Toast.fire({
         icon: "success",
-        title: `
+        title: editedUser.isBlocked
             ? "User Blocked Successfully"
-            : "User Activated Successfully"
-        } `,
-      );
+            : "User Activated Successfully",
+      });
     }
     return { data, error: null };
   } catch (error) {
-    // console.log("er", error);
     return {
       data: null,
       error: error?.response?.data?.message || "Something went wrong",

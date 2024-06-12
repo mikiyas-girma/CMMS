@@ -15,7 +15,6 @@ import {
 import { blockUser, updateUser } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
 import { Navigate } from "react-router-dom";
-import { updatePassword } from "../../../../backend/Controller/authController";
 
 const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
   const [editedUser, setEditedUser] = useState(user);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, Suspense } from "react";
 import { Badge } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
@@ -32,7 +32,7 @@ import { getUserAuthStatus } from "../utils/auth";
 
 import FormSubmitted from "./FormSubmitted";
 import apiInstance from "../utils/axios";
-import EditUserModal from "../components/employee/EditUserModal";
+const EditUserModal = React.lazy(() => import("../components/employee/EditUserModal"));
 
 const Employees = () => {
   // const [employData, setEmployData] = useState(EmployeesData);
@@ -295,6 +295,7 @@ const Employees = () => {
         </Box>
       </Box>
 
+      <Suspense fallback={<div>Loading...</div>}>
       {selectedUserForEdit && (
         <EditUserModal
           user={selectedUserForEdit}
@@ -312,7 +313,8 @@ const Employees = () => {
             setSelectedUserForEdit(null);
           }}
         />
-      )}
+        )}
+    </Suspense>
     </SidebarWithHeader>
   );
 };
