@@ -5,6 +5,7 @@ import Footer from "../components/common/Footer";
 import ThemeToggle from "../components/common/ThemeToggle";
 import PulseCards from "../components/common/PulseCards";
 import { background } from "@chakra-ui/react";
+import ScrollToTop from "../components/common/ScrollToTop";
 
 export default function Layout() {
   const location = useLocation();
@@ -17,6 +18,7 @@ export default function Layout() {
       {!isLandingPage && <Header />}
       <main>
         <Suspense fallback={<PulseCards />}>
+          <ScrollToTop/>
           <Outlet />
         </Suspense>
       </main>
