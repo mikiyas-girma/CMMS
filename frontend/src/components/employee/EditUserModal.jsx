@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -14,10 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { blockUser, updateUser } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
-<<<<<<< HEAD
-import { Navigate } from "react-router-dom";
-=======
->>>>>>> a705eff (EditUserModal Updated)
+// import { Navigate } from "react-router-dom";
 
 const EditUserModal = ({ user, isOpen, onClose }) => {
   const [editedUser, setEditedUser] = useState(user);

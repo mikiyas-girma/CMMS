@@ -37,6 +37,7 @@ import { BiSolidReport } from "react-icons/bi";
 import { capitalize } from "../../utils/capitalize";
 import { useEffect, useState } from "react";
 import apiInstance from "../../utils/axios";
+import { ScaleLoader } from "react-spinners";
 
 const SidebarContent = ({ onClose, ...rest }) => {
   let LinkItems = [
@@ -78,7 +79,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
   return (
     <Box
       transition="3s ease"
-    //   bg={useColorModeValue("gray.50", "gray.900")}
+      //   bg={useColorModeValue("gray.50", "gray.900")}
       bg={useColorModeValue("#fcfcfc", "gray.900")}
       borderRight="1px"
       borderRightColor={useColorModeValue("gray.200", "gray.700")}
@@ -146,10 +147,13 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
   const [user, setUser] = useState("");
   const [error, setError] = useState("");
+  const [Loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        setLoading(true);
         const res = await apiInstance.get("/users/me");
+        setLoading(false);
         console.log("users res", res);
         if (res?.data?.status === "success") {
           setUser(res.data.data.user);
@@ -220,14 +224,23 @@ const MobileNav = ({ onOpen, ...rest }) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar size={"sm"} src={user.image} />
+                <Avatar
+                  size={"sm"}
+                  src={`http://127.0.0.1:3000/public/img/users/${user.image}`}
+                />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{user?.Fname + " " + user?.Lname}</Text>
+                  <Text fontSize="sm">
+                    {Loading ? (
+                      <ScaleLoader color="#36d7b7" size={5} />
+                    ) : (
+                      `${user?.Fname} ${user?.Lname}`
+                    )}
+                  </Text>
                   <Text fontSize="xs" color="gray.600">
                     {capitalize(role)}
                   </Text>
@@ -241,7 +254,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               bg={useColorModeValue("gray.50", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem as={Link} to='/profile'>
+              <MenuItem as={Link} to="/profile">
                 Profile
               </MenuItem>
               <MenuItem>Settings</MenuItem>

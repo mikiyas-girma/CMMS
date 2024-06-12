@@ -93,7 +93,6 @@ export const getAllStoreOwner = asyncHandler(async (req, res) => {
 export const getUserById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   let user = await User.findById(id);
-  user.image = `${req.protocol}://${req.get("host")}/public/img/users/${user.image}`;
 
   if (!user) return next(new AppError("User not found", 404));
 
