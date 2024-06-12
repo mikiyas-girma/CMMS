@@ -14,9 +14,12 @@ import {
 } from "@chakra-ui/react";
 import { blockUser, updateUser } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
+<<<<<<< HEAD
 import { Navigate } from "react-router-dom";
+=======
+>>>>>>> a705eff (EditUserModal Updated)
 
-const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
+const EditUserModal = ({ user, isOpen, onClose }) => {
   const [editedUser, setEditedUser] = useState(user);
   const [Loading, setLoading] = useState("");
   const [backenderror, setBakendError] = useState("");

@@ -36,6 +36,7 @@ const EditUserModal = React.lazy(() =>
   import("../components/employee/EditUserModal")
 );
 // import EditUserModal from "../components/employee/EditUserModal";
+// import EditUserModal from "../components/employee/EditUserModal";
 
 const Employees = () => {
   // const [employData, setEmployData] = useState(EmployeesData);
@@ -251,7 +252,8 @@ const Employees = () => {
             <Thead>
               <Tr>
                 <Th>ID</Th>
-                <Th>Full Name </Th>
+                <Th>First Name </Th>
+                {isMediumScreen && <Th>Last Name </Th>}
                 {/* <Th>Role</Th> */}
                 {isMediumScreen && <Th>Email</Th>}
 
@@ -267,6 +269,9 @@ const Employees = () => {
                   <Td>
                     {user.Fname} {user.Lname}
                   </Td>
+                  <Td maxWidth={"max-content"}>{i + 1}</Td>
+                  <Td>{user.Fname}</Td>
+                  {isMediumScreen && <Td>{user.Lname}</Td>}
                   {/* <Td>{user.role}</Td> */}
                   {isMediumScreen && <Td>{user.email}</Td>}
                   <Td>{user.status}</Td>
