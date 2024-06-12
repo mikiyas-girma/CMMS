@@ -80,7 +80,7 @@ export const RegisterStoreOwner = asyncHandler(async (req, res, next) => {
 });
 
 export const getAllStoreOwner = asyncHandler(async (req, res) => {
-  const users = await User.find();
+  const users = await StoreOwner.find();
   res.status(200).json({
     status: "success",
     results: users.length,
@@ -195,6 +195,55 @@ export const getAllEmployee = asyncHandler(async (req, res) => {
     msg: "users fetched successfully",
     data: {
       users,
+    },
+  });
+});
+export const BlockEmployee = asyncHandler(async (req, res, next) => {
+  const user = await Employee.findByIdAndUpdate(
+    req.params.id,
+    { status: "inactive" },
+    { new: true }
+  );
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+});
+
+export const UpdateEmployee = asyncHandler(async (req, res, next) => {
+  const user = await Employee.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+});
+
+export const UnBlockEmployee = asyncHandler(async (req, res, next) => {
+  const user = await Employee.findByIdAndUpdate(
+    req.params.id,
+    { status: "active" },
+    { new: true, runValidators: true }
+  );
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+});
+export const DeleteEmployee = asyncHandler(async (req, res) => {
+  const user = await Employee.findByIdAndDelete(req.params.id);
+  res.status(204).json({
+    status: "success",
+    data: {
+      message: "User deleted Successfully",
     },
   });
 });

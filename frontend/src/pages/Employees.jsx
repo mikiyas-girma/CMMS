@@ -24,7 +24,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useBreakpointValue
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
@@ -32,8 +32,7 @@ import { getUserAuthStatus } from "../utils/auth";
 
 import FormSubmitted from "./FormSubmitted";
 import apiInstance from "../utils/axios";
-import EditUserModal from "../components/employee/EditUserModal"
-
+import EditUserModal from "../components/employee/EditUserModal";
 
 const Employees = () => {
   // const [employData, setEmployData] = useState(EmployeesData);
@@ -43,7 +42,10 @@ const Employees = () => {
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
   const isMediumScreen = useBreakpointValue({ base: false, md: true });
-  const tableMaxWidth = useBreakpointValue({ base: 'auto', md: 'calc(100vw - 250px)' });
+  const tableMaxWidth = useBreakpointValue({
+    base: "auto",
+    md: "calc(100vw - 250px)",
+  });
   // const [edit, setEdit] = useState({
   //   email: "",
   //   Fname: "",
@@ -137,7 +139,7 @@ const Employees = () => {
   const handleEditClick = (user) => {
     setSelectedUserForEdit(user);
     setIsEditModalOpen(true);
-  }
+  };
 
   return (
     <SidebarWithHeader>
@@ -241,83 +243,77 @@ const Employees = () => {
           </Modal>
         </Box>
 
-        <Box
-            overflowX='auto'
-            maxWidth={tableMaxWidth}
-        >
-        <Table
-        >
-          <Thead>
-            <Tr>
-              <Th>ID</Th>
-              <Th>First Name </Th>
-              {isMediumScreen && <Th>Last Name </Th>}
-              {/* <Th>Role</Th> */}
-              {isMediumScreen && <Th>Email</Th>}
+        <Box overflowX="auto" maxWidth={tableMaxWidth}>
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>ID</Th>
+                <Th>First Name </Th>
+                {isMediumScreen && <Th>Last Name </Th>}
+                {/* <Th>Role</Th> */}
+                {isMediumScreen && <Th>Email</Th>}
 
-              <Th>Status</Th>
-              {isMediumScreen && <Th>Phone</Th>}
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {userData?.map((user, i) => (
-              <Tr key={user._id}>
-                <Td maxWidth={'max-content'}>{i}</Td>
-                <Td>{user.Fname}</Td>
-                {isMediumScreen && <Td>{user.Lname}</Td>}
-                {/* <Td>{user.role}</Td> */}
-                {isMediumScreen && <Td>{user.email}</Td>}
-                <Td>{user.status}</Td>
-                {isMediumScreen && <Td>{user.phone}</Td>}
-                <Td>
-                  <Badge
-                    colorScheme={user.status === "active" ? "green" : "red"}
-                  >
-                    {user.status}
-                  </Badge>
-                </Td>
-                <Td>
-                    <EditIcon
-                        colorScheme="blue"
-                        color="blue.500"
-                        onClick={() => handleEditClick(user)}
-                    />
-                </Td>
+                <Th>Status</Th>
+                {isMediumScreen && <Th>Phone</Th>}
+                <Th></Th>
               </Tr>
-            ))}
-          <Tr>
-            <Td colSpan={isMediumScreen ? 7 : 4}>
-              {numberofuser} of {role === "admin" && " StoreOwner"}
-              {role === "storeOwner" && " Employee"}
-            </Td>
-            <Td>( {numberofuser} )</Td>
-          </Tr>
-          </Tbody>
-        </Table>
+            </Thead>
+            <Tbody>
+              {userData?.map((user, i) => (
+                <Tr key={user._id}>
+                  <Td maxWidth={"max-content"}>{i + 1}</Td>
+                  <Td>{user.Fname}</Td>
+                  {isMediumScreen && <Td>{user.Lname}</Td>}
+                  {/* <Td>{user.role}</Td> */}
+                  {isMediumScreen && <Td>{user.email}</Td>}
+                  <Td>{user.status}</Td>
+                  {isMediumScreen && <Td>{user.phone}</Td>}
+                  <Td>
+                    <Badge
+                      colorScheme={user.status === "active" ? "green" : "red"}
+                    >
+                      {user.status}
+                    </Badge>
+                  </Td>
+                  <Td>
+                    <EditIcon
+                      colorScheme="blue"
+                      color="blue.500"
+                      onClick={() => handleEditClick(user)}
+                    />
+                  </Td>
+                </Tr>
+              ))}
+              <Tr>
+                <Td colSpan={isMediumScreen ? 7 : 4}>
+                  {numberofuser} of {role === "admin" && " StoreOwner"}
+                  {role === "storeOwner" && " Employee"}
+                </Td>
+                <Td>( {numberofuser} )</Td>
+              </Tr>
+            </Tbody>
+          </Table>
         </Box>
       </Box>
 
       {selectedUserForEdit && (
         <EditUserModal
-        user={selectedUserForEdit}
-        isOpen={isEditModalOpen}
-        onClose={() => {
+          user={selectedUserForEdit}
+          isOpen={isEditModalOpen}
+          onClose={() => {
             setIsEditModalOpen(false);
             setSelectedUserForEdit(null);
-        }}
-        onSave={(updatedUser) => {
+          }}
+          onSave={(updatedUser) => {
             setUserData((prev) =>
-            prev.map((user) =>
+              prev.map((user) =>
                 user._id === updatedUser._id ? updatedUser : user
-            )
+              )
             );
             setSelectedUserForEdit(null);
-        }}
+          }}
         />
-      )
-        }
-
+      )}
     </SidebarWithHeader>
   );
 };

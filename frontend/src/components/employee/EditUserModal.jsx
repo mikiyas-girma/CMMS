@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -11,7 +11,7 @@ import {
   FormControl,
   FormLabel,
   Input,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
   const [editedUser, setEditedUser] = useState(user);
@@ -32,6 +32,7 @@ const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
     onSave(editedUser);
     onClose();
   };
+  const handleButtonClick = () => {};
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -42,38 +43,62 @@ const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
         <ModalBody pb={2}>
           <FormControl>
             <FormLabel>First Name</FormLabel>
-            <Input value={editedUser.Fname} name="Fname" onChange={handleChange} />
+            <Input
+              value={editedUser.Fname}
+              name="Fname"
+              onChange={handleChange}
+            />
           </FormControl>
 
           <FormControl mt={1}>
             <FormLabel>Last Name</FormLabel>
-            <Input value={editedUser.Lname} name="Lname" onChange={handleChange} />
+            <Input
+              value={editedUser.Lname}
+              name="Lname"
+              onChange={handleChange}
+            />
           </FormControl>
 
           <FormControl mt={1}>
             <FormLabel>Email</FormLabel>
-            <Input value={editedUser.email} name="email" onChange={handleChange} />
+            <Input
+              value={editedUser.email}
+              name="email"
+              onChange={handleChange}
+            />
           </FormControl>
 
           <FormControl mt={1}>
             <FormLabel>Role</FormLabel>
-            <Input value={editedUser.role} name="role" onChange={handleChange} />
+            <Input
+              value={editedUser.role}
+              name="role"
+              onChange={handleChange}
+            />
           </FormControl>
 
           <FormControl mt={1}>
             <FormLabel>Phone</FormLabel>
-            <Input value={editedUser.phone} name="phone" onChange={handleChange} />
+            <Input
+              value={editedUser.phone}
+              name="phone"
+              onChange={handleChange}
+            />
           </FormControl>
 
           <FormControl mt={1}>
             <FormLabel>Status</FormLabel>
-            <Input value={editedUser.status} name="status" onChange={handleChange} />
+            <Input
+              value={editedUser.status}
+              name="status"
+              onChange={handleChange}
+            />
           </FormControl>
         </ModalBody>
 
-        <ModalFooter display='flex' justifyContent='space-between'>
-          <Button colorScheme="red" mr={3}>
-            {user.status == 'active' ? 'Block' : 'UnBlock'}
+        <ModalFooter display="flex" justifyContent="space-between">
+          <Button onClick={handleButtonClick} colorScheme="red" mr={3}>
+            {user.status === "active" ? "Block" : "UnBlock"}
           </Button>
           <div>
             <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
