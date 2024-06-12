@@ -132,9 +132,9 @@ export const blockUser = async (url, user) => {
     };
   }
 };
-export const updateUser = async (url, data) => {
+export const updateUser = async (url, editedUser) => {
   try {
-    const { data } = await apiInstance.patch(`/users${ur}`);
+    const { data } = await apiInstance.patch(url, editedUser);
     // console.log("token", data?.token);
 
     if (data?.status === "success") {
