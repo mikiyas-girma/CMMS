@@ -13,6 +13,7 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Image } from '@chakra-ui/react'
 
 import {
   Modal,
@@ -27,6 +28,7 @@ import {
   Select,
   Checkbox,
 } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 
@@ -81,6 +83,8 @@ const Materials = () => {
   const [Loading, setLoading] = useState("");
   const [AddMaterialbackenderror, setAddMaterialBakendError] = useState("");
   const [AddMaterialLoading, setAddMaterialLoading] = useState("");
+  const [editedMaterial, setEditedMaterial] = useState("");
+  const [EditMaterialModal, setEditMaterialModal] = useState(false);
   useEffect(() => {
     const totalPages = Math.ceil(materialList.length / rowsLimit);
     settotalPage(totalPages);
@@ -120,6 +124,13 @@ const Materials = () => {
   const onClose = () => {
     setIsOpen(false);
   };
+
+  const onEditModalOpen = () => {
+    setEditMaterialModal(true);
+    };
+    const onEditModalClose = () => {
+    setEditMaterialModal(false);
+    };
 
   const handleNewMaterial = async (e) => {
     e.preventDefault();
@@ -408,6 +419,77 @@ const Materials = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
+      <Modal isOpen={EditMaterialModal} onClose={onEditModalClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Edit Material Threshold</ModalHeader>
+                    <ModalBody>
+                        <form>
+                            <FormControl>
+                                <Image 
+                                    src={`http://127.0.0.1:3000/public/img/materials/${editedMaterial.image}`}
+                                    alt={editedMaterial.name}
+                                    w="200px"
+                                    h="100px"
+                                />
+                            </FormControl>
+                            <FormControl>
+                                <FormLabel>Name</FormLabel>
+                                <Input
+                                    id="name"
+                                    placeholder="Enter material name"
+                                    value={editedMaterial.name}
+                                    onChange={(e) =>
+                                        setEditedMaterial({ ...editedMaterial, name: e.target.value })
+                                    }
+                                    isDisabled
+                                />
+                            </FormControl>
+                            <FormControl mt={4}>
+                                <FormLabel>Category</FormLabel>
+                                <Input
+                                    id="category"
+                                    placeholder="Enter material category"
+                                    value={editedMaterial.category}
+                                    onChange={(e) =>
+                                        setEditedMaterial({ ...editedMaterial, category: e.target.value })
+                                    }
+                                    isDisabled
+                                />
+                            </FormControl>
+                            <FormControl mt={4}>
+                                <FormLabel>Quantity</FormLabel>
+                                <Input
+                                    id="quantity"
+                                    placeholder="Enter material quantity"
+                                    value={editedMaterial.totalQuantity}
+                                    onChange={(e) =>
+                                        setEditedMaterial({ ...editedMaterial, quantity: e.target.value })
+                                    }
+                                    isDisabled
+                                />
+                            </FormControl>
+                            <FormControl mt={4}>
+                                <FormLabel>Threshold</FormLabel>
+                                <Input
+                                    id="threshold"
+                                    placeholder="Enter material threshold"
+                                    value={editedMaterial.threshold}
+                                    onChange={(e) =>
+                                        setEditedMaterial({ ...editedMaterial, threshold: e.target.value })
+                                    }
+                                />
+                            </FormControl>
+                        </form>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3}>
+                            Update
+                        </Button>
+                        <Button onClick={onEditModalClose}>Cancel</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
 
       <Box bg={bg} minH="100vh" pt={10} pb={4} maxW="4xl" mx="auto">
         <Text fontSize="2xl" fontWeight="medium">
@@ -446,6 +528,15 @@ const Materials = () => {
                   <Td>{data.name}</Td>
                   <Td>{data.category}</Td>
                   <Td>{data.totalQuantity}</Td>
+                  <EditIcon
+                      colorScheme="blue"
+                      color="blue.500"
+                      onClick={() => {
+                            setEditedMaterial(data);
+                            onEditModalOpen();
+                        }
+                    }
+                    />
                   {isEditing && (
                     <>
                       <Td>
