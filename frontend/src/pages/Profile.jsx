@@ -93,10 +93,12 @@ const Profile = () => {
                   Profile Information
                 </Text>
               </CardFooter>
-              <Text fontSize="17px">Full Name: Mikias Girma</Text>
-              <Text fontSize="17px">Email: Mikias12@gmail.com</Text>
+              <Text fontSize="17px">
+                Full Name: {user?.Fname} {user?.Lname}
+              </Text>
+              <Text fontSize="17px">Email: {user?.email}</Text>
               <Text fontSize="17px">Country: Ethiopia</Text>
-              <Text fontSize="17px">Mobile: +251921493682</Text>
+              <Text fontSize="17px">Mobile:{user?.phone}</Text>
             </CardBody>
           </Card>
         </GridItem>
