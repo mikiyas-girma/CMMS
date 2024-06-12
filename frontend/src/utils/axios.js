@@ -10,6 +10,7 @@ const apiInstance = axios.create({
     Accept: "application/json",
   },
   withCredentials: true,
+  credentials: "include",
 });
 export default apiInstance;
 // credentials: "include",

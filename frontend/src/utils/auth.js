@@ -1,8 +1,10 @@
+// utils/auth.js
 import apiInstance from "./axios";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // Fix import here
 import axios from "axios";
 import Swal from "sweetalert2";
+
 const Toast = Swal.mixin({
   toast: true,
   position: "top",
@@ -10,6 +12,8 @@ const Toast = Swal.mixin({
   timer: 1500,
   timerProgressBar: true,
 });
+
+// The rest of your code
 
 export const setAuthUser = (token) => {
   Cookies.set("jwt", token, {
@@ -118,7 +122,6 @@ export const blockUser = async (url, user) => {
         icon: "success",
         title: "User Updated Successfully",
       });
-  
     }
     return { data, error: null };
   } catch (error) {
@@ -137,8 +140,8 @@ export const updateUser = async (url, editedUser) => {
       Toast.fire({
         icon: "success",
         title: editedUser.isBlocked
-            ? "User Blocked Successfully"
-            : "User Activated Successfully",
+          ? "User Blocked Successfully"
+          : "User Activated Successfully",
       });
     }
     return { data, error: null };

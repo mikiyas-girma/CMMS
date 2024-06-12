@@ -32,7 +32,10 @@ import { getUserAuthStatus } from "../utils/auth";
 
 import FormSubmitted from "./FormSubmitted";
 import apiInstance from "../utils/axios";
-const EditUserModal = React.lazy(() => import("../components/employee/EditUserModal"));
+const EditUserModal = React.lazy(() =>
+  import("../components/employee/EditUserModal")
+);
+// import EditUserModal from "../components/employee/EditUserModal";
 
 const Employees = () => {
   // const [employData, setEmployData] = useState(EmployeesData);
@@ -63,7 +66,6 @@ const Employees = () => {
     const fetchUserData = async () => {
       try {
         let url = "";
-
         if (role === "admin") {
           url = "/storeOwner";
         } else if (role === "storeOwner") {
@@ -262,7 +264,9 @@ const Employees = () => {
               {userData?.map((user, i) => (
                 <Tr key={user._id}>
                   <Td>{i + 1}</Td>
-                  <Td>{user.Fname}  {user.Lname}</Td>
+                  <Td>
+                    {user.Fname} {user.Lname}
+                  </Td>
                   {/* <Td>{user.role}</Td> */}
                   {isMediumScreen && <Td>{user.email}</Td>}
                   <Td>{user.status}</Td>
@@ -296,25 +300,25 @@ const Employees = () => {
       </Box>
 
       <Suspense fallback={<div>Loading...</div>}>
-      {selectedUserForEdit && (
-        <EditUserModal
-          user={selectedUserForEdit}
-          isOpen={isEditModalOpen}
-          onClose={() => {
-            setIsEditModalOpen(false);
-            setSelectedUserForEdit(null);
-          }}
-          onSave={(updatedUser) => {
-            setUserData((prev) =>
-              prev.map((user) =>
-                user._id === updatedUser._id ? updatedUser : user
-              )
-            );
-            setSelectedUserForEdit(null);
-          }}
-        />
+        {selectedUserForEdit && (
+          <EditUserModal
+            user={selectedUserForEdit}
+            isOpen={isEditModalOpen}
+            onClose={() => {
+              setIsEditModalOpen(false);
+              setSelectedUserForEdit(null);
+            }}
+            onSave={(updatedUser) => {
+              setUserData((prev) =>
+                prev.map((user) =>
+                  user._id === updatedUser._id ? updatedUser : user
+                )
+              );
+              setSelectedUserForEdit(null);
+            }}
+          />
         )}
-    </Suspense>
+      </Suspense>
     </SidebarWithHeader>
   );
 };
