@@ -12,14 +12,17 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
-import { blockUser } from "../../utils/auth";
+import { blockUser, updateUser } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
 import { Navigate } from "react-router-dom";
+import { updatePassword } from "../../../../backend/Controller/authController";
 
 const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
   const [editedUser, setEditedUser] = useState(user);
   const [Loading, setLoading] = useState("");
   const [backenderror, setBakendError] = useState("");
+  const [loading, setloading] = useState("");
+  const [backerror, setBackError] = useState("");
 
   useEffect(() => {
     setEditedUser(user); // Update the state when the user prop changes
@@ -33,8 +36,24 @@ const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
     }));
   };
 
-  const handleSubmit = () => {
-    onSave(editedUser);
+  const handleSubmit = async () => {
+    let url = "";
+    if (user.role === "storeOwner") {
+      url = `users/storeOwner/${user._id}`;
+    } else if (user.role === "employee") {
+      url = `users/employee/${user._id}`;
+    }
+    setloading(true);
+    const response = await updateUser(url, editedUser);
+    setloading(false);
+    console.log("response", response);
+    if (response?.error) {
+      setBackError(response?.error);
+    }
+    if (response?.data?.status === "success") {
+      onClose();
+    }
+    // onSave(editedUser);
     onClose();
   };
   const handleButtonClick = async () => {
@@ -104,15 +123,6 @@ const EditUserModal = ({ user, isOpen, onClose, onSave }) => {
             <Input
               value={editedUser.phone}
               name="phone"
-              onChange={handleChange}
-            />
-          </FormControl>
-
-          <FormControl mt={1}>
-            <FormLabel>Status</FormLabel>
-            <Input
-              value={editedUser.status}
-              name="status"
               onChange={handleChange}
             />
           </FormControl>

@@ -160,7 +160,7 @@ export const DeleteStoreOwner = asyncHandler(async (req, res) => {
 //employee
 
 export const RegisterEmployee = asyncHandler(async (req, res, next) => {
-  const existingUsers = await User.findOne({ email: req.body.email });
+  const existingUsers = await Employee.findOne({ email: req.body.email });
 
   if (existingUsers) {
     return next(new AppError(" This user already exist.", 400));

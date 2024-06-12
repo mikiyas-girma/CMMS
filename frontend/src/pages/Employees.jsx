@@ -79,6 +79,7 @@ const Employees = () => {
           setError("Invalid role");
         }
       } catch (error) {
+        console.log("error", error);
         console.error("Error fetching user data:", error);
         setError("Failed to fetch user data");
       }

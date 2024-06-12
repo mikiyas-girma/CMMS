@@ -114,7 +114,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   }
 
   // Check if user account is active
-  console.log("freshUser", freshUser);
+  // console.log("freshUser", freshUser);
   if (
     (freshUser.role === "employee" || freshUser.role === "storeOwner") &&
     freshUser.status === "inactive"
