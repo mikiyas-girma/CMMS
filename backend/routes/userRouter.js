@@ -62,14 +62,14 @@ userRouter
 
 userRouter
   .route("/employee/:id")
-  .patch(restrictTo("admin"), checkPasswordUpdate, UpdateEmployee)
-  .delete(restrictTo("admin"), DeleteEmployee)
+  .patch(restrictTo("storeOwner"), checkPasswordUpdate, UpdateEmployee)
+  .delete(restrictTo("storeOwner"), DeleteEmployee)
   .get(restrictTo("storeOwner"), getUserById);
 userRouter
   .route("/employee/block/:id")
-  .patch(restrictTo("admin"), checkPasswordUpdate, BlockEmployee);
+  .patch(restrictTo("storeOwner"), checkPasswordUpdate, BlockEmployee);
 userRouter
   .route("/employee/unblock/:id")
-  .patch(restrictTo("admin"), checkPasswordUpdate, UnBlockEmployee);
+  .patch(restrictTo("storeOwner"), checkPasswordUpdate, UnBlockEmployee);
 
 export default userRouter;
