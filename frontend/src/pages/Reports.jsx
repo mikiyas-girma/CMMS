@@ -21,44 +21,7 @@ import { BeatLoader, PulseLoader } from "react-spinners";
 import { generatereport } from "../utils/material";
 <script src="../path/to/flowbite/dist/datepicker.js"></script>;
 const Reports = () => {
-  // const reportData = [
-  //   {
-  //     id: Math.floor(Math.random() * 10000),
-  //     name: "Cement",
-  //     quantity: "340 pcs",
-  //     description: "The rusty swing creaked a melancholic ...",
-  //   },
-  //   {
-  //     id: Math.floor(Math.random() * 10000),
-  //     name: "Ceramic",
-  //     quantity: "678 pcs",
-  //     description: "Neon signs bled into the twilight, paint...",
-  //   },
-  //   {
-  //     id: Math.floor(Math.random() * 10000),
-  //     name: "Steel",
-  //     quantity: "90 pcs",
-  //     description: "The rusty swing creaked a melancholic tun...",
-  //   },
-  //   {
-  //     id: Math.floor(Math.random() * 10000),
-  //     name: "Pipes",
-  //     quantity: "310 pcs",
-  //     description: "whispering secrets of forgotten childhood la... ",
-  //   },
-  //   {
-  //     id: Math.floor(Math.random() * 10000),
-  //     name: "Windows",
-  //     quantity: "909 pcs",
-  //     description: "The abandoned library held its breath, its... ",
-  //   },
-  //   {
-  //     id: Math.floor(Math.random() * 10000),
-  //     name: "Bricks",
-  //     quantity: "1100 pcs",
-  //     description: "Its dusty shelves pregnant with untold sto.... ",
-  //   },
-  // ];
+
   const [reports, setReport] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -66,6 +29,42 @@ const Reports = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [backenderror, setBakendError] = useState("");
   const [Loading, setLoading] = useState("");
+  const [cache, setCache] = useState(
+                                {reports: [], timestamp: 0});
+
+
+  const fetchInitialReport = async () => {
+    const currentTime = new Date().getTime();
+
+    if (currentTime - cache.timestamp > 1800000) {
+
+        const past30Days = new Date();
+        past30Days.setDate(past30Days.getDate() - 30);
+        const formattedStartDate = past30Days.toISOString().split("T")[0];
+        setStartDate(formattedStartDate);
+        setEndDate(today);
+        const url = "addedmaterialreport"; // Default option for initial load
+        setLoading(true);
+        const { data } = await generatereport(url, formattedStartDate, today);
+        setLoading(false);
+        console.log("report generated", data);
+        setReport(data?.data?.report || []);
+        if (data?.error) {
+          setBakendError(data?.error);
+        }
+        setCache({reports: data?.data?.report, timestamp: currentTime});
+
+    } else {
+        setReport(cache.reports);
+    }
+
+    };
+
+    useEffect(() => {
+        fetchInitialReport();
+    }, []);
+
+
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
   };
@@ -98,38 +97,8 @@ const Reports = () => {
       setBakendError(data?.error);
     }
 
-    // if (response?.data?.status === "success") {
-    //   Navigate("/materials");
-    // }
   };
-  //   console.log("dates", startDate, endDate);
-  // console.log("selected", selectedOption);
-  console.log("reports", reports);
-  useEffect(() => {
-    const fetchInitialReport = async () => {
-      const past30Days = new Date();
-      past30Days.setDate(past30Days.getDate() - 30);
-
-      const formattedStartDate = past30Days.toISOString().split("T")[0];
-      setStartDate(formattedStartDate);
-      setEndDate(today);
-
-      const url = "addedmaterialreport"; // Default option for initial load
-
-      setLoading(true);
-
-      const { data } = await generatereport(url, formattedStartDate, today);
-      setLoading(false);
-
-      console.log("report generated", data);
-      setReport(data?.data?.report || []);
-      if (data?.error) {
-        setBakendError(data?.error);
-      }
-    };
-
-    fetchInitialReport();
-  }, []);
+ 
 
   return (
       <SidebarWithHeader>
