@@ -12,7 +12,8 @@ export const registerMaterial = async (
   name,
   category,
   image,
-  totalQuantity
+  totalQuantity,
+  minthreshold
 ) => {
   try {
     const requestData = {
@@ -20,6 +21,7 @@ export const registerMaterial = async (
       category,
       image,
       totalQuantity,
+      minthreshold,
     };
 
     const { data } = await apiInstance.post("/materials", requestData, {
