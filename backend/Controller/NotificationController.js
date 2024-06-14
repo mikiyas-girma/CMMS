@@ -1,7 +1,6 @@
-const asyncHandler = require("express-async-handler");
-const Notification = require("../models/Notification");
-const AppError = require("../utils/AppError");
-
+import { AppError } from "../utils/AppError.js";
+import Notification from "../Models/NotificationModel.js";
+import asyncHandler from "express-async-handler";
 export const createNotification = asyncHandler(async (req, res) => {
   const notification = await Notification.create(req.body);
   res.status(201).json({
