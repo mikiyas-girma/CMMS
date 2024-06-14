@@ -16,17 +16,25 @@ const materialSchema = new mongoose.Schema(
       default: 0,
       min: [0, "Total quantity must be a positive number"],
     },
-
+    minthreshold: {
+      type: Number,
+      default: 5,
+      min: [0, "Treshold must be a positive number"],
+    },
     weight: {
       type: Number,
       default: 0,
       min: [0, "Weight must be a positive number"],
     },
 
-    user: {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
+    receiverIds: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
+
     image: {
       type: String,
       required: [true, "Material image is required"],

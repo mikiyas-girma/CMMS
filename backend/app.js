@@ -10,6 +10,7 @@ import mongoSanitize from "express-mongo-sanitize";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import Notificationrouter from "./routes/NotificationRouter.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,6 +35,8 @@ if (process.env.NODE_ENV === "developement") app.use(morgan("dev"));
 
 app.use("/cmms/api/users", userRouter);
 app.use("/cmms/api/materials", MaterialRouter);
+app.use("/cmms/api/notifications", Notificationrouter);
+
 app.all("*", (req, res, next) => {
   // console.log(
   //   new AppError(`Can't find ${req.originalUrl} on this server!`, 404)
