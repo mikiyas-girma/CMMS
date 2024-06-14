@@ -54,7 +54,7 @@ export const getUserAuthStatus = () => {
 
   try {
     const decodedToken = jwtDecode(token);
-    return { isAuth: true, role: decodedToken.role };
+    return { isAuth: true, role: decodedToken.role, userId: decodedToken.id };
   } catch (error) {
     return { isAuth: false };
   }
