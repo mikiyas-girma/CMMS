@@ -10,7 +10,7 @@ const Notificationrouter = express.Router();
 
 // Routes
 Notificationrouter.route("/").post(createNotification);
-Notificationrouter.route("/UserId").get(getAllNotifications);
+Notificationrouter.route("/user/:userId").get(getAllNotifications);
 
 Notificationrouter.route("/:id")
   .get(getNotificationById)

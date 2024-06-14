@@ -28,9 +28,7 @@ export const getAllNotifications = asyncHandler(async (req, res) => {
 });
 
 export const getNotificationById = asyncHandler(async (req, res, next) => {
-  const notification = await Notification.findById(req.params.id).populate(
-    "receiverIds"
-  );
+  const notification = await Notification.findById(req.params.id);
   if (!notification) {
     return next(new AppError("No notification found with that ID", 404));
   }
