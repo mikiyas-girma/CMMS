@@ -166,11 +166,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
       try {
         const response = await getAllNotifications(userId);
         setNotiloading(false);
+        setNotifications(response?.data?.data?.notifications);
 
-        if (response?.data?.status === "success") {
-          setNotifications(response?.data?.data?.notifications);
-        }
-        console.log("notifications", response);
         if (response?.error) {
           setBackendError(response?.error);
         }
@@ -185,6 +182,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
     getrecentNotification();
   }, []); // Empty dependency array ensures this runs only once
+  console.log("notifications", notifications);
 
   const navigate = useNavigate();
 
@@ -232,7 +230,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
           variant="ghost"
           aria-label="open menu"
           icon={<FiBell />}
-          onClick={() => navigate("/notification")}
+          onClick={() =>
+            navigate("/notification", { state: { notifications } })
+          }
         />
         <Flex alignItems={"center"}>
           <Menu>
