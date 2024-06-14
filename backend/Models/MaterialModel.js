@@ -16,7 +16,11 @@ const materialSchema = new mongoose.Schema(
       default: 0,
       min: [0, "Total quantity must be a positive number"],
     },
-
+    minthreshold: {
+      type: Number,
+      default: 5,
+      min: [0, "Treshold must be a positive number"],
+    },
     weight: {
       type: Number,
       default: 0,
