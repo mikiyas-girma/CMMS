@@ -152,7 +152,12 @@ const Notification = () => {
                 >
                   <Text>
                     <strong>{notification?.from}</strong> requested{" "}
-                    <p>{notification.text}</p>{" "}
+                    <span>
+                      {" "}
+                      {notification.text.length > 35
+                        ? `${notification.text.slice(0, 35)}...`
+                        : notification.text}
+                    </span>{" "}
                     <strong>{notification.materialName}</strong> at{" "}
                     <strong>{format(notification.createdAt)}</strong>
                     <MdReceipt />
