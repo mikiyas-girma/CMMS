@@ -80,20 +80,20 @@ const SignIn = forwardRef((props, ref) => {
         response = await login(email, password);
         setloading(false);
 
+        if (response?.error) {
+            setBakendError(response?.error);
+            setTimeout(() => {
+                setBakendError("");
+            }, 1500);
+        }
+
         if (response?.data?.user) {
             triggerLoginAttempt();
 
             if (response?.data?.user?.role === "admin") {
                 navigate("/dashboard");
             }
-            if (response?.error) {
-                setBakendError(response?.error);
-                setTimeout(() => {
-                    setBakendError("");
-                }, 1500);
-            }
             // if storeOwner redirecting to /employees
-
             if (response?.data?.user?.role === "employee") {
                 navigate("/dashboard");
             } else if (response?.data?.user?.role === "storeOwner") {
