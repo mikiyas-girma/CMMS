@@ -19,8 +19,18 @@ import { MdBolt } from 'react-icons/md';
 import { useColorMode } from '@chakra-ui/color-mode';
 import SignIn from '../components/forms/SignIn';
 import Features from '../components/common/Features';
+import {useRef } from 'react';
+
 
 export default function Home() {
+
+    const signInRef = useRef(null);
+
+    const focusSignIn = () => {
+        if (signInRef.current) {
+            signInRef.current.focus();
+        }
+    }
 
     const { colorMode, toggleColorMode } = useColorMode();
 
@@ -48,7 +58,7 @@ export default function Home() {
                             mb={{ base: '3rem !important', sm: 0 }}
                             flexWrap="wrap"
                         >
-                            <Link href='/dashboard'>
+                            <Link onClick={focusSignIn}>
                                 <chakra.button
                                     w={{ base: '100%', sm: 'auto' }}
                                     h={12}
@@ -62,14 +72,14 @@ export default function Home() {
                                     bgGradient="linear(to-l, #0ea5e9,#2563eb)"
                                     _hover={{ bgGradient: 'linear(to-l, #0ea5e9,#2563eb)', opacity: 0.9 }}
                                 >
-                                    <chakra.span>Get  Dashboard </chakra.span>
+                                    <chakra.span>Get IN</chakra.span>
                                     <Icon as={MdBolt} h={4} w={4} ml={1} />
                                 </chakra.button>
                             </Link>
                         </HStack>
                     </Stack>
                     <Stack direction="column" spacing={6} px={4} justifyContent="right">
-                        <SignIn />
+                        <SignIn ref={signInRef} />
 
                     </Stack>
                 </Stack>

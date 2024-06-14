@@ -28,9 +28,10 @@ import {
 import { login } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
 import { useUser } from "../../utils/UserContext";
+import { forwardRef } from "react";
 
 
-const SignIn = () => {
+const SignIn = forwardRef((props, ref) => {
     const navigate = useNavigate();
 
     const [show, setShow] = useState(false);
@@ -127,6 +128,7 @@ const SignIn = () => {
                         <FormControl id="username">
                             <FormLabel>Email</FormLabel>
                             <Input
+                                ref={ref}
                                 rounded="md"
                                 type="text"
                                 value={email}
@@ -186,6 +188,6 @@ const SignIn = () => {
             </Stack>
         </Flex>
     );
-};
+});
 
 export default SignIn;
