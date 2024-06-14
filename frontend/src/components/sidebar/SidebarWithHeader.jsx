@@ -212,28 +212,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
                             transition="all 0.3s"
                             _focus={{ boxShadow: "none" }}
                         >
-                            {/* <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={`http://127.0.0.1:3000/public/img/users/${user.image}`}
-                />
-                <VStack
-                  display={{ base: "none", md: "flex" }}
-                  alignItems="flex-start"
-                  spacing="1px"
-                  ml="2"
-                >
-                  <Text fontSize="sm">
-                      {user?.Fname} {user?.Lname}
-                  </Text>
-                  <Text fontSize="xs" color="gray.600">
-                    {capitalize(role)}
-                  </Text>
-                </VStack>
-                <Box display={{ base: "none", md: "flex" }}>
-                  <FiChevronDown />
-                </Box>
-              </HStack> */}
                             {loading ? (
                                 <Spinner size="sm" />
                             ) : (

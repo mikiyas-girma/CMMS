@@ -20,9 +20,23 @@ import { useColorMode } from '@chakra-ui/color-mode';
 import SignIn from '../components/forms/SignIn';
 import Features from '../components/common/Features';
 import {useRef } from 'react';
+import { useUser } from '../utils/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Home() {
+
+    const navigate = useNavigate();
+
+    const { user } = useUser();
+
+    const handleLinkClick = () => {
+        if (!user) {
+            focusSignIn();
+        } else {
+            navigate(-1);
+        }
+    }
 
     const signInRef = useRef(null);
 
@@ -58,7 +72,7 @@ export default function Home() {
                             mb={{ base: '3rem !important', sm: 0 }}
                             flexWrap="wrap"
                         >
-                            <Link onClick={focusSignIn}>
+                            <Link onClick={handleLinkClick}>
                                 <chakra.button
                                     w={{ base: '100%', sm: 'auto' }}
                                     h={12}

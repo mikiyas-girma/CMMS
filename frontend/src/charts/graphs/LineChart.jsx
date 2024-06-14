@@ -9,29 +9,31 @@ const LineChart = () => {
         },
         title: {
           display: true,
-          text: "Line Chart: Monthly Sales Trend for Products A & B",
+          text: "Line Chart: Construction VS Finishing Materials",
         },
+        
+
       },
     }
   
     const labels = ["January", "February", "March", "April", "May", "June", "July"]
   
-    const productASales = [120, 135, 125, 145, 160, 150, 170]
+    const constructionMaterialsSales = [120, 135, 125, 125, 160, 150, 170]
   
-    const productBSales = [80, 75, 95, 100, 110, 105, 120, 115]
+    const finishingMaterialsSales = [80, 100, 95, 150, 145, 105, 120, 115]
   
     const data = {
       labels,
       datasets: [
         {
-          label: "Product A Sales",
-          data: productASales,
+          label: "Construction Materials",
+          data: constructionMaterialsSales,
           borderColor: "rgb(255, 99, 132)",
           backgroundColor: "rgba(255, 99, 132)",
         },
         {
-          label: "Product B Sales",
-          data: productBSales,
+          label: "Finishing Materials",
+          data: finishingMaterialsSales,
           borderColor: "rgb(53, 162, 235)",
           backgroundColor: "rgba(53, 162, 235)",
         },
