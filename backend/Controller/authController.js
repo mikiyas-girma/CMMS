@@ -26,6 +26,7 @@ const createSendToken = (user, statusCode, res) => {
   };
 
   res.cookie("jwt", token, cookieOptions);
+  console.log("Set-Cookie header:", res.get("Set-Cookie")); // Debug log
 
   user.password = undefined;
   res.status(statusCode).json({
@@ -218,4 +219,29 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
       new AppError("There was an Error sending an Email. Please try again", 500)
     );
   }
+});
+export const getStatus = asyncHandler(async (req, res) => {
+  const token = req.cookies.jwt;
+
+  if (!token) {
+    return res.status(401).json({ isAuth: false });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return res.json({ isAuth: true, user: decoded });
+  } catch (err) {
+    return res.status(401).json({ isAuth: false });
+  }
+});
+export const clearCookie = asyncHandler(async (req, res) => {
+  res.clearCookie(req.params.name, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+  // res.status(200).send();
+  res.status(200).json({
+    message: `Cookie with name ${req.params.name} is deleted`,
+  });
 });

@@ -25,12 +25,16 @@ import {
   updatePassword,
   restrictTo,
   forgotPassword,
+  clearCookie,
+  getStatus,
 } from "../Controller/authController.js";
 const userRouter = express.Router();
 userRouter.route("/login").post(login);
 userRouter.route("/forgotPassword").post(forgotPassword);
+// userRouter.get("/auth-status", getStatus);
 
 userRouter.use(protect);
+userRouter.get("/deleteCookies/:name", clearCookie);
 userRouter.route("/updateMypassword").post(updatePassword);
 userRouter.route("/me").get(getme, getUserById);
 

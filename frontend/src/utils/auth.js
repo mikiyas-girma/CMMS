@@ -154,3 +154,17 @@ export const updateUser = async (url, editedUser) => {
     };
   }
 };
+export const deleteCookies = async (cookieName) => {
+  try {
+    const response = await apiInstance.get(
+      `/users/deleteCookies/${cookieName}`
+    );
+    console.log(`Cookie ${cookieName} deleted successfully.`);
+    return response.data; // Optionally return data if needed
+  } catch (error) {
+    return {
+      data: null,
+      error: error?.response?.data?.message || "Something went wrong",
+    };
+  }
+};

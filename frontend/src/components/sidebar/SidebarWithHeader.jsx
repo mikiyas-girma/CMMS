@@ -1,6 +1,6 @@
 // src/components/sidebar/SidebarWithHeader.jsx
 
-import { getUserAuthStatus } from "../../utils/auth";
+import { deleteCookies, getUserAuthStatus } from "../../utils/auth";
 import {
   IconButton,
   Avatar,
@@ -185,11 +185,14 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     try {
-      console.log("signing out this cookies jwt:", Cookies.get("jwt"));
+      // console.log("signing out this cookies jwt:", Cookies.get("jwt"));
+      // Cookies.remove("jwt");
+      // console.log("signing out this cookies jwt:", Cookies.get("jwt"));
+      await deleteCookies("jwt");
       Cookies.remove("jwt");
-      console.log("signing out this cookies jwt:", Cookies.get("jwt"));
+
       resetUser();
       navigate("/");
     } catch (error) {
