@@ -4,6 +4,8 @@ import Material from "../Models/MaterialModel.js";
 import multer from "multer";
 import sharp from "sharp";
 import QuantityChange from "../Models/QuantityChangesModel.js";
+import { createNotification } from "./NotificationController.js";
+import { User } from "../Models/UserModel.js";
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
@@ -183,6 +185,24 @@ export const withdrawAndUpdateQuantities = asyncHandler(
     });
 
     await Material.bulkWrite(bulkOps);
+
+    for (const change of changes) {
+      const material = await Material.findById(change.material);
+
+      if (material.totalQuantity < material.minthreshold) {
+        const receiverIds = await User.find({
+          $or: [{ role: "employee" }, { role: "storeOwner" }],
+        }).select("_id");
+
+        const notificationData = {
+          receiverIds: receiverIds.map((user) => user._id),
+          from: "System",
+          text: `Material ${material.name} is below min threshold, please reorder`,
+        };
+
+        await createNotification({ body: notificationData }, res, next);
+      }
+    }
 
     res.status(200).json({
       status: "success",

@@ -2,6 +2,7 @@ import { AppError } from "../utils/AppError.js";
 import Notification from "../Models/NotificationModel.js";
 import asyncHandler from "express-async-handler";
 export const createNotification = asyncHandler(async (req, res) => {
+  console.log("req.body", req.body);
   const notification = await Notification.create(req.body);
   res.status(201).json({
     status: "success",
