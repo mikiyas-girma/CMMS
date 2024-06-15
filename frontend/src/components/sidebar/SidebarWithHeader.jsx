@@ -190,7 +190,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
   const handleSignOut = () => {
     try {
+      console.log("signing out this cookies jwt:", Cookies.get("jwt"));
       Cookies.remove("jwt");
+      console.log("signing out this cookies jwt:", Cookies.get("jwt"));
       resetUser();
       navigate("/");
     } catch (error) {

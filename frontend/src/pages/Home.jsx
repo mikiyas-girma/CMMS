@@ -19,26 +19,26 @@ import { MdBolt } from 'react-icons/md';
 import { useColorMode } from '@chakra-ui/color-mode';
 import SignIn from '../components/forms/SignIn';
 import Features from '../components/common/Features';
-import {useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useUser } from '../utils/UserContext';
 import { useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 
 export default function Home() {
 
     const navigate = useNavigate();
-
     const { user } = useUser();
 
     const handleLinkClick = () => {
-        if (!user) {
+        if (!user?.role || Cookies.get('jwt') === undefined ){
             focusSignIn();
         } else {
             navigate(-1);
         }
     }
 
-    const signInRef = useRef(null);
+    const signInRef = useRef();
 
     const focusSignIn = () => {
         if (signInRef.current) {
