@@ -264,7 +264,6 @@ const Employees = () => {
                   </Td>
                   <Td>
                     <EditIcon
-                      colorScheme="blue"
                       color="blue.500"
                       onClick={() => handleEditClick(user)}
                     />
