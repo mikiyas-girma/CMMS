@@ -18,31 +18,36 @@ import {
 } from "@chakra-ui/react";
 import apiInstance from "../utils/axios";
 import { ScaleLoader } from "react-spinners";
+import { useUser } from "../utils/UserContext";
+
 
 const Profile = () => {
-  const [user, setUser] = useState("");
+//   const [user, setUser] = useState("");
   const [error, setError] = useState("");
   const [Loading, setLoading] = useState(false);
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        setLoading(true);
-        const res = await apiInstance.get("/users/me");
-        setLoading(false);
-        console.log("users res", res);
-        if (res?.data?.status === "success") {
-          setUser(res.data.data.user);
-        } else {
-          setError("Failed to fetch user");
-        }
-      } catch (error) {
-        setError(error.response?.data?.message || "Something went wrong");
-      }
-    };
 
-    fetchUser();
-  }, []);
-  console.log("user", user);
+  const { user } = useUser();
+
+//   useEffect(() => {
+//     const fetchUser = async () => {
+//       try {
+//         setLoading(true);
+//         const res = await apiInstance.get("/users/me");
+//         setLoading(false);
+//         console.log("users res", res);
+//         if (res?.data?.status === "success") {
+//           setUser(res.data.data.user);
+//         } else {
+//           setError("Failed to fetch user");
+//         }
+//       } catch (error) {
+//         setError(error.response?.data?.message || "Something went wrong");
+//       }
+//     };
+
+//     fetchUser();
+//   }, []);
+  console.log("user here", user);
   return (
     <SidebarWithHeader>
       <Grid
@@ -65,8 +70,8 @@ const Profile = () => {
               padding="15px"
               borderRadius="full"
               objectFit="cover"
-              src={`http://127.0.0.1:3000/public/img/users/${user.image}`}
-              alt={user.Fname}
+              src={`http://127.0.0.1:3000/public/img/users/${user?.image}`}
+              alt={user?.Fname}
             />
 
             <Stack>
@@ -80,7 +85,7 @@ const Profile = () => {
                   )}
                 </Heading>
 
-                <Text py="2">{user.email}</Text>
+                <Text py="2">{user?.email}</Text>
               </CardBody>
             </Stack>
           </Card>

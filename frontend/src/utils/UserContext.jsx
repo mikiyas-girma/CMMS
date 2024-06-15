@@ -1,5 +1,4 @@
-// UserContext.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import apiInstance from './axios'; // Assuming you have an API instance set up
 
 const UserContext = createContext();
@@ -10,7 +9,8 @@ export const UserProvider = ({ children }) => {
   const [loginAttempted, setLoginAttempted] = useState(false);
 
   const fetchUser = async () => {
-    setLoading(true);
+    // Only set loading to true if it's currently false
+    if (!loading) setLoading(true);
     try {
       const res = await apiInstance.get('/users/me');
       if (res?.data?.status === 'success') {
@@ -18,8 +18,10 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Failed to fetch user", error);
+    } finally {
+      // Always set loading to false after the fetch operation completes
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -33,17 +35,18 @@ export const UserProvider = ({ children }) => {
   const triggerLoginAttempt = async () => {
     setLoginAttempted(true);
     await fetchUser();
-   
   };
 
+  // Memoize the context value to prevent unnecessary re-renders
+  const contextValue = useMemo(() => ({
+    user,
+    loading,
+    resetUser,
+    triggerLoginAttempt
+  }), [user, resetUser, triggerLoginAttempt]);
+
   return (
-    <UserContext.Provider
-    value={{
-            user,
-            loading,
-            resetUser,
-            triggerLoginAttempt
-        }}>
+    <UserContext.Provider value={contextValue}>
       {children}
     </UserContext.Provider>
   );

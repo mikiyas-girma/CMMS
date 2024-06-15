@@ -154,8 +154,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   const [error, setError] = useState("");
   const [Loading, setLoading] = useState(false);
 
-  const { user, loading } = useUser();
-  const { resetUser } = useUser();
+  const { user, loading, resetUser } = useUser();
   const [notifications, setNotifications] = useState([]);
   const [notiloading, setNotiloading] = useState(false);
   const [backendError, setBackendError] = useState(null);

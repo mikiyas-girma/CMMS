@@ -14,7 +14,7 @@ export const UserProfile = React.memo(({ user, role, capitalize }) => {
     }, [user.image]);
 
     if (!user) {
-        return <div>loading user profiele</div>;
+        return <div>loading user profile</div>;
     }
 
     return (
