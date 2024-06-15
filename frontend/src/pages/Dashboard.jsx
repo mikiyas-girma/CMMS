@@ -24,7 +24,7 @@ const Dashboard = () => {
                     </>
                 }
 
-                {user?.role === 'storeOwner' || user?.role === 'employee' &&
+                { (user?.role === 'employee' || 'storeOwner') &&
                     <Grid
                         gridTemplateColumns={{ base: '1fr', md: '1fr 1fr', lg: '1fr .5fr 1fr' }}
                         templateRows={{ base: 'repeat(4, 1fr)', md: 'repeat(2, 1fr)' }}
