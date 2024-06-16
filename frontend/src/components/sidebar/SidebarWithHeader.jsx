@@ -152,24 +152,33 @@ const MobileNav = ({ onOpen, ...rest }) => {
   const socket = useRef();
   const [onlineUsers, setOnlineUsers] = useState([]);
   const { role, userId } = getUserAuthStatus();
+  const [error, setError] = useState("");
+  const [Loading, setLoading] = useState(false);
 
+  const { user, loading, resetUser } = useUser();
+  const [notifications, setNotifications] = useState([]);
+  const [recentnotifications, setRecentNotifications] = useState([]);
+
+  const [notiloading, setNotiloading] = useState(false);
+  const [backendError, setBackendError] = useState(null);
   useEffect(() => {
     socket.current = io("http://localhost:3000");
     socket.current.emit("addUser", userId);
     socket.current.on("getUsers", (users) => {
       setOnlineUsers(users);
     });
+    socket.current.on("newNotification", (data) => {
+      setNotifications((prevNotifications) => [...prevNotifications, data]);
+      setRecentNotifications((prevRecentNotifications) => [
+        ...prevRecentNotifications,
+        data,
+      ]);
+    });
   }, [userId]);
+  console.log("notificationsSocket", notifications);
 
   console.log("OnlineUseers", onlineUsers);
   //   const [user, setUser] = useState("");
-  const [error, setError] = useState("");
-  const [Loading, setLoading] = useState(false);
-
-  const { user, loading, resetUser } = useUser();
-  const [notifications, setNotifications] = useState([]);
-  const [notiloading, setNotiloading] = useState(false);
-  const [backendError, setBackendError] = useState(null);
 
   useEffect(() => {
     const getrecentNotification = async () => {
@@ -193,7 +202,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
     getrecentNotification();
   }, []); // Empty dependency array ensures this runs only once
-  console.log("notifications", notifications);
+  console.log("notifications", recentnotifications);
 
   const navigate = useNavigate();
 
@@ -241,15 +250,26 @@ const MobileNav = ({ onOpen, ...rest }) => {
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-          onClick={() =>
-            navigate("/notification", { state: { notifications } })
-          }
-        />
+        <div className="relative">
+          <IconButton
+            size="lg"
+            variant="ghost"
+            aria-label="open menu"
+            icon={<FiBell />}
+            onClick={() =>
+              navigate("/notification", { state: { notifications } })
+            }
+            className={`relative ${
+              recentnotifications.length > 0 ? "text-red-500" : ""
+            }`}
+          />
+          {recentnotifications.length > 0 && (
+            <div className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+              {recentnotifications.length}
+            </div>
+          )}
+        </div>
+
         <Flex alignItems={"center"}>
           <Menu>
             <MenuButton

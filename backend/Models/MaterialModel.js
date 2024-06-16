@@ -27,14 +27,10 @@ const materialSchema = new mongoose.Schema(
       min: [0, "Weight must be a positive number"],
     },
 
-    receiverIds: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-    ],
-
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
     image: {
       type: String,
       required: [true, "Material image is required"],

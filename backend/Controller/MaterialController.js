@@ -4,8 +4,9 @@ import Material from "../Models/MaterialModel.js";
 import multer from "multer";
 import sharp from "sharp";
 import QuantityChange from "../Models/QuantityChangesModel.js";
-import { createNotification } from "./NotificationController.js";
+// import { createNotification } from "./NotificationController.js";
 import { User } from "../Models/UserModel.js";
+import Notification from "../Models/NotificationModel.js";
 import { io, getUserSocketId } from "../server.js";
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
@@ -149,10 +150,14 @@ export const withdrawAndUpdateQuantities = asyncHandler(
   async (req, res, next) => {
     console.log(req.body);
     const changes = req.body;
-    for (const change of changes) {
+
+    // Update changes array with user and changeType
+    changes.forEach((change) => {
       change.user = req.user._id;
       change.changeType = "withdraw";
-    }
+    });
+
+    // Validate each change
     for (const change of changes) {
       const material = await Material.findById(change.material);
 
@@ -165,65 +170,84 @@ export const withdrawAndUpdateQuantities = asyncHandler(
       if (material.totalQuantity < change.quantity) {
         return next(
           new AppError(
-            ` Cannot withdraw ${change.quantity} units from Material with name ${material.name} because totalQuantity < quantity`,
+            `Cannot withdraw ${change.quantity} units from Material ${material.name}`,
             400
           )
         );
       }
     }
 
+    // Insert quantity changes into database
     const insertedChanges = await QuantityChange.insertMany(changes);
 
-    const bulkOps = insertedChanges.map((change) => {
-      const update = { $inc: { totalQuantity: -change.quantity } };
-
-      return {
-        updateOne: {
-          filter: { _id: change.material },
-          update: update,
-        },
-      };
-    });
-
+    // Bulk update material quantities
+    const bulkOps = insertedChanges.map((change) => ({
+      updateOne: {
+        filter: { _id: change.material },
+        update: { $inc: { totalQuantity: -change.quantity } },
+      },
+    }));
     await Material.bulkWrite(bulkOps);
 
+    // Notify users if material quantity falls below threshold
     for (const change of changes) {
       const material = await Material.findById(change.material);
 
       if (material.totalQuantity < material.minthreshold) {
-        const receiverIds = await User.find({
-          $or: [{ role: "employee" }, { role: "storeOwner" }],
-        }).select("_id");
+        try {
+          // Find users who should receive notifications
+          const receiverIds = await User.find({
+            $or: [{ role: "employee" }, { role: "storeOwner" }],
+          }).select("_id");
 
-        const notificationData = {
-          receiverIds: receiverIds.map((user) => user._id),
-          from: "System",
-          text: `Material ${material.name} is below min threshold, please reorder`,
-        };
+          // Prepare notification data
+          const notificationData = {
+            receiverIds: receiverIds.map((user) => user._id),
+            from: "System",
+            text: `Material ${material.name} is below min threshold, please reorder`,
+          };
 
-        const notification = await createNotification(
-          { body: notificationData },
-          res,
-          next
-        );
-        notification.receiverIds.forEach((receiverId) => {
-          const socketId = getUserSocketId(receiverId);
-          if (socketId) {
-            io.to(socketId).emit("newNotification", {
-              from: notification.from,
-              text: notification.text,
+          // Create notification
+          // const notification = await createNotification(
+          //   { body: notificationData },
+          //   res,
+          //   next
+          // );
+          const notification = await Notification.create(notificationData);
+          console.log("socket ");
+
+          // Check if notification object is valid
+          if (notification && notification.receiverIds) {
+            // Emit notification to relevant sockets
+            console.log("socket 2");
+
+            notification.receiverIds.forEach((receiverId) => {
+              const socketId = getUserSocketId(receiverId.toString());
+              console.log("socketId", socketId);
+
+              if (socketId) {
+                io.to(socketId).emit("newNotification", {
+                  from: notification.from,
+                  text: notification.text,
+                });
+                console.log("socket notification sent successfully");
+              }
             });
           }
-        });
+        } catch (error) {
+          console.error("Error sending notification:", error);
+        }
       }
     }
 
+    // Send success response
     res.status(200).json({
       status: "success",
       message: "Sample data removed and total quantities updated successfully",
     });
   }
 );
+
 export const GetReportOfHowManyMaterialsAdded = asyncHandler(
   async (req, res) => {
     const { start, upto } = req.body;
