@@ -25,12 +25,36 @@ const io = new Server(server, {
   },
 });
 
-// Handling Socket.io connections
+let onlineUsers = [];
+
+const addOnlineUser = (userId, socketId) => {
+  !onlineUsers.some((user) => user.userId === userId) &&
+    onlineUsers.push({ userId, socketId });
+};
+
+const removeOnlineUser = (socketId) => {
+  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+};
+
+// const getUser = (userId) => {
+//   return onlineUsers.find((user) => user.userId === userId);
+// };
+const getUserSocketId = (userId) => {
+  const user = onlineUsers.find((user) => user.userId === userId);
+  return user ? user.socketId : null;
+};
 io.on("connection", (socket) => {
   console.log("a user connected");
 
+  socket.on("addUser", (userId) => {
+    addOnlineUser(userId, socket.id);
+    io.emit("getUsers", onlineUsers);
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
+    removeOnlineUser(socket.id);
+    io.emit("getUsers", onlineUsers);
   });
 });
 
@@ -40,4 +64,4 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-export { io };
+export { io, getUserSocketId };

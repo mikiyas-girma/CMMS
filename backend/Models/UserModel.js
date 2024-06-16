@@ -94,6 +94,6 @@ const Employee = User.discriminator(
     },
   })
 );
-console.log(User.discriminator);
+// console.log(User.discriminator);
 
 export { User, StoreOwner, Employee };

@@ -1,4 +1,5 @@
 // src/components/sidebar/SidebarWithHeader.jsx
+import { io } from "socket.io-client";
 
 import { deleteCookies, getUserAuthStatus } from "../../utils/auth";
 import {
@@ -35,7 +36,7 @@ import { HiUsers } from "react-icons/hi2";
 import { ImProfile } from "react-icons/im";
 import { BiSolidReport } from "react-icons/bi";
 import { capitalize } from "../../utils/capitalize";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import apiInstance from "../../utils/axios";
 import { ScaleLoader } from "react-spinners";
 import { Spinner } from "@chakra-ui/react";
@@ -148,8 +149,19 @@ const NavItem = ({ icon, children, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const socket = useRef();
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const { role, userId } = getUserAuthStatus();
 
+  useEffect(() => {
+    socket.current = io("http://localhost:3000");
+    socket.current.emit("addUser", userId);
+    socket.current.on("getUsers", (users) => {
+      setOnlineUsers(users);
+    });
+  }, [userId]);
+
+  console.log("OnlineUseers", onlineUsers);
   //   const [user, setUser] = useState("");
   const [error, setError] = useState("");
   const [Loading, setLoading] = useState(false);

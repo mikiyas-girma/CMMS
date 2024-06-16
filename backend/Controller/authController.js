@@ -26,7 +26,7 @@ const createSendToken = (user, statusCode, res) => {
   };
 
   res.cookie("jwt", token, cookieOptions);
-  console.log("Set-Cookie header:", res.get("Set-Cookie")); // Debug log
+  // console.log("Set-Cookie header:", res.get("Set-Cookie")); // Debug log
 
   user.password = undefined;
   res.status(statusCode).json({
@@ -78,8 +78,8 @@ export const protect = asyncHandler(async (req, res, next) => {
   if (req.cookies && req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-  console.log("Token", token);
-  console.log("Token:", req.cookies.jwt);
+  // console.log("Token", token);
+  // console.log("Token:", req.cookies.jwt);
 
   if (!token) {
     return next(
@@ -106,7 +106,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   // });
 
   // Check if user still exists
-  console.log("decode", decoded);
+  // console.log("decode", decoded);
   const freshUser = await User.findById(decoded?.id);
   if (!freshUser) {
     return next(

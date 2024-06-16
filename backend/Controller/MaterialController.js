@@ -6,6 +6,7 @@ import sharp from "sharp";
 import QuantityChange from "../Models/QuantityChangesModel.js";
 import { createNotification } from "./NotificationController.js";
 import { User } from "../Models/UserModel.js";
+import { io, getUserSocketId } from "../server.js";
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
@@ -200,7 +201,20 @@ export const withdrawAndUpdateQuantities = asyncHandler(
           text: `Material ${material.name} is below min threshold, please reorder`,
         };
 
-        await createNotification({ body: notificationData }, res, next);
+        const notification = await createNotification(
+          { body: notificationData },
+          res,
+          next
+        );
+        notification.receiverIds.forEach((receiverId) => {
+          const socketId = getUserSocketId(receiverId);
+          if (socketId) {
+            io.to(socketId).emit("newNotification", {
+              from: notification.from,
+              text: notification.text,
+            });
+          }
+        });
       }
     }
 
