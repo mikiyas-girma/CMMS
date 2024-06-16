@@ -15,6 +15,7 @@ import {
   Text,
   Grid,
   GridItem,
+  Box,
 } from "@chakra-ui/react";
 import apiInstance from "../utils/axios";
 import { ScaleLoader } from "react-spinners";
@@ -50,15 +51,13 @@ const Profile = () => {
   console.log("user here", user);
   return (
     <SidebarWithHeader>
-      <Grid
-        marginLeft="100px"
-        padding="0px"
-        h="200px"
-        templateRows="repeat(2, 1fr)"
-        templateColumns="repeat(5, 2fr)"
-        gap={4}
+      <Box >
+      <Grid  marginLeft='50px'
+         gridTemplateColumns={{ base: '1fr', md: '1fr 1fr', lg: '1fr .5fr 0.5fr'}}
+         
+         gap={5}
       >
-        <GridItem colSpan={4}>
+        <GridItem colSpan={{ base: 1, md: 2, lg:2 }} bg=""  p={0} boxShadow="sm">
           <Card
             direction={{ base: "column", sm: "row" }}
             overflow="hidden"
@@ -90,7 +89,7 @@ const Profile = () => {
             </Stack>
           </Card>
         </GridItem>
-        <GridItem colSpan={2}>
+        <GridItem colSpan={{ base: 1, md: 2, lg:2 }} bg=""  p={0} boxShadow="sm">
           <Card>
             <CardBody>
               <CardFooter>
@@ -107,7 +106,7 @@ const Profile = () => {
             </CardBody>
           </Card>
         </GridItem>
-        <GridItem colSpan={2}>
+        <GridItem colSpan={{ base: 1, md: 2, lg:2 }} bg=""  p={0} boxShadow="sm">
           <Card>
             <CardBody>
               <CardHeader>
@@ -132,6 +131,7 @@ const Profile = () => {
           </Card>
         </GridItem>
       </Grid>
+      </Box>
     </SidebarWithHeader>
   );
 };
