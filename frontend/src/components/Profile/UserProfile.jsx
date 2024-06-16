@@ -6,8 +6,8 @@ export const UserProfile = React.memo(({ user, role, capitalize }) => {
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
-    if (user && user.image) {
-      const newImageUrl = `http://127.0.0.1:3000/public/img/users/${user.image}`;
+    if (user && user?.image) {
+      const newImageUrl = `http://127.0.0.1:3000/public/img/users/${user?.image}`;
       setImageUrl(newImageUrl);
     }
   }, [user?.image]);
@@ -26,7 +26,7 @@ export const UserProfile = React.memo(({ user, role, capitalize }) => {
         ml="2"
       >
         <Text fontSize="sm">
-          {user.Fname} {user.Lname}
+          {user?.Fname} {user?.Lname}
         </Text>
         <Text fontSize="xs" color="gray.600">
           {capitalize(role)}
