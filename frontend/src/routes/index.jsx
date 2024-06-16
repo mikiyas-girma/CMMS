@@ -11,7 +11,9 @@ const Employees = React.lazy(() => import("../pages/Employees"));
 const Profile = React.lazy(() => import("../pages/Profile"));
 const Notification = React.lazy(() => import("../pages/Notifications"));
 const Reports = React.lazy(() => import("../pages/Reports"));
+const Settings = React.lazy(() => import("../pages/Settings"));
 PageNotFound;
+
 const routes = [
   { path: PathConstants.HOME, element: <Home /> },
   {
@@ -59,6 +61,14 @@ const routes = [
     element: (
       <AuthRoute>
         <Notification />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: PathConstants.Settings,
+    element: (
+      <AuthRoute>
+        <Settings />
       </AuthRoute>
     ),
   },
