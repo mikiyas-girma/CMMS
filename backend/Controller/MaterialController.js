@@ -214,12 +214,12 @@ export const withdrawAndUpdateQuantities = asyncHandler(
           //   next
           // );
           const notification = await Notification.create(notificationData);
-          console.log("socket ");
+          // console.log("socket ");
 
           // Check if notification object is valid
           if (notification && notification.receiverIds) {
             // Emit notification to relevant sockets
-            console.log("socket 2");
+            // console.log("socket 2");
 
             notification.receiverIds.forEach((receiverId) => {
               const socketId = getUserSocketId(receiverId.toString());
@@ -230,7 +230,7 @@ export const withdrawAndUpdateQuantities = asyncHandler(
                   from: notification.from,
                   text: notification.text,
                 });
-                console.log("socket notification sent successfully");
+                // console.log("socket notification sent successfully");
               }
             });
           }

@@ -40,12 +40,12 @@ const removeOnlineUser = (socketId) => {
 //   return onlineUsers.find((user) => user.userId === userId);
 // };
 const getUserSocketId = (userId) => {
-  console.log("userIDfor Socket", userId);
+  // console.log("userIDfor Socket", userId);
   const user = onlineUsers.find(
     (user) => user.userId.toString() === userId.toString()
   );
-  console.log("ActiveUser socket", user);
-  console.log("onlineUser", onlineUsers);
+  // console.log("ActiveUser socket", user);
+  // console.log("onlineUser", onlineUsers);
 
   return user ? user.socketId : null;
 };
