@@ -212,7 +212,12 @@ export const BlockEmployee = asyncHandler(async (req, res, next) => {
 });
 
 export const UpdateEmployee = asyncHandler(async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+  // const existingUsers = await User.findOne({ email: req.body.email });
+
+  // if (existingUsers) {
+  //   return next(new AppError(" This user already exist.", 400));
+  // }
+  const user = await Employee.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
