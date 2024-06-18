@@ -44,8 +44,12 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       required: [true, "please enter user role"],
-      enum: ["admin", "storeOwner", "employee"],
+      enum: {
+        values: ["admin", "storeOwner", "employee"],
+        message: "please enter only admin, storeOwner, or employee",
+      },
     },
+
     image: {
       type: String,
       default: "defaultUser.png",
@@ -71,6 +75,7 @@ const StoreOwner = User.discriminator(
     phone: {
       type: String,
       required: true,
+      unique: true,
     },
   })
 );
@@ -91,6 +96,7 @@ const Employee = User.discriminator(
     phone: {
       type: String,
       required: true,
+      unique: true,
     },
   })
 );

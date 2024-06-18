@@ -151,9 +151,21 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
           )}
 
           <div>
-            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
-              Save
-            </Button>
+            {backerror && (
+              <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                {backenderror}
+              </p>
+            )}
+            {!backerror && (
+              <Button
+                disable={loading}
+                colorScheme="blue"
+                mr={3}
+                onClick={handleSubmit}
+              >
+                {loading ? <PulseLoader color="#FFFFFF" /> : "Save"}
+              </Button>
+            )}
             <Button onClick={onClose}>Cancel</Button>
           </div>
         </ModalFooter>

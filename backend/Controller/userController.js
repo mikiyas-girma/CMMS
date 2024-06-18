@@ -105,15 +105,36 @@ export const getUserById = asyncHandler(async (req, res, next) => {
   });
 });
 
+// export const UpdateStoreOwner = asyncHandler(async (req, res, next) => {
+//   const user = await StoreOwner.findByIdAndUpdate(req.params.id, req.body, {
+//     new: true,
+//     runValidators: true,
+//   });
+//   res.status(200).json({
+//     status: "success",
+//     data: {
+//       user,
+//     },
+//   });
+// });
+
 export const UpdateStoreOwner = asyncHandler(async (req, res, next) => {
-  const user = await StoreOwner.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
+  let storeOwner = await StoreOwner.findById(req.params.id);
+
+  if (!storeOwner) {
+    return next(new AppError("Store owner not found", 404));
+  }
+
+  Object.keys(req.body).forEach((key) => {
+    storeOwner[key] = req.body[key];
   });
+
+  await storeOwner.save();
+
   res.status(200).json({
     status: "success",
     data: {
-      user,
+      user: storeOwner,
     },
   });
 });
@@ -211,15 +232,35 @@ export const BlockEmployee = asyncHandler(async (req, res, next) => {
   });
 });
 
+// export const UpdateEmployee = asyncHandler(async (req, res, next) => {
+//   const user = await Employee.findByIdAndUpdate(req.params.id, req.body, {
+//     new: true,
+//     runValidators: true,
+//   });
+//   res.status(200).json({
+//     status: "success",
+//     data: {
+//       user,
+//     },
+//   });
+// });
 export const UpdateEmployee = asyncHandler(async (req, res, next) => {
-  const user = await Employee.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
+  let employee = await Employee.findById(req.params.id);
+
+  if (!employee) {
+    return next(new AppError("Employee not found", 404));
+  }
+
+  Object.keys(req.body).forEach((key) => {
+    employee[key] = req.body[key];
   });
+
+  await employee.save();
+
   res.status(200).json({
     status: "success",
     data: {
-      user,
+      user: employee,
     },
   });
 });
