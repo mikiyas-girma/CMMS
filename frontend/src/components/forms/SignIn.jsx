@@ -166,7 +166,9 @@ const SignIn = forwardRef((props, ref) => {
               {/* <Checkbox colorScheme="green" size="md">
                 Remember me
               </Checkbox> */}
-              <Link fontSize={{ base: "md", sm: "md" }}>Forgot password?</Link>
+              <Link href="/forgotpassword" fontSize={{ base: "md", sm: "md" }}>
+                Forgot password?
+              </Link>
             </Stack>
             <Button
               bgGradient="linear(to-l, #0ea5e9,#2563eb)"

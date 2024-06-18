@@ -12,10 +12,13 @@ const Profile = React.lazy(() => import("../pages/Profile"));
 const Notification = React.lazy(() => import("../pages/Notifications"));
 const Reports = React.lazy(() => import("../pages/Reports"));
 const Settings = React.lazy(() => import("../pages/Settings"));
+const ForgotPassword = React.lazy(() => import("../pages/ForgotPassword"));
 PageNotFound;
 
 const routes = [
   { path: PathConstants.HOME, element: <Home /> },
+  { path: PathConstants.ForgotPassword, element: <ForgotPassword /> },
+
   {
     path: PathConstants.DASHBOARD,
     element: (

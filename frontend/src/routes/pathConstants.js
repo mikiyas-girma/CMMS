@@ -8,8 +8,9 @@ const PathConstants = {
   EMPLOYEES: "users",
   PROFILE: "profile",
   NOTIFICATION: "notification",
-  REPORTS:"reports",
-  Settings:"settings"
+  REPORTS: "reports",
+  Settings: "settings",
+  ForgotPassword: "forgotpassword",
 };
 
 export default PathConstants;
