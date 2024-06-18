@@ -51,3 +51,38 @@ export const deleteNotification = asyncHandler(async (req, res, next) => {
     data: null,
   });
 });
+export const markAsViewed = asyncHandler(async (req, res, next) => {
+  const { userId, notificationIds } = req.body;
+
+  const notifications = await Notification.updateMany(
+    { _id: { $in: notificationIds }, viewedBy: { $ne: userId } },
+    { $addToSet: { viewedBy: userId } }
+  );
+
+  if (notifications.nModified === 0) {
+    return next(new AppError("No notifications found with those IDs", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Notifications marked as viewed",
+  });
+});
+
+export const markAsRead = asyncHandler(async (req, res, next) => {
+  const { userId, notificationIds } = req.body;
+
+  const notifications = await Notification.updateMany(
+    { _id: { $in: notificationIds }, readBy: { $ne: userId } },
+    { $addToSet: { readBy: userId } }
+  );
+
+  if (notifications.nModified === 0) {
+    return next(new AppError("No notifications found with those IDs", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Notifications marked as read",
+  });
+});
