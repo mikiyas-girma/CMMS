@@ -17,8 +17,8 @@ const Notificationrouter = express.Router();
 Notificationrouter.use(protect);
 Notificationrouter.route("/").post(createNotification);
 Notificationrouter.route("/user/:userId").get(getAllNotifications);
-Notificationrouter.route("/markAsViewed").post(markAsViewed);
-Notificationrouter.route("/markAsRead").post(markAsRead);
+Notificationrouter.route("/markAsViewed").patch(markAsViewed);
+Notificationrouter.route("/markAsRead").patch(markAsRead);
 
 Notificationrouter.route("/:id")
   .get(getNotificationById)

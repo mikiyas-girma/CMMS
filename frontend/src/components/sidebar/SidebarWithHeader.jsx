@@ -167,6 +167,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
   const [backendError, setBackendError] = useState(null);
   const [notviloading, setNotViloading] = useState(false);
   const [NbackendError, setNBackendError] = useState(null);
+  const [notViewedLength, setnotViewedLength] = useState("");
+
   useEffect(() => {
     socket.current = io("http://localhost:3000");
     socket.current.emit("addUser", userId);
@@ -212,9 +214,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
       setNotViloading(true);
       try {
         const response = await getNotViewedNotifications(userId);
-        setNotViloading(false);
-        setNotVNotifications(response?.data?.results);
 
+        setNotViloading(false);
+        setNotVNotifications(response?.data?.data?.notifications);
+        setnotViewedLength(response?.data?.results);
         if (response?.error) {
           setNBackendError(response?.error);
         }
@@ -227,11 +230,27 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
     getunviewedNotification();
   }, []); // Empty dependency array ensures this runs only once
+  console.log(("notViewedLength", notViewedLength));
 
   console.log("NotViwednotifications", NotVnotifications);
 
   const navigate = useNavigate();
-
+  const markAsViewed = async () => {
+    const notificationIds = NotVnotifications.map(
+      (notification) => notification._id
+    );
+    console.log("notificationIds", notificationIds);
+    try {
+      const response = await apiInstance.patch("/notifications/markAsViewed", {
+        userId,
+        notificationIds,
+      });
+      console.log("Notifications marked as viewed:", response.data);
+    } catch (error) {
+      console.error("Error marking notifications as viewed:", error);
+    }
+  };
+  console.log("NotView", NotVnotifications);
   const handleSignOut = async () => {
     try {
       // console.log("signing out this cookies jwt:", Cookies.get("jwt"));
@@ -276,7 +295,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <div className="relative">
+        <div className="relative" onClick={markAsViewed}>
           <IconButton
             size="lg"
             variant="ghost"
@@ -289,9 +308,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
               recentnotifications.length > 0 ? "text-red-500" : ""
             }`}
           />
-          {(recentnotifications.length > 0 || NotVnotifications > 0) && (
+          {(recentnotifications.length > 0 || notViewedLength > 0) && (
             <div className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-              {recentnotifications.length + NotVnotifications}
+              {recentnotifications.length + notViewedLength}
             </div>
           )}
         </div>
