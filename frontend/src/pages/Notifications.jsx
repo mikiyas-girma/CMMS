@@ -22,6 +22,8 @@ import { useLocation } from "react-router-dom";
 import { format } from "timeago.js";
 
 import { useState, useRef, useEffect } from "react";
+import { getUserAuthStatus } from "../utils/auth";
+import apiInstance from "../utils/axios";
 
 const Notification = () => {
   const location = useLocation();
@@ -31,8 +33,11 @@ const Notification = () => {
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [showSendForm, setShowSendForm] = useState(false);
   const detailRef = useRef(null);
+  const [readNotfication, setReadNotifications] = useState([]);
 
   const toast = useToast();
+  const { userId } = getUserAuthStatus();
+
   const notification = [
     {
       user: { name: "John" },
@@ -116,7 +121,6 @@ const Notification = () => {
     setIsDetailVisible(false);
     setShowSendForm(true);
   };
-
   const handleSendFormSubmit = (e) => {
     e.preventDefault();
     toast({
@@ -129,6 +133,21 @@ const Notification = () => {
     });
     setShowSendForm(false);
   };
+  const markAsRead = async (notificationId) => {
+    try {
+      await apiInstance.patch(`/notifications/markAsRead`, {
+        notificationId,
+      });
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
+
+  const handleCombinedClick = (notification) => {
+    handleNotificationClick(notification);
+    markAsRead(notification._id);
+  };
+
   if (notifications.length === 0) {
     return <p className="text-gray-500 text-center py-4">No Notifications</p>;
   }
@@ -147,17 +166,25 @@ const Notification = () => {
                   key={index}
                   p={2}
                   borderRadius="md"
-                  onClick={() => handleNotificationClick(notification)}
+                  onClick={() => handleCombinedClick(notification)}
+                  // onClick={() => handleNotificationClick(notification);markAsread(notification._id)}
                   cursor={"pointer"}
                 >
                   <Text>
-                    <strong>{notification?.from}</strong> requested{" "}
+                    <strong>{notification?.from}</strong> requested
                     <span>
-                      {" "}
-                      {notification.text.length > 35
-                        ? `${notification.text.slice(0, 35)}...`
-                        : notification.text}
-                    </span>{" "}
+                      {!notification?.readBy?.includes(userId) ? (
+                        <strong>
+                          {notification.text.length > 35
+                            ? `${notification.text.slice(0, 35)}...`
+                            : notification.text}
+                        </strong>
+                      ) : notification.text.length > 35 ? (
+                        `${notification.text.slice(0, 35)}...`
+                      ) : (
+                        notification.text
+                      )}
+                    </span>
                     <strong>{notification.materialName}</strong> at{" "}
                     <strong>{format(notification.createdAt)}</strong>
                     <MdReceipt />
@@ -177,7 +204,7 @@ const Notification = () => {
               <HStack>
                 <Text>
                   <strong>{selectedNotification.from}</strong> requested{" "}
-                  <p>{selectedNotification.text}</p>{" "}
+                  <span>{selectedNotification.text}</span>{" "}
                   <strong>{selectedNotification.materialName}</strong>at{" "}
                   <strong>{format(selectedNotification.createdAt)}</strong>
                 </Text>

@@ -70,20 +70,22 @@ export const markAsViewed = asyncHandler(async (req, res, next) => {
 });
 
 export const markAsRead = asyncHandler(async (req, res, next) => {
-  const { userId, notificationIds } = req.body;
-
-  const notifications = await Notification.updateMany(
-    { _id: { $in: notificationIds }, readBy: { $ne: userId } },
-    { $addToSet: { readBy: userId } }
+  // const { userId, notificationId } = req.body;
+  const { notificationId } = req.body;
+  // console.log("MarAsREad", req.body, req.user._id);
+  const notification = await Notification.findByIdAndUpdate(
+    notificationId,
+    { $addToSet: { readBy: req?.user?._id } },
+    { new: true, runValidators: true }
   );
 
-  if (notifications.nModified === 0) {
-    return next(new AppError("No notifications found with those IDs", 404));
+  if (!notification) {
+    return next(new AppError("No notification found with that ID", 404));
   }
 
   res.status(200).json({
     status: "success",
-    message: "Notifications marked as read",
+    message: "Notification marked as read",
   });
 });
 export const NotReadNotification = asyncHandler(async (req, res, next) => {
