@@ -90,31 +90,24 @@ export const NotReadNotification = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
   const notifications = await Notification.find({ readBy: { $ne: userId } });
 
-  if (!notifications || notifications.length === 0) {
-    return next(new AppError("No unread notifications found", 404));
+  if (notifications || notifications.length > 0) {
+    res.status(200).json({
+      status: "success",
+      data: {
+        notifications,
+      },
+    });
   }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      notifications,
-    },
-  });
 });
 
-// Get notifications not viewed by a user
 export const NotViwedNotification = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
   const notifications = await Notification.find({ viewedBy: { $ne: userId } });
 
-  if (!notifications || notifications.length === 0) {
-    return next(new AppError("No unviewed notifications found", 404));
+  if (notifications || notifications.length > 0) {
+    res.status(200).json({
+      status: "success",
+      results: notifications.length,
+    });
   }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      notifications,
-    },
-  });
 });

@@ -43,7 +43,10 @@ import { Spinner } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useUser } from "../../utils/UserContext";
 import { UserProfile } from "../Profile/UserProfile";
-import { getAllNotifications } from "../../utils/notification";
+import {
+  getAllNotifications,
+  getNotViewedNotifications,
+} from "../../utils/notification";
 
 const SidebarContent = ({ onClose, ...rest }) => {
   let LinkItems = [
@@ -158,9 +161,12 @@ const MobileNav = ({ onOpen, ...rest }) => {
   const { user, loading, resetUser } = useUser();
   const [notifications, setNotifications] = useState([]);
   const [recentnotifications, setRecentNotifications] = useState([]);
+  const [NotVnotifications, setNotVNotifications] = useState([]);
 
   const [notiloading, setNotiloading] = useState(false);
   const [backendError, setBackendError] = useState(null);
+  const [notviloading, setNotViloading] = useState(false);
+  const [NbackendError, setNBackendError] = useState(null);
   useEffect(() => {
     socket.current = io("http://localhost:3000");
     socket.current.emit("addUser", userId);
@@ -191,8 +197,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
         if (response?.error) {
           setBackendError(response?.error);
         }
-
-        console.log("response", response);
       } catch (error) {
         setNotiloading(false);
         setBackendError(error.message || "Something went wrong");
@@ -202,7 +206,29 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
     getrecentNotification();
   }, []); // Empty dependency array ensures this runs only once
-  console.log("notifications", recentnotifications);
+
+  useEffect(() => {
+    const getunviewedNotification = async () => {
+      setNotViloading(true);
+      try {
+        const response = await getNotViewedNotifications(userId);
+        setNotViloading(false);
+        setNotVNotifications(response?.data?.results);
+
+        if (response?.error) {
+          setNBackendError(response?.error);
+        }
+      } catch (error) {
+        setNotViloading(false);
+        setBackendError(error.message || "Something went wrong");
+        console.error("Error fetching Notification", error);
+      }
+    };
+
+    getunviewedNotification();
+  }, []); // Empty dependency array ensures this runs only once
+
+  console.log("NotViwednotifications", NotVnotifications);
 
   const navigate = useNavigate();
 
@@ -263,9 +289,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
               recentnotifications.length > 0 ? "text-red-500" : ""
             }`}
           />
-          {recentnotifications.length > 0 && (
+          {(recentnotifications.length > 0 || NotVnotifications > 0) && (
             <div className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-              {recentnotifications.length}
+              {recentnotifications.length + NotVnotifications}
             </div>
           )}
         </div>
