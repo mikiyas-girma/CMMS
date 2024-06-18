@@ -223,7 +223,7 @@ export const withdrawAndUpdateQuantities = asyncHandler(
 
             notification.receiverIds.forEach((receiverId) => {
               const socketId = getUserSocketId(receiverId.toString());
-              console.log("socketId", socketId);
+              // console.log("socketId", socketId);
 
               if (socketId) {
                 io.to(socketId).emit("newNotification", {

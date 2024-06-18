@@ -182,6 +182,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
         data,
       ]);
     });
+    return () => {
+      socket.current.disconnect();
+    };
   }, [userId]);
   console.log("notificationsSocket", notifications);
 
@@ -207,7 +210,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
     };
 
     getrecentNotification();
-  }, []); // Empty dependency array ensures this runs only once
+  }, [userId]); // Empty dependency array ensures this runs only once
 
   useEffect(() => {
     const getunviewedNotification = async () => {
@@ -229,7 +232,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
     };
 
     getunviewedNotification();
-  }, []); // Empty dependency array ensures this runs only once
+  }, [userId]); // Empty dependency array ensures this runs only once
   console.log(("notViewedLength", notViewedLength));
 
   console.log("NotViwednotifications", NotVnotifications);
@@ -239,13 +242,19 @@ const MobileNav = ({ onOpen, ...rest }) => {
     const notificationIds = NotVnotifications.map(
       (notification) => notification._id
     );
+
     console.log("notificationIds", notificationIds);
     try {
-      const response = await apiInstance.patch("/notifications/markAsViewed", {
-        userId,
-        notificationIds,
-      });
-      console.log("Notifications marked as viewed:", response.data);
+      if (NotVnotifications.length > 0) {
+        await apiInstance.patch("/notifications/markAsViewed", {
+          userId,
+          notificationIds,
+        });
+      }
+      setRecentNotifications([]);
+      setNotVNotifications([]);
+
+      // console.log("Notifications marked as viewed:", response.data);
     } catch (error) {
       console.error("Error marking notifications as viewed:", error);
     }
@@ -304,9 +313,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
             onClick={() =>
               navigate("/notification", { state: { notifications } })
             }
-            className={`relative ${
-              recentnotifications.length > 0 ? "text-red-500" : ""
-            }`}
           />
           {(recentnotifications.length > 0 || notViewedLength > 0) && (
             <div className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
