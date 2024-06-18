@@ -148,6 +148,7 @@ export const updateUser = async (url, editedUser) => {
     }
     return { data, error: null };
   } catch (error) {
+    console.log("Error", error);
     return {
       data: null,
       error: error?.response?.data?.message || "Something went wrong",

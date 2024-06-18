@@ -1,4 +1,4 @@
-import { AppError } from "./AppError";
+import { AppError } from "./AppError.js";
 
 const handleDuplicateEmailError = (err) => {
   const value = err.keyValue.email;

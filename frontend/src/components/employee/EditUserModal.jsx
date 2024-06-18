@@ -34,6 +34,7 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
       [name]: value,
     }));
   };
+  console.log("editedUser", editedUser);
 
   const handleSubmit = async () => {
     let url = "";
@@ -53,8 +54,11 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
       onClose();
     }
     // onSave(editedUser);
-    onClose();
+    if (response?.data?.status === "success") {
+      onClose();
+    }
   };
+  console.log("bacError", backerror);
   const handleButtonClick = async () => {
     let url = "";
     if (user.status === "active") {
@@ -153,20 +157,23 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
           <div>
             {backerror && (
               <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
-                {backenderror}
+                {backerror}
               </p>
             )}
             {!backerror && (
-              <Button
-                disable={loading}
-                colorScheme="blue"
-                mr={3}
-                onClick={handleSubmit}
-              >
-                {loading ? <PulseLoader color="#FFFFFF" /> : "Save"}
-              </Button>
+              <>
+                <Button
+                  disable={loading}
+                  colorScheme="blue"
+                  mr={3}
+                  onClick={handleSubmit}
+                >
+                  {loading ? <PulseLoader color="#FFFFFF" /> : "Save"}
+                </Button>
+
+                <Button onClick={onClose}>Cancel</Button>
+              </>
             )}
-            <Button onClick={onClose}>Cancel</Button>
           </div>
         </ModalFooter>
       </ModalContent>
