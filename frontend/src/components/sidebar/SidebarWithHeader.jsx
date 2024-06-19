@@ -314,11 +314,12 @@ const MobileNav = ({ onOpen, ...rest }) => {
               navigate("/notification", { state: { notifications } })
             }
           />
-          {(recentnotifications.length > 0 || notViewedLength > 0) && (
-            <div className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-              {recentnotifications.length + notViewedLength}
-            </div>
-          )}
+          {(recentnotifications.length > 0 || notViewedLength > 0) &&
+            role !== "admin" && (
+              <div className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {recentnotifications.length + notViewedLength}
+              </div>
+            )}
         </div>
 
         <Flex alignItems={"center"}>
