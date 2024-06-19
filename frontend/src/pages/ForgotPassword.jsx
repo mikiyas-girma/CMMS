@@ -12,18 +12,15 @@ const ForgotPassword = () => {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const response = await forgotPassword(email);
-      console.log("res", response);
-      setLoading(false);
-      if (response?.data?.status === "success") {
-        setMessage(response?.data?.message);
-      } else {
-        setBackendError(response?.error);
-      }
-    } catch (error) {
-      setLoading(false);
-      setBackendError("An error occurred. Please try again later.");
+
+    const response = await forgotPassword(email);
+    console.log("res", response);
+    setLoading(false);
+    if (response?.data?.status === "success") {
+      setMessage(response?.data?.message);
+    }
+    if (response?.error) {
+      setBackendError(response?.error);
     }
   };
 

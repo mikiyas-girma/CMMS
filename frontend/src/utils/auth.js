@@ -170,6 +170,21 @@ export const forgotPassword = async (email) => {
     };
   }
 };
+export const resetPassword = async (password, passwordConfirm, token) => {
+  try {
+    const { data } = await axios.patch(
+      `http://127.0.0.1:3000/cmms/api/users/resetPassword/${token}`,
+      { password, passwordConfirm }
+    );
+
+    return { data, error: null };
+  } catch (error) {
+    return {
+      data: null,
+      error: error?.response?.data?.message || "Something went wrong",
+    };
+  }
+};
 export const deleteCookies = async (cookieName) => {
   try {
     const response = await apiInstance.get(

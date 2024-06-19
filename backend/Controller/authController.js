@@ -4,6 +4,7 @@ import { StoreOwner, User } from "../Models/UserModel.js";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
 import { Email } from "../utils/Email.js";
+import crypto from "crypto";
 
 const signToken = (id, role) => {
   console.log("id", id);
