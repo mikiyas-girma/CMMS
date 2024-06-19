@@ -11,6 +11,7 @@ const PathConstants = {
   REPORTS: "reports",
   Settings: "settings",
   ForgotPassword: "forgotpassword",
+  ResetPassword: "resetpassword/:token",
 };
 
 export default PathConstants;

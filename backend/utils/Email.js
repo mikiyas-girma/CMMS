@@ -121,4 +121,72 @@ export class Email {
     `;
     await this.send("Welcome to CMMS!", html);
   }
+  async sendPasswordReset() {
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+          }
+          .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+          }
+          .header {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #333333;
+          }
+          .content {
+            margin-top: 20px;
+            line-height: 1.6;
+          }
+          .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            color: #ffffff;
+            background-color: #007BFF;
+            text-decoration: none;
+            border-radius: 5px;
+          }
+          .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #777777;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            Password Reset Request
+          </div>
+          <div class="content">
+            <p>Dear ${this.firstName},</p>
+            <p>We received a request to reset your password for your CMMS account.</p>
+            <p>Please click the link below to reset your password. This link is valid for only  10 minutes.</p>
+            <p><a href="${this.url}" class="button">Reset Password</a></p>
+            <p>If you did not request a password reset, please ignore this email.</p>
+          </div>
+          <div class="footer">
+            <p>Thank you,</p>
+            <p>The CMMS Team</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+    await this.send("CMMS, Reset Forgotten Password", html);
+  }
 }

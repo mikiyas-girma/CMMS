@@ -27,6 +27,7 @@ import {
   forgotPassword,
   clearCookie,
   getStatus,
+  resetPassword,
 } from "../Controller/authController.js";
 const userRouter = express.Router();
 userRouter.route("/login").post(login);

@@ -3,6 +3,7 @@ import { AppError } from "../utils/AppError.js";
 import { StoreOwner, User } from "../Models/UserModel.js";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
+import { Email } from "../utils/Email.js";
 
 const signToken = (id, role) => {
   console.log("id", id);
@@ -197,19 +198,18 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
-  const resetURL = `${req.protocol}://${req.get("host")}/resetPassword/${resetToken}`;
+  // const resetURL = `${req.protocol}://${req.get("host")}/resetPassword/${resetToken}`;
+  const resetURL = `http://localhost:8000/resetpassword/${resetToken}`;
 
-  const message = `Forgot your password? Click the link to reset your password: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+  // const message = `Forgot your password? Click the link to reset your password: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: "Your password reset token (valid for 10 min)",
-      message,
-    });
+    await new Email(user, resetURL).sendPasswordReset();
+
     res.status(200).json({
       status: "success",
-      message: "Token sent to email!",
+      message:
+        "A reset link has been sent to your registered email. Please use it to reset your password.",
     });
   } catch (err) {
     user.passwordResetExpires = undefined;
@@ -221,8 +221,7 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const resetPassword = catchAsync(async (req, res, next) => {
-  // 1) Get user based on the token
+export const resetPassword = asyncHandler(async (req, res, next) => {
   const hashedToken = crypto
     .createHash("sha256")
     .update(req.params.token)
@@ -242,11 +241,12 @@ export const resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
+
   res.status(200).json({
     status: "success",
     message: "Password updated successfully. Please log in to continue!",
+  });
 });
-
 
 export const getStatus = asyncHandler(async (req, res) => {
   const token = req.cookies.jwt;
