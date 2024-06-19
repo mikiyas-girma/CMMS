@@ -31,6 +31,8 @@ import {
 const userRouter = express.Router();
 userRouter.route("/login").post(login);
 userRouter.route("/forgotPassword").post(forgotPassword);
+userRouter.route("/resetPassword/:token").patch(resetPassword);
+
 // userRouter.get("/auth-status", getStatus);
 
 userRouter.use(protect);

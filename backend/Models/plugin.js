@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 const passwordPlugin = function (schema, options) {
   schema.pre("save", async function (next) {
@@ -19,6 +20,17 @@ const passwordPlugin = function (schema, options) {
     this.passwordChangedAt = Date.now() - 1000;
     next();
   });
+
+  schema.methods.createPasswordResetToken = function () {
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    this.passwordResetToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+    return resetToken;
+  };
+
   schema.methods.changedPasswordAfter = function (JWTTimestamp) {
     if (this.passwordChangedAt) {
       const changedTimestamp = parseInt(

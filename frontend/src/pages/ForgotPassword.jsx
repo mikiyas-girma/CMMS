@@ -1,8 +1,13 @@
 // src/components/ForgotPassword.js
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [backendError, setBackendError] = useState("");
+
+  const handleResetPassword = () => {};
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
@@ -43,6 +48,7 @@ const ForgotPassword = () => {
           <div>
             <button
               type="submit"
+              onClick={handleResetPassword}
               className="w-full bg-blue-600  text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
             >
               Reset Password
