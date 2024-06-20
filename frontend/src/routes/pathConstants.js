@@ -10,6 +10,7 @@ const PathConstants = {
   NOTIFICATION: "notification",
   REPORTS: "reports",
   Settings: "settings",
+  UPDATEPASSWORD:"updatepassword",
   ForgotPassword: "forgotpassword",
   ResetPassword: "resetpassword/:token",
 };

@@ -293,7 +293,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-
+      
       <Text
         display={{ base: "flex", md: "none" }}
         fontSize="2xl"
@@ -347,7 +347,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <MenuItem as={Link} to="/profile">
                 Profile
               </MenuItem>
-              <MenuItem>Settings</MenuItem>
+              <MenuItem as={Link} to="/updatepassword">UpdatePassword</MenuItem>
               <MenuDivider />
               <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
             </MenuList>
