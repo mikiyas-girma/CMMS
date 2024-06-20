@@ -1,8 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import App from './App.jsx';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import App from "./App.jsx";
+import "./index.css";
+import { Provider } from "react-redux";
+import { store } from "./redux/Store/store.js";
 
 const theme = extendTheme({
   colors: {
@@ -26,18 +28,20 @@ const theme = extendTheme({
   styles: {
     global: (props) => ({
       body: {
-        bg: props.colorMode === 'dark' ? 'gray.800' : '#fefefb',
+        bg: props.colorMode === "dark" ? "gray.800" : "#fefefb",
       },
     }),
   },
 });
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ChakraProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 // color main 1:  F3F8FF

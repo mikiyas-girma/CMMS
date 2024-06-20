@@ -29,15 +29,16 @@ import {
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 import { getUserAuthStatus } from "../utils/auth";
+import { fetchUsers } from "../redux/Slice/userSlice";
 
 import FormSubmitted from "./FormSubmitted";
 import apiInstance from "../utils/axios";
+import { useDispatch, useSelector } from "react-redux";
 const EditUserModal = React.lazy(() =>
   import("../components/employee/EditUserModal")
 );
 
 const Employees = () => {
-
   const [edit, setEdit] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -51,39 +52,30 @@ const Employees = () => {
 
   const { role } = getUserAuthStatus();
   const [submittedData, setSubmittedData] = useState(null);
-  const [userData, setUserData] = useState([]);
+  // const [userData, setUserData] = useState([]);
   const [error, setError] = useState("");
-  const [numberofuser, setNumberofUsers] = useState("");
+  // const [numberofuser, setNumberofUsers] = useState("");
   const [selectedUserForEdit, setSelectedUserForEdit] = useState(null);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        let url = "";
-        if (role === "admin") {
-          url = "/storeOwner";
-        } else if (role === "storeOwner") {
-          url = "/employee";
-        }
+      let url = "";
+      if (role === "admin") {
+        url = "/storeOwner";
+      } else if (role === "storeOwner") {
+        url = "/employee";
+      }
 
-        if (url) {
-          const response = await apiInstance.get(`/users/${url}`);
-          console.log("response", response);
-          setUserData(response?.data?.data?.users);
-          setNumberofUsers(response?.data?.results);
-        } else {
-          setError("Invalid role");
-        }
-      } catch (error) {
-        console.log("error", error);
-        console.error("Error fetching user data:", error);
-        setError("Failed to fetch user data");
+      if (url) {
+        dispatch(fetchUsers(url));
+      } else {
+        setError("Invalid role");
       }
     };
 
     fetchUserData();
   }, [role]);
-
+  const { userData, numberofuser } = useSelector((state) => state.user);
   const handleSubmit = (e) => {
     onClose();
     e.preventDefault();
@@ -124,7 +116,6 @@ const Employees = () => {
     });
     console.log("edit", edit);
   };
-
 
   const handleEditClick = (user) => {
     setSelectedUserForEdit(user);
@@ -251,7 +242,7 @@ const Employees = () => {
                 <Tr key={user._id}>
                   <Td>{i + 1}</Td>
                   <Td>
-                    {user.Fname}    {user.Lname}
+                    {user.Fname} {user.Lname}
                   </Td>
                   {isMediumScreen && <Td>{user.email}</Td>}
                   {isMediumScreen && <Td>{user.phone}</Td>}

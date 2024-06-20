@@ -148,7 +148,7 @@ const Notification = () => {
     markAsRead(notification._id);
   };
 
-  if (notifications.length === 0) {
+  if (notifications?.length === 0) {
     return <p className="text-gray-500 text-center py-4">No Notifications</p>;
   }
 
@@ -161,7 +161,7 @@ const Notification = () => {
           </CardHeader>
           <CardBody>
             <Stack divider={<StackDivider />} spacing={4}>
-              {notifications.map((notification, index) => (
+              {notifications?.map((notification, index) => (
                 <Box
                   key={index}
                   p={2}

@@ -45,6 +45,17 @@ export const login = async (email, password) => {
   }
 };
 
+// export const fetchUsers = async (url) => {
+//   try {
+//     const { data } = await apiInstance.get(`/users/${url}`);
+//     return { data, error: null };
+//   } catch (error) {
+//     return {
+//       data: null,
+//       error: error?.response?.data?.message || "Something went wrong",
+//     };
+//   }
+// };
 export const getUserAuthStatus = () => {
   // console.log("tokenfromCookies", Cookies);
 
