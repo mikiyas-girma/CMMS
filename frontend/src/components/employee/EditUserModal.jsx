@@ -49,6 +49,16 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
     setloading(true);
     const response = await updateUser(url, editedUser);
     setloading(false);
+    let ur = "";
+    if (user.role === "storeOwner") {
+      ur = "/storeOwner";
+    } else if (user.role === "employee") {
+      ur = "/employee";
+    }
+
+    if (ur) {
+      dispatch(fetchUsers(ur));
+    }
     console.log("response", response);
     if (response?.error) {
       setBackError(response?.error);
