@@ -2,6 +2,7 @@
 // import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 // import UpdatePassword from "../components/settings/UpdatePassword";
 
+<<<<<<< HEAD
 
 // const Settings = () => {
 //     return (
@@ -10,5 +11,10 @@
 //         </SidebarWithHeader>
 //     );
 //     }
+=======
+const Settings = () => {
+  return <UpdatePassword />;
+};
+>>>>>>> 4150643 (Update Password interface)
 
 // export default Settings;
