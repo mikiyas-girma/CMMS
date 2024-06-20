@@ -9,6 +9,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
+import SidebarWithHeader from '../sidebar/SidebarWithHeader';
 
 const UpdatePassword = () => {
   const [showForm, setShowForm] = useState(false);
@@ -49,6 +50,7 @@ const UpdatePassword = () => {
   };
 
   return (
+    <SidebarWithHeader>
     <Container>
     <Box p={4}>
       <Button ml={0} colorScheme="blue" onClick={() => setShowForm(!showForm)}>
@@ -75,6 +77,7 @@ const UpdatePassword = () => {
       )}
     </Box>
     </Container>
+    </SidebarWithHeader>
   );
 };
 

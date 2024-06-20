@@ -11,7 +11,9 @@ const Employees = React.lazy(() => import("../pages/Employees"));
 const Profile = React.lazy(() => import("../pages/Profile"));
 const Notification = React.lazy(() => import("../pages/Notifications"));
 const Reports = React.lazy(() => import("../pages/Reports"));
-const Settings = React.lazy(() => import("../pages/Settings"));
+const Settings = React.lazy(() => import("../components/settings/UpdatePassword"));
+const About = React.lazy(() => import("../pages/About"));
+const UpdatePassword = React.lazy(() => import("../components/settings/UpdatePassword"));
 const ForgotPassword = React.lazy(() => import("../pages/ForgotPassword"));
 const ResetPassword = React.lazy(() => import("../pages/ResetPassword"));
 PageNotFound;
@@ -74,6 +76,22 @@ const routes = [
     element: (
       <AuthRoute>
         <Settings />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: PathConstants.ABOUT,
+    element: (
+      <AuthRoute>
+        <About />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: PathConstants.UPDATEPASSWORD,
+    element: (
+      <AuthRoute>
+        <UpdatePassword />
       </AuthRoute>
     ),
   },
