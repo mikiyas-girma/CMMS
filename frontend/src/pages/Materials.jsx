@@ -471,12 +471,11 @@ const Materials = () => {
           <ModalHeader>Edit Material </ModalHeader>
           <ModalBody>
             <form>
-              <FormControl>
+              <FormControl className="w-[400px] h-[200px] border border-gray-300 rounded-lg overflow-hidden">
                 <Image
                   src={`http://127.0.0.1:3000/public/img/materials/${editedMaterial.image}`}
                   alt={editedMaterial.name}
-                  w="200px"
-                  h="100px"
+                  className="w-full h-full object-cover"
                 />
               </FormControl>
               <FormControl>
