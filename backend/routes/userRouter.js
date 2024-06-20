@@ -38,7 +38,7 @@ userRouter.route("/resetPassword/:token").patch(resetPassword);
 
 userRouter.use(protect);
 userRouter.get("/deleteCookies/:name", clearCookie);
-userRouter.route("/updateMypassword").post(updatePassword);
+userRouter.route("/updateMypassword").patch(updatePassword);
 userRouter.route("/me").get(getme, getUserById);
 
 userRouter

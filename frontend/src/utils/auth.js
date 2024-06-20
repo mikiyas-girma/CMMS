@@ -166,6 +166,33 @@ export const updateUser = async (url, editedUser) => {
     };
   }
 };
+export const updatePassword = async (
+  passwordCurrent,
+  password,
+  passwordConfirm
+) => {
+  try {
+    const { data } = await apiInstance.patch("/users/updateMypassword", {
+      passwordCurrent,
+      password,
+      passwordConfirm,
+    });
+
+    if (data?.status === "success") {
+      Toast.fire({
+        icon: "success",
+        title: "Password Updated Successfully",
+      });
+    }
+    return { data, error: null };
+  } catch (error) {
+    console.log("Error", error);
+    return {
+      data: null,
+      error: error?.response?.data?.message || "Something went wrong",
+    };
+  }
+};
 export const forgotPassword = async (email) => {
   try {
     const { data } = await axios.post(
