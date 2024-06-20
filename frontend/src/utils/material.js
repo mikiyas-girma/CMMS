@@ -108,3 +108,24 @@ export const generatereport = async (url, start, upto) => {
     };
   }
 };
+
+export const updateMaterial = async (url, editedUser) => {
+  try {
+    const { data } = await apiInstance.patch(url, editedUser);
+    console.log("data updated", data);
+
+    if (data?.status === "success") {
+      Toast.fire({
+        icon: "success",
+        title: "Material Updated Successfully",
+      });
+    }
+    return { data, error: null };
+  } catch (error) {
+    console.log("Error", error);
+    return {
+      data: null,
+      error: error?.response?.data?.message || "Something went wrong",
+    };
+  }
+};

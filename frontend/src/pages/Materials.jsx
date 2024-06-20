@@ -43,7 +43,11 @@ import {
   handleBlurQuantity,
 } from "../utils/validateMaterial";
 // import materialslist from "../components/materials/materialsData";
-import { addMaterials, registerMaterial } from "../utils/material";
+import {
+  addMaterials,
+  registerMaterial,
+  updateMaterial,
+} from "../utils/material";
 import { PulseLoader } from "react-spinners";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { Navigate } from "react-router-dom";
@@ -131,6 +135,7 @@ const Materials = () => {
   };
   const onEditModalClose = () => {
     setEditMaterialModal(false);
+    setBackError("");
   };
 
   const handleNewMaterial = async (e) => {
@@ -174,6 +179,27 @@ const Materials = () => {
   //     [id]: e.target.checked,
   //   }));
   // };
+  const [upLoading, setUploading] = useState(false);
+  const [back, setBackError] = useState("");
+
+  const handleUpdate = async (id) => {
+    // console.log("IDDDDDDDD", id);
+    let url = `materials/material/${id}`;
+
+    setUploading(true);
+    const response = await updateMaterial(url, editedMaterial);
+    setUploading(false);
+
+    if (response?.error) {
+      setBackError(response?.error);
+    }
+    if (response?.data?.status === "success") {
+      dispatch(getMaterials());
+
+      onEditModalClose();
+    }
+  };
+
   const handleCheckboxChange = (e, id) => {
     const isChecked = checkedMaterials.includes(id);
     if (isChecked) {
@@ -442,7 +468,7 @@ const Materials = () => {
       <Modal isOpen={EditMaterialModal} onClose={onEditModalClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Edit Material Threshold</ModalHeader>
+          <ModalHeader>Edit Material </ModalHeader>
           <ModalBody>
             <form>
               <FormControl>
@@ -465,7 +491,6 @@ const Materials = () => {
                       name: e.target.value,
                     })
                   }
-                  isDisabled
                 />
               </FormControl>
               <FormControl mt={4}>
@@ -480,7 +505,6 @@ const Materials = () => {
                       category: e.target.value,
                     })
                   }
-                  isDisabled
                 />
               </FormControl>
               <FormControl mt={4}>
@@ -492,7 +516,7 @@ const Materials = () => {
                   onChange={(e) =>
                     setEditedMaterial({
                       ...editedMaterial,
-                      quantity: e.target.value,
+                      totalQuantity: e.target.value,
                     })
                   }
                   isDisabled
@@ -503,11 +527,11 @@ const Materials = () => {
                 <Input
                   id="threshold"
                   placeholder="Enter material threshold"
-                  value={editedMaterial.threshold}
+                  value={editedMaterial.minthreshold}
                   onChange={(e) =>
                     setEditedMaterial({
                       ...editedMaterial,
-                      threshold: e.target.value,
+                      minthreshold: e.target.value,
                     })
                   }
                 />
@@ -515,9 +539,25 @@ const Materials = () => {
             </form>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Update
-            </Button>
+            <div>
+              {back && (
+                <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
+                  {back}
+                </p>
+              )}
+              {!back && (
+                <>
+                  <Button
+                    disabled={upLoading}
+                    colorScheme="blue"
+                    mr={3}
+                    onClick={() => handleUpdate(editedMaterial._id)}
+                  >
+                    {upLoading ? <PulseLoader color="#FFFFFF" /> : "Update"}
+                  </Button>
+                </>
+              )}
+            </div>
             <Button onClick={onEditModalClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
@@ -537,6 +577,8 @@ const Materials = () => {
                 <Th>Name</Th>
                 <Th>Category</Th>
                 <Th>Quantity</Th>
+                <Th>Threshold</Th>
+
                 {isEditing && (
                   <>
                     <Th>Select</Th>
@@ -560,6 +602,8 @@ const Materials = () => {
                   <Td>{data.name}</Td>
                   <Td>{data.category}</Td>
                   <Td>{data.totalQuantity}</Td>
+                  <Td>{data.minthreshold}</Td>
+
                   <Td>
                     <EditIcon
                       color="blue.500"

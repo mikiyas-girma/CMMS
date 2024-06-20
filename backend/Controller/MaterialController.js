@@ -83,7 +83,7 @@ export const updateMaterial = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    status: "updated successfully",
+    status: "success",
     data: {
       material,
     },

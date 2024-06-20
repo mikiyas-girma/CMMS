@@ -42,12 +42,7 @@ MaterialRouter.route("/addmaterial").post(insertAndUpdateQuantities);
 MaterialRouter.route("/withdrawmaterial").post(withdrawAndUpdateQuantities);
 
 MaterialRouter.route("/material/:id")
-  .patch(
-    uploadMaterialPhoto,
-    checkMaterialExists,
-    resizeMaterialPhoto,
-    updateMaterial
-  )
+  .patch(uploadMaterialPhoto, resizeMaterialPhoto, updateMaterial)
   .delete(deleteMaterial)
   .get(getMaterialById);
 
