@@ -14,6 +14,8 @@ import {
 } from "@chakra-ui/react";
 import { blockUser, updateUser } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
+import { useDispatch } from "react-redux";
+import { fetchUsers } from "../../redux/Slice/userSlice";
 // import { Navigate } from "react-router-dom";
 
 const EditUserModal = ({ user, isOpen, onClose }) => {
@@ -22,6 +24,7 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
   const [backenderror, setBakendError] = useState("");
   const [loading, setloading] = useState("");
   const [backerror, setBackError] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setEditedUser(user); // Update the state when the user prop changes
@@ -70,6 +73,18 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
     const response = await blockUser(url, user);
     setLoading(false);
     console.log("response", response);
+
+    let ur = "";
+    if (user.role === "storeOwner") {
+      ur = "/storeOwner";
+    } else if (user.role === "employee") {
+      ur = "/employee";
+    }
+
+    if (ur) {
+      dispatch(fetchUsers(ur));
+    }
+
     if (response?.error) {
       setBakendError(response?.error);
     }
