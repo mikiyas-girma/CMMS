@@ -11,6 +11,7 @@ const PathConstants = {
   REPORTS: "reports",
   Settings: "settings",
   UPDATEPASSWORD:"updatepassword",
+  ABOUT:"about",
   ForgotPassword: "forgotpassword",
   ResetPassword: "resetpassword/:token",
 };
