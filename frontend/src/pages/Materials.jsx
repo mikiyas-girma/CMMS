@@ -43,14 +43,12 @@ import {
   handleBlurQuantity,
 } from "../utils/validateMaterial";
 // import materialslist from "../components/materials/materialsData";
-import {
-  addMaterials,
-  getMaterials,
-  registerMaterial,
-} from "../utils/material";
+import { addMaterials, registerMaterial } from "../utils/material";
 import { PulseLoader } from "react-spinners";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getMaterials } from "../redux/Slice/materialSlice";
 
 const Materials = () => {
   const bg = useColorModeValue("#fefefb", "gray.800");
@@ -61,7 +59,7 @@ const Materials = () => {
   const [materialList, setMaterialList] = useState([]);
   const [rowsLimit] = useState(5);
   const [rowsToShow, setRowsToShow] = useState(
-    materialList.slice(0, rowsLimit)
+    materialList?.slice(0, rowsLimit)
   );
   const [totalPage, settotalPage] = useState(
     Math.ceil(materialList.length / rowsLimit)
@@ -72,6 +70,7 @@ const Materials = () => {
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState("");
   const [threshold, setThreshold] = useState("");
+  const dispatch = useDispatch();
 
   const [nameError, setNameError] = useState("");
   const [categoryError, setCategoryError] = useState("");
@@ -100,21 +99,21 @@ const Materials = () => {
   const nextPage = () => {
     const startIndex = rowsLimit * (currentPage + 1);
     const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materialList.slice(startIndex, endIndex));
+    setRowsToShow(materialList?.slice(startIndex, endIndex));
     setCurrentPage(currentPage + 1);
   };
 
   const changePage = (value) => {
     const startIndex = value * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materialList.slice(startIndex, endIndex));
+    setRowsToShow(materialList?.slice(startIndex, endIndex));
     setCurrentPage(value);
   };
 
   const previousPage = () => {
     const startIndex = (currentPage - 1) * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    setRowsToShow(materialList.slice(startIndex, endIndex));
+    setRowsToShow(materialList?.slice(startIndex, endIndex));
     setCurrentPage(currentPage > 1 ? currentPage - 1 : 0);
   };
 
@@ -152,6 +151,8 @@ const Materials = () => {
     );
     setLoading(false);
     if (response?.data?.status === "success") {
+      await dispatch(getMaterials());
+
       onClose();
     }
     if (response?.error) {
@@ -217,6 +218,8 @@ const Materials = () => {
     }
 
     if (response?.data?.status === "success") {
+      await dispatch(getMaterials());
+
       Navigate("/materials");
     }
 
@@ -253,6 +256,8 @@ const Materials = () => {
     }
 
     if (response?.data?.status === "success") {
+      await dispatch(getMaterials());
+
       Navigate("/materials");
     }
 
@@ -285,20 +290,18 @@ const Materials = () => {
 
   useEffect(() => {
     const fetchMaterials = async () => {
-      const { data, error } = await getMaterials();
-      if (data && data.status === "success") {
-        console.log("my datas : ", data.data.materials);
-        const materials = data.data.materials;
-        setMaterialList(materials);
-        setRowsToShow(materials.slice(0, rowsLimit));
-      }
-      if (error) {
-        console.log("error", error);
-      }
+      await dispatch(getMaterials());
     };
     fetchMaterials();
   }, [rowsLimit]);
-
+  const { material } = useSelector((state) => state.material);
+  // console.log("fteched materials", material);
+  useEffect(() => {
+    if (material) {
+      setMaterialList(material);
+      setRowsToShow(material.slice(0, rowsLimit));
+    }
+  }, [material, rowsLimit]);
   const { role } = getUserAuthStatus();
   if (role === "admin") return null;
 
@@ -599,9 +602,9 @@ const Materials = () => {
           <Text>
             Showing {currentPage === 0 ? 1 : currentPage * rowsLimit + 1} to{" "}
             {currentPage === totalPage - 1
-              ? materialList.length
+              ? materialList?.length
               : (currentPage + 1) * rowsLimit}{" "}
-            of {materialList.length} entries
+            of {materialList?.length} entries
           </Text>
           <HStack spacing={2}>
             <Button

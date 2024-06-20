@@ -67,9 +67,9 @@ const Employees = () => {
       }
 
       if (url) {
-        dispatch(fetchUsers(url));
+        await dispatch(fetchUsers(url));
       } else {
-        setError("Invalid role");
+        setError("Error Occured during Fetching Users");
       }
     };
 
