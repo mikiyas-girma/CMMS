@@ -34,12 +34,25 @@ import { useUser } from "../utils/UserContext";
 import { updateProfile } from "../utils/auth";
 import { fetchUser } from "../redux/Slice/userSlice";
 import { useDispatch } from "react-redux";
+import { handleBlurEmail,
+         handleBlurName,
+         handleBlurPhone
+ } from "../utils/validateLogin";
+
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
   const dispatch = useDispatch();
   const [editedUser, setEditteduser] = useState(user);
+  const [email, setEmail] = useState(editedUser.email);
+  const [emailError, setEmailError] = useState("");
+  const [Fname, setFname] = useState(editedUser.Fname);
+  const [Lname, setLname] = useState(editedUser.Lname);
+  const [FnameError, setFNameError] = useState("");
+  const [LnameError, setLNameError] = useState("");
+  const [phone, setPhone] = useState(editedUser.phone);
+  const [phoneError, setPhoneError] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [preview, setPreview] = useState(null);
   const inputRef = useRef();
@@ -76,6 +89,11 @@ const Profile = () => {
       // updateImageOnServer(file);
     }
   };
+
+    const hasValidationErrors = () => {
+        return FnameError || LnameError || emailError || phoneError;
+    };
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setUploading(true);
@@ -178,8 +196,12 @@ const Profile = () => {
                         Fname: e.target.value,
                       })
                     }
+                    onBlur={(e) => handleBlurName(e, setFNameError)}
                   />
                 </FormControl>
+                {FnameError && (
+                  <p className="text-red-700 p-2 rounded w-full">{FnameError}</p>
+                )}
                 <FormControl mt={4}>
                   <FormLabel>Last Name</FormLabel>
                   <Input
@@ -192,8 +214,12 @@ const Profile = () => {
                         Lname: e.target.value,
                       })
                     }
+                    onBlur={(e) => handleBlurName(e, setLNameError)}
                   />
                 </FormControl>
+                {LnameError && (
+                    <p className="text-red-700 p-2 rounded w-full">{LnameError}</p>
+                )}
                 <FormControl mt={4}>
                   <FormLabel>Email</FormLabel>
                   <Input
@@ -207,22 +233,31 @@ const Profile = () => {
                         email: e.target.value,
                       })
                     }
+                    onBlur={(e) => handleBlurEmail(e, setEmailError)}
                   />
                 </FormControl>
+                {emailError && (
+                    <p className="text-red-700 p-2 rounded w-full">{emailError}</p>
+                )}
                 <FormControl mt={4}>
                   <FormLabel>Phone</FormLabel>
                   <Input
                     name="phone"
                     defaultValue={user?.phone}
                     required
-                    onChange={(e) =>
+                    onChange={(e) => {
+                        console.log("phone in now", e.target.value);
                       setEditteduser({
                         ...editedUser,
                         phone: e.target.value,
                       })
-                    }
+                    }}
+                    onBlur={(e) => handleBlurPhone(e, setPhoneError)}
                   />
                 </FormControl>
+                {phoneError && (
+                    <p className="text-red-700 p-2 rounded w-full">{phoneError}</p>
+                )}
               </ModalBody>
               <ModalFooter>
                 <div>
@@ -237,7 +272,7 @@ const Profile = () => {
                         colorScheme="blue"
                         mr={3}
                         type="submit"
-                        disabled={upLoading}
+                        isDisabled={hasValidationErrors() || upLoading}
                       >
                         {upLoading ? <PulseLoader color="#FFFFFF" /> : "Update"}
                       </Button>
