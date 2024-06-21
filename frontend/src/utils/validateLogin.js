@@ -15,6 +15,11 @@ export function validateName(name) {
   return re.test(name);
 }
 
+export function validateLName(Lname) {
+  const re = /^[a-zA-Z]{2,30}$/;
+  return re.test(Lname);
+}
+
 export function validatePhone(phone) {
     const re = /^(0(9|7)\d{8})$/;
     return re.test(phone);
@@ -42,7 +47,7 @@ export function handleBlurPassword(e, setPasswordError) {
 
 export function handleBlurName(e, setNameError) {
   if (!validateName(e.target.value)) {
-    setNameError("Name should be > 2 characters");
+    setNameError("Name should be atleast 2 characters");
     // setTimeout(() => setNameError(""), 2000);
   } else {
     setNameError("");

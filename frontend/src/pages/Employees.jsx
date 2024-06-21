@@ -37,11 +37,27 @@ import { useDispatch, useSelector } from "react-redux";
 const EditUserModal = React.lazy(() =>
   import("../components/employee/EditUserModal")
 );
+import { handleBlurEmail,
+         handleBlurName,
+         handleBlurPhone,
+         validateEmail,
+         validateName,
+         validateLName,
+         validatePhone
+ } from "../utils/validateLogin";
 
 const Employees = () => {
   const [edit, setEdit] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [Fname, setFname] = useState("");
+  const [Lname, setLname] = useState("");
+  const [FnameError, setFNameError] = useState("");
+  const [LnameError, setLNameError] = useState("");
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
   const isMediumScreen = useBreakpointValue({ base: false, md: true });
@@ -76,13 +92,54 @@ const Employees = () => {
     fetchUserData();
   }, [role]);
   const { userData, numberofuser } = useSelector((state) => state.user);
-  const handleSubmit = (e) => {
-    onClose();
-    e.preventDefault();
-    setSubmittedData(edit);
 
-    console.log("formData", edit);
-    return <FormSubmitted data={edit} />;
+  const hasValidationErrors = () => {
+    return FnameError || LnameError || emailError || phoneError;
+    };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let hasError = false;
+
+    if (!validateName(edit.Fname)) {
+        setFNameError("Name should be atleast 2 characters");
+        hasError = true;
+    } else {
+        setFNameError("");
+    }
+
+    if (!validateLName(edit.Lname)) {
+        console.log("edit.Lname", edit.Lname);
+        setLNameError("Name should be atleast 2 characters");
+        hasError = true;
+    } else {
+        setLNameError("");
+    }
+
+    if (!validateEmail(edit.email)) {
+        setEmailError("Please enter valid email");
+        hasError = true;
+    } else {
+        setEmailError("");
+    }
+
+    if (!validatePhone(edit.phone)) {
+        setPhoneError("valid format: 09XXXXXXXX or 07XXXXXXXX");
+        hasError = true;
+    } else {
+        setPhoneError("");
+    }
+
+    if (!hasError) {
+
+        setSubmittedData(edit);
+        onClose();
+    
+        console.log("formData", edit);
+        return <FormSubmitted data={edit} />;
+    }
+
   };
 
   const handleDelete = (id) => {
@@ -176,9 +233,15 @@ const Employees = () => {
                       value={edit.Fname}
                       onChange={(e) =>
                         setEdit({ ...edit, Fname: e.target.value })
+
                       }
+                      onBlur={(e) => handleBlurName(e, setFNameError)}
                     />
                   </FormControl>
+
+                  {FnameError && (
+                  <p className="text-red-700 p-2 rounded w-full">{FnameError}</p>
+                )}
                   <FormControl mt={4}>
                     <FormLabel>Last Name</FormLabel>
                     <Input
@@ -188,8 +251,12 @@ const Employees = () => {
                       onChange={(e) =>
                         setEdit({ ...edit, Lname: e.target.value })
                       }
+                      onBlur={(e) => handleBlurName(e, setLNameError)}
                     />
                   </FormControl>
+                    {LnameError && (
+                    <p className="text-red-700 p-2 rounded w-full">{LnameError}</p>
+                    )}
                   <FormControl mt={4}>
                     <FormLabel>Email</FormLabel>
                     <Input
@@ -199,8 +266,12 @@ const Employees = () => {
                       onChange={(e) =>
                         setEdit({ ...edit, email: e.target.value })
                       }
+                      onBlur={(e) => handleBlurEmail(e, setEmailError)}
                     />
                   </FormControl>
+                    {emailError && (
+                    <p className="text-red-700 p-2 rounded w-full">{emailError}</p>
+                    )}
                   <FormControl mt={4}>
                     <FormLabel>Phone</FormLabel>
                     <Input
@@ -210,12 +281,21 @@ const Employees = () => {
                       onChange={(e) =>
                         setEdit({ ...edit, phone: e.target.value })
                       }
+                      onBlur={(e) => handleBlurPhone(e, setPhoneError)}
                     />
                   </FormControl>
+                    {phoneError && (
+                    <p className="text-red-700 p-2 rounded w-full">{phoneError}</p>
+                    )}
                 </form>
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+                <Button
+                    colorScheme="blue"
+                    mr={3} 
+                    onClick={handleSubmit}
+                    isDisabled={hasValidationErrors()}
+                >
                   {edit.id ? "Update" : "Add"}
                 </Button>
                 <Button onClick={onClose}>Cancel</Button>
