@@ -135,3 +135,18 @@ export const updateMaterial = async (url, editedMaterial) => {
     };
   }
 };
+
+export const getSaleMaterialreport = async () => {
+  try {
+    const { data } = await apiInstance.get(`/materials/getsalereport`);
+
+    console.log("data", data);
+    return { data, error: null };
+  } catch (error) {
+    console.log("error", error.response?.data);
+    return {
+      data: null,
+      error: error.response?.data?.message || "Something went wrong",
+    };
+  }
+};

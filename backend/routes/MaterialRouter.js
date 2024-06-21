@@ -13,6 +13,7 @@ import {
   withdrawAndUpdateQuantities,
   GetReportOfHowManyMaterialsAdded,
   GetReportOfHowManyMaterialsRemoved,
+  GetReportOfMaterialSale,
 } from "../Controller/MaterialController.js";
 
 const MaterialRouter = express.Router();
@@ -28,6 +29,11 @@ MaterialRouter.route("/")
     resizeMaterialPhoto,
     createMaterial
   );
+MaterialRouter.route("/getsalereport").get(
+  restrictTo("employee", "storeOwner"),
+  GetReportOfMaterialSale
+);
+
 MaterialRouter.route("/addedmaterialreport").post(
   restrictTo("employee", "storeOwner"),
   GetReportOfHowManyMaterialsAdded

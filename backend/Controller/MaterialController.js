@@ -357,3 +357,76 @@ export const GetReportOfHowManyMaterialsRemoved = asyncHandler(
     });
   }
 );
+
+export const GetReportOfMaterialSale = asyncHandler(async (req, res) => {
+  const startDate = new Date("2022-01-01"); // Adjust this to the earliest date in your dataset
+  const currentDate = new Date();
+  const monthNames = [
+    "",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const report = await QuantityChange.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: startDate, $lte: currentDate },
+        changeType: "withdraw",
+      },
+    },
+    {
+      $lookup: {
+        from: "materials",
+        localField: "material",
+        foreignField: "_id",
+        as: "materialDetails",
+      },
+    },
+    {
+      $unwind: "$materialDetails",
+    },
+    {
+      $group: {
+        _id: {
+          category: "$materialDetails.category",
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        },
+        totalQuantity: { $sum: "$quantity" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        category: "$_id.category",
+        month: { $arrayElemAt: [monthNames, "$_id.month"] },
+        year: "$_id.year",
+        totalQuantity: 1,
+      },
+    },
+    {
+      $sort: {
+        category: 1,
+        year: 1,
+        month: 1,
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      report,
+    },
+  });
+});
