@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 import {
   Button,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   FormControl,
   FormLabel,
@@ -16,121 +15,107 @@ import {
   Grid,
   GridItem,
   Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
-import apiInstance from "../utils/axios";
 import { ScaleLoader } from "react-spinners";
 import { useUser } from "../utils/UserContext";
 
-
 const Profile = () => {
-//   const [user, setUser] = useState("");
-  const [error, setError] = useState("");
-  const [Loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const { user } = useUser();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-//   useEffect(() => {
-//     const fetchUser = async () => {
-//       try {
-//         setLoading(true);
-//         const res = await apiInstance.get("/users/me");
-//         setLoading(false);
-//         console.log("users res", res);
-//         if (res?.data?.status === "success") {
-//           setUser(res.data.data.user);
-//         } else {
-//           setError("Failed to fetch user");
-//         }
-//       } catch (error) {
-//         setError(error.response?.data?.message || "Something went wrong");
-//       }
-//     };
+  const handleUpdateProfile = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const updatedUser = Object.fromEntries(formData.entries());
+    setLoading(true);
+    // Simulate API call to update user profile
+    console.log("Updating user profile with:", updatedUser);
+    setTimeout(() => {
+      setLoading(false);
+      onClose(); // Close the modal after updating
+      // Update user context or state here with the updated information
+    }, 2000);
+  };
 
-//     fetchUser();
-//   }, []);
-  console.log("user here", user);
   return (
     <SidebarWithHeader>
-      <Box >
-      <Grid  marginLeft='50px'
-         gridTemplateColumns={{ base: '1fr', md: '1fr 1fr', lg: '1fr .5fr 0.5fr'}}
-         
-         gap={5}
-      >
-        <GridItem colSpan={{ base: 1, md: 2, lg:2 }} bg=""  p={0} boxShadow="sm">
-          <Card
-            direction={{ base: "column", sm: "row" }}
-            overflow="hidden"
-            variant="outline"
-          >
-            <Image
-              maxW={{ base: "100%", sm: "100px" }}
-              marginLeft="30px"
-              padding="15px"
-              borderRadius="full"
-              objectFit="cover"
-              src={`http://127.0.0.1:3000/public/img/users/${user?.image}`}
-              alt={user?.Fname}
-            />
-
-            <Stack>
-              <CardBody>
-                <Heading size="md">
-                  {" "}
-                  {Loading ? (
-                    <ScaleLoader color="#36d7b7" size={5} />
-                  ) : (
-                    `${user?.Fname} ${user?.Lname}`
-                  )}
-                </Heading>
-
-                <Text py="2">{user?.email}</Text>
-              </CardBody>
-            </Stack>
-          </Card>
-        </GridItem>
-        <GridItem colSpan={{ base: 1, md: 2, lg:2 }} bg=""  p={0} boxShadow="sm">
-          <Card>
-            <CardBody>
-              <CardFooter>
-                <Text fontSize="20px" as="b">
-                  Profile Information
-                </Text>
-              </CardFooter>
-              <Text fontSize="17px">
-                Full Name: {user?.Fname} {user?.Lname}
-              </Text>
-              <Text fontSize="17px">Email: {user?.email}</Text>
-              <Text fontSize="17px">Country: Ethiopia</Text>
-              <Text fontSize="17px">Mobile:{user?.phone}</Text>
-            </CardBody>
-          </Card>
-        </GridItem>
-        <GridItem colSpan={{ base: 1, md: 2, lg:2 }} bg=""  p={0} boxShadow="sm">
-          <Card>
-            <CardBody>
+      <Box p={5}>
+        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+          <GridItem colSpan={[3, 3, 1]}>
+            <Card>
               <CardHeader>
-                <Text fontSize="20px" as="b">
-                  Change Password
-                </Text>
+                <Image
+                  borderRadius="full"
+                  boxSize="150px"
+                  src={`http://127.0.0.1:3000/public/img/users/${user?.image}`}
+                  alt={user?.Fname}
+                  mx="auto"
+                />
               </CardHeader>
-              <FormControl isRequired>
-                <FormLabel>Current Password</FormLabel>
-                <Input placeholder="Current Password" />
-                <FormLabel>New Password</FormLabel>
-                <Input placeholder="New Password" />
-                <FormLabel>Repeat New Password</FormLabel>
-                <Input placeholder="Repeat New Password" />
-                <br></br>
-                <br></br>
-                <Button colorScheme="blue" color="white">
-                  Update Password
+              <CardBody textAlign="center">
+                <Heading size="lg">{`${user?.Fname} ${user?.Lname}`}</Heading>
+                <Text>{user?.email}</Text>
+                <Button mt={4} colorScheme="blue" onClick={onOpen}>
+                  Edit Profile
                 </Button>
-              </FormControl>
-            </CardBody>
-          </Card>
-        </GridItem>
-      </Grid>
+              </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem colSpan={[3, 3, 2]}>
+            <Card>
+              <CardBody>
+                <Heading size="md">Profile Information</Heading>
+                <Text mt={4}>Full Name: {user?.Fname} {user?.Lname}</Text>
+                <Text>Email: {user?.email}</Text>
+                <Text>Country: Ethiopia</Text>
+                <Text>Mobile: {user?.phone}</Text>
+              </CardBody>
+            </Card>
+          </GridItem>
+        </Grid>
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Update Profile</ModalHeader>
+            <ModalCloseButton />
+            <form onSubmit={handleUpdateProfile}>
+              <ModalBody pb={6}>
+                <FormControl>
+                  <FormLabel>First Name</FormLabel>
+                  <Input name="Fname" defaultValue={user?.Fname} required />
+                </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Last Name</FormLabel>
+                  <Input name="Lname" defaultValue={user?.Lname} required />
+                </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Email</FormLabel>
+                  <Input name="email" type="email" defaultValue={user?.email} required />
+                </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Phone</FormLabel>
+                  <Input name="phone" defaultValue={user?.phone} required />
+                </FormControl>
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} type="submit" isLoading={loading}>
+                  Save
+                </Button>
+                <Button onClick={onClose}>Cancel</Button>
+              </ModalFooter>
+            </form>
+          </ModalContent>
+        </Modal>
       </Box>
     </SidebarWithHeader>
   );
