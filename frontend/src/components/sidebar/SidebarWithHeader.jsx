@@ -54,7 +54,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
     { name: "Materials", icon: FiTrendingUp, id: 2, to: "/materials" },
     { name: "Employees", icon: HiUsers, id: 3, to: "/users" },
     { name: "Reports", icon: BiSolidReport, id: 4, to: "/reports" },
-    { name: "Settings", icon: FiSettings, id: 5, to: "/settings" },
+    // { name: "Settings", icon: FiSettings, id: 5, to: "/settings" },
   ];
   const { role } = getUserAuthStatus();
   if (role === "admin") {
@@ -293,7 +293,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-      
+
       <Text
         display={{ base: "flex", md: "none" }}
         fontSize="2xl"
@@ -347,7 +347,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <MenuItem as={Link} to="/profile">
                 Profile
               </MenuItem>
-              <MenuItem as={Link} to="/updatepassword">UpdatePassword</MenuItem>
+              <MenuItem as={Link} to="/updatepassword">
+                UpdatePassword
+              </MenuItem>
               <MenuDivider />
               <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
             </MenuList>

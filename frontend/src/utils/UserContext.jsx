@@ -1,54 +1,61 @@
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import apiInstance from './axios'; // Assuming you have an API instance set up
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "../redux/Slice/userSlice";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loginAttempted, setLoginAttempted] = useState(false);
+  const dispatch = useDispatch();
 
-  const fetchUser = async () => {
-    // Only set loading to true if it's currently false
-    if (!loading) setLoading(true);
-    try {
-      const res = await apiInstance.get('/users/me');
-      if (res?.data?.status === 'success') {
-        setUser(res.data.data.user);
-      }
-    } catch (error) {
-      console.error("Failed to fetch user", error);
-    } finally {
-      // Always set loading to false after the fetch operation completes
-      setLoading(false);
-    }
-  };
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
-    fetchUser();
-  }, []);
+    const fetchUserData = async () => {
+      if (!loading) setLoading(true);
+      try {
+        await dispatch(fetchUser());
+      } catch (error) {
+        console.error("Failed to fetch user", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!loginAttempted) {
+      fetchUserData();
+    }
+  }, [dispatch, loginAttempted]);
 
   const resetUser = () => {
-    setUser(null);
-  }
+    setLoginAttempted(false); // Ensure loginAttempted is reset when user is reset
+  };
 
   const triggerLoginAttempt = async () => {
     setLoginAttempted(true);
-    await fetchUser();
+    await dispatch(fetchUser());
   };
 
   // Memoize the context value to prevent unnecessary re-renders
-  const contextValue = useMemo(() => ({
-    user,
-    loading,
-    resetUser,
-    triggerLoginAttempt
-  }), [user, resetUser, triggerLoginAttempt]);
+  const contextValue = useMemo(
+    () => ({
+      user,
+      loading,
+      resetUser,
+      triggerLoginAttempt,
+    }),
+    [user, loading]
+  );
 
   return (
-    <UserContext.Provider value={contextValue}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 };
 
