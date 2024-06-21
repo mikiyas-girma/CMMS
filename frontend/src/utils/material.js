@@ -150,3 +150,17 @@ export const getSaleMaterialreport = async () => {
     };
   }
 };
+export const getAddeAndREmovedMaterialReport = async () => {
+  try {
+    const { data } = await apiInstance.get(`/materials/getaddeandremoved`);
+
+    console.log("data", data);
+    return { data, error: null };
+  } catch (error) {
+    console.log("error", error.response?.data);
+    return {
+      data: null,
+      error: error.response?.data?.message || "Something went wrong",
+    };
+  }
+};

@@ -33,16 +33,25 @@ const LineChart = () => {
 
   // Function to accumulate monthly quantities based on category
   const getMonthlyQuantities = (category) => {
-    const quantities = Array(12).fill(0); // Initialize quantities array for all months with zeros
+    const quantities = Array(12).fill(null); // Initialize quantities array for all months with null
 
     data?.forEach((item) => {
       if (item.category === category) {
         const monthIndex = new Date(`${item.month} 1, ${item.year}`).getMonth();
         if (monthIndex !== -1) {
-          quantities[monthIndex] += item.totalQuantity;
+          quantities[monthIndex] =
+            (quantities[monthIndex] || 0) + item.totalQuantity;
         }
       }
     });
+
+    // Get the current month index (0-11)
+    const currentMonth = new Date().getMonth();
+
+    // Set future months to null
+    for (let i = currentMonth + 1; i < 12; i++) {
+      quantities[i] = null;
+    }
 
     return quantities;
   };
