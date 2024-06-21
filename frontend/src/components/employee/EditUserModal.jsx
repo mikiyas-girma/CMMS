@@ -36,7 +36,20 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
   const [backenderror, setBakendError] = useState("");
   const [loading, setloading] = useState("");
   const [backerror, setBackError] = useState("");
+  const [showError, setShowError] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (backerror) {
+        setShowError(true);
+        const timer = setTimeout(() => {
+          setBackError("");
+          setShowError(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }
+  }, [backerror]);
 
   useEffect(() => {
     setEditedUser(user); // Update the state when the user prop changes
@@ -174,6 +187,9 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
           {emailError && (
                   <p className="text-red-700 p-2 rounded w-full">{emailError}</p>
                 )}
+          {showError && backerror && (
+                  <p className="text-red-700 p-2 rounded w-full">{backerror}</p>
+                )}
 
           <FormControl mt={1}>
             <FormLabel>Phone</FormLabel>
@@ -198,7 +214,8 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
             <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
               {backenderror}
             </p>
-          )}
+          )
+          }
           {!backenderror && (
             <Button
               onClick={handleButtonClick}
@@ -217,12 +234,8 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
           )}
 
           <div>
-            {backerror && (
-              <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full">
-                {backerror}
-              </p>
-            )}
-            {!backerror && (
+
+            {(
               <>
                 <Button
                   colorScheme="blue"
