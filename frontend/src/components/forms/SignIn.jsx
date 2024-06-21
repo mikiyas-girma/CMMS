@@ -44,25 +44,25 @@ const SignIn = forwardRef((props, ref) => {
 
   const [passwordError, setPasswordError] = useState("");
 
-  const handleSignIn = (e) => {
-    e.preventDefault();
+//   const handleSignIn = (e) => {
+//     e.preventDefault();
 
-    const emailError = validateEmail(email) ? "" : "Please enter valid email";
-    const passwordError = validatePassword(password)
-      ? ""
-      : "Password should be > 5 characters";
+//     const emailError = validateEmail(email) ? "" : "Please enter valid email";
+//     const passwordError = validatePassword(password)
+//       ? ""
+//       : "Password should be > 5 characters";
 
-    setEmailError(emailError);
-    setPasswordError(passwordError);
+//     setEmailError(emailError);
+//     setPasswordError(passwordError);
 
-    if (emailError || passwordError) {
-      setTimeout(() => {
-        setEmailError("");
-        setPasswordError("");
-      }, 100);
-      return;
-    }
-  };
+//     if (emailError || passwordError) {
+//       setTimeout(() => {
+//         setEmailError("");
+//         setPasswordError("");
+//       }, 100);
+//       return;
+//     }
+//   };
 
   let response = {};
 

@@ -17,11 +17,23 @@ import { PulseLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { fetchUsers } from "../../redux/Slice/userSlice";
 import validateUserInfo from "../../utils/validateUserInfo";
+import { handleBlurEmail,
+         handleBlurName,
+         handleBlurPhone
+ } from "../../utils/validateLogin";
 // import { Navigate } from "react-router-dom";
 
 const EditUserModal = ({ user, isOpen, onClose }) => {
   const [editedUser, setEditedUser] = useState(user);
   const [Loading, setLoading] = useState("");
+  const [email, setEmail] = useState(editedUser.email);
+  const [emailError, setEmailError] = useState("");
+  const [Fname, setFname] = useState(editedUser.Fname);
+  const [Lname, setLname] = useState(editedUser.Lname);
+  const [FnameError, setFNameError] = useState("");
+  const [LnameError, setLNameError] = useState("");
+  const [phone, setPhone] = useState(editedUser.phone);
+  const [phoneError, setPhoneError] = useState("");
   const [backenderror, setBakendError] = useState("");
   const [loading, setloading] = useState("");
   const [backerror, setBackError] = useState("");
@@ -49,6 +61,10 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
     }
   };
   console.log("editedUser", editedUser);
+
+  const hasValidationErrors = () => {
+    return FnameError || LnameError || emailError || phoneError;
+    };
 
   const handleSubmit = async () => {
     let url = "";
@@ -124,49 +140,65 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
           <FormControl>
             <FormLabel>First Name</FormLabel>
             <Input
-              value={editedUser.Fname}
+              value={Fname}
               name="Fname"
-              onChange={handleChange}
+              onChange={(e) => {
+                setFname(e.target.value);
+                handleChange(e);
+              }}
+              onBlur={(e) => handleBlurName(e, setFNameError)}
             />
           </FormControl>
-          {validationMessages.Fname && (
-                  <p className="text-red-700 p-2 rounded w-full">{validationMessages.Fname}</p>
+          {FnameError && (
+                  <p className="text-red-700 p-2 rounded w-full">{FnameError}</p>
                 )}
 
           <FormControl mt={1}>
             <FormLabel>Last Name</FormLabel>
             <Input
-              value={editedUser.Lname}
+              value={Lname}
               name="Lname"
-              onChange={handleChange}
+              onChange={(e) => {
+                setLname(e.target.value);
+                handleChange(e);
+              }}
+              onBlur={(e) => handleBlurName(e, setLNameError)}
             />
           </FormControl>
-          {validationMessages.Lname && (
-                  <p className="text-red-700 p-2 rounded w-full">{validationMessages.Lname}</p>
+          {LnameError && (
+                  <p className="text-red-700 p-2 rounded w-full">{LnameError}</p>
                 )}
 
           <FormControl mt={1}>
             <FormLabel>Email</FormLabel>
             <Input
-              value={editedUser.email}
+              value={email}
               name="email"
-              onChange={handleChange}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                handleChange(e);
+                }}
+              onBlur={(e) => handleBlurEmail(e, setEmailError)}
             />
           </FormControl>
-          {validationMessages.email && (
-                  <p className="text-red-700 p-2 rounded w-full">{validationMessages.email}</p>
+          {emailError && (
+                  <p className="text-red-700 p-2 rounded w-full">{emailError}</p>
                 )}
 
           <FormControl mt={1}>
             <FormLabel>Phone</FormLabel>
             <Input
-              value={editedUser.phone}
+              value={phone}
               name="phone"
-              onChange={handleChange}
+              onChange={(e) => {
+                setPhone(e.target.value);
+                handleChange(e);
+              }}
+              onBlur={(e) => handleBlurPhone(e, setPhoneError)}
             />
           </FormControl>
-          {validationMessages.phone && (
-                  <p className="text-red-700 p-2 rounded w-full">{validationMessages.phone}</p>
+          {phoneError && (
+                  <p className="text-red-700 p-2 rounded w-full">{phoneError}</p>
                 )}
 
         </ModalBody>
@@ -203,10 +235,10 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
             {!backerror && (
               <>
                 <Button
-                  disable={loading}
                   colorScheme="blue"
                   mr={3}
                   onClick={handleSubmit}
+                  isDisabled={hasValidationErrors() || loading}
                 >
                   {loading ? <PulseLoader color="#FFFFFF" /> : "Save"}
                 </Button>

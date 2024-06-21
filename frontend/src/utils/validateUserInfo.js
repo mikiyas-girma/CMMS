@@ -11,8 +11,8 @@ const validateUserInfo = (name, value) => {
     case "Fname":
     case "Lname":
       // Validate names to allow letters and spaces, but don't block input
-      if (value && !/^[a-zA-Z\s]*$/.test(value)) {
-        message = "Names should only contain letters and spaces.";
+      if (!/^[a-zA-Z]*$/.test(value)) {
+        message = "Names should only contain letters.";
       }
       break;
     case "phone":
