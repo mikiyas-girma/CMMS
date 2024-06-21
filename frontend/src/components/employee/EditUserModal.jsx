@@ -16,7 +16,6 @@ import { blockUser, updateUser } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { fetchUsers } from "../../redux/Slice/userSlice";
-import validateUserInfo from "../../utils/validateUserInfo";
 import { handleBlurEmail,
          handleBlurName,
          handleBlurPhone
@@ -37,7 +36,6 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
   const [backenderror, setBakendError] = useState("");
   const [loading, setloading] = useState("");
   const [backerror, setBackError] = useState("");
-  const [validationMessages, setValidationMessages] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,19 +44,11 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const message = validateUserInfo(name, value);
 
-    setValidationMessages((prev) => ({
-        ...prev,
-        [name]: message,
-        }));
-
-    if (!message) {
       setEditedUser((prev) => ({
         ...prev,
         [name]: value,
       }));
-    }
   };
   console.log("editedUser", editedUser);
 
