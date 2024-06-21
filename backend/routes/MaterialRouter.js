@@ -14,6 +14,7 @@ import {
   GetReportOfHowManyMaterialsAdded,
   GetReportOfHowManyMaterialsRemoved,
   GetReportOfMaterialSale,
+  GetReportOfMaterialAdedAndRemoved,
 } from "../Controller/MaterialController.js";
 
 const MaterialRouter = express.Router();
@@ -33,7 +34,10 @@ MaterialRouter.route("/getsalereport").get(
   restrictTo("employee", "storeOwner"),
   GetReportOfMaterialSale
 );
-
+MaterialRouter.route("/getaddeandremoved").get(
+  restrictTo("employee", "storeOwner"),
+  GetReportOfMaterialAdedAndRemoved
+);
 MaterialRouter.route("/addedmaterialreport").post(
   restrictTo("employee", "storeOwner"),
   GetReportOfHowManyMaterialsAdded
