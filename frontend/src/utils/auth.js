@@ -237,3 +237,29 @@ export const deleteCookies = async (cookieName) => {
     };
   }
 };
+
+export const updateProfile = async (editedUser) => {
+  // console.log("eddsubmitting Material ", editedMaterial);
+  try {
+    const { data } = await apiInstance.patch(`users/updateMe`, editedUser, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log("data updated", data);
+
+    if (data?.status === "success") {
+      Toast.fire({
+        icon: "success",
+        title: "Profile Updated Successfully",
+      });
+    }
+    return { data, error: null };
+  } catch (error) {
+    console.log("Error", error);
+    return {
+      data: null,
+      error: error?.response?.data?.message || "Something went wrong",
+    };
+  }
+};

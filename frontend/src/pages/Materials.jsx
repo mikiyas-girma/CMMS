@@ -231,15 +231,15 @@ const Materials = () => {
     return item ? item.quantity : "";
   };
 
-  console.log("checkedMaterial", checkedMaterials);
-  console.log("Input", inputValues);
+  // console.log("checkedMaterial", checkedMaterials);
+  // console.log("Input", inputValues);
 
   const handleAddMaterials = async () => {
     const url = "addmaterial";
     setAddMaterialLoading(true);
     const response = await addMaterials(url, inputValues);
     setAddMaterialLoading(false);
-    console.log("response", response);
+    // console.log("response", response);
     if (response?.error) {
       setAddMaterialBakendError(response?.error);
     }
@@ -277,7 +277,7 @@ const Materials = () => {
     setAddMaterialLoading(true);
     const response = await addMaterials(url, inputValues);
     setAddMaterialLoading(false);
-    console.log("response", response);
+    // console.log("response", response);
     if (response?.error) {
       setAddMaterialBakendError(response?.error);
     }
@@ -346,12 +346,9 @@ const Materials = () => {
         setPreview(reader.result);
       };
       reader.readAsDataURL(file);
-
-      // Assuming you have some method to update the image on the server
-      // updateImageOnServer(file);
     }
   };
-  console.log("edddddddditedMaerial", editedMaterial);
+  // console.log("edddddddditedMaerial", editedMaterial);
 
   return (
     <SidebarWithHeader>
