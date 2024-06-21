@@ -6,6 +6,7 @@ const initialState = {
   error: "",
   numberofuser: "",
   userData: [],
+  user: "",
 };
 
 export const fetchUsers = createAsyncThunk(
@@ -13,6 +14,19 @@ export const fetchUsers = createAsyncThunk(
   async (url, { rejectWithValue }) => {
     try {
       const { data } = await apiInstance.get(`/users/${url}`);
+      return data;
+    } catch (e) {
+      return rejectWithValue(
+        e.response?.data?.message || "Something went wrong"
+      );
+    }
+  }
+);
+export const fetchUser = createAsyncThunk(
+  "fetchUser",
+  async (url, { rejectWithValue }) => {
+    try {
+      const { data } = await apiInstance.get("/users/me");
       return data;
     } catch (e) {
       return rejectWithValue(
@@ -37,6 +51,18 @@ export const userSlice = createSlice({
         state.numberofuser = action.payload.results;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(fetchUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.error = "";
+        state.user = action?.payload?.data?.user;
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

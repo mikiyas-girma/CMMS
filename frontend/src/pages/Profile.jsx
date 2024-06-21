@@ -32,10 +32,13 @@ import { PulseLoader } from "react-spinners";
 import { ScaleLoader } from "react-spinners";
 import { useUser } from "../utils/UserContext";
 import { updateProfile } from "../utils/auth";
+import { fetchUser } from "../redux/Slice/userSlice";
+import { useDispatch } from "react-redux";
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
+  const dispatch = useDispatch();
   const [editedUser, setEditteduser] = useState(user);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [preview, setPreview] = useState(null);
@@ -81,9 +84,9 @@ const Profile = () => {
     if (response?.error) {
       setBackError(response?.error);
     }
-    // if (response?.data?.status === "success") {
-    //   dispatch(getMaterials());
-    // }
+    if (response?.data?.status === "success") {
+      await dispatch(fetchUser());
+    }
     onClose();
   };
   console.log("updatedUser", editedUser);
