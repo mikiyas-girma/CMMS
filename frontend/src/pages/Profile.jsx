@@ -37,7 +37,7 @@ const Profile = () => {
     const formData = new FormData(event.target);
     const updatedUser = Object.fromEntries(formData.entries());
     setLoading(true);
-    // Simulate API call to update user profile
+    //  API call to update user profile
     console.log("Updating user profile with:", updatedUser);
     setTimeout(() => {
       setLoading(false);

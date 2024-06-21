@@ -16,6 +16,7 @@ import { blockUser, updateUser } from "../../utils/auth";
 import { PulseLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { fetchUsers } from "../../redux/Slice/userSlice";
+import validateUserInfo from "../../utils/validateUserInfo";
 // import { Navigate } from "react-router-dom";
 
 const EditUserModal = ({ user, isOpen, onClose }) => {
@@ -24,6 +25,7 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
   const [backenderror, setBakendError] = useState("");
   const [loading, setloading] = useState("");
   const [backerror, setBackError] = useState("");
+  const [validationMessages, setValidationMessages] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,10 +34,19 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedUser((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const message = validateUserInfo(name, value);
+
+    setValidationMessages((prev) => ({
+        ...prev,
+        [name]: message,
+        }));
+
+    if (!message) {
+      setEditedUser((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
   console.log("editedUser", editedUser);
 
@@ -118,6 +129,9 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
               onChange={handleChange}
             />
           </FormControl>
+          {validationMessages.Fname && (
+                  <p className="text-red-700 p-2 rounded w-full">{validationMessages.Fname}</p>
+                )}
 
           <FormControl mt={1}>
             <FormLabel>Last Name</FormLabel>
@@ -127,6 +141,9 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
               onChange={handleChange}
             />
           </FormControl>
+          {validationMessages.Lname && (
+                  <p className="text-red-700 p-2 rounded w-full">{validationMessages.Lname}</p>
+                )}
 
           <FormControl mt={1}>
             <FormLabel>Email</FormLabel>
@@ -136,15 +153,9 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
               onChange={handleChange}
             />
           </FormControl>
-
-          <FormControl mt={1}>
-            <FormLabel>Role</FormLabel>
-            <Input
-              value={editedUser.role}
-              name="role"
-              onChange={handleChange}
-            />
-          </FormControl>
+          {validationMessages.email && (
+                  <p className="text-red-700 p-2 rounded w-full">{validationMessages.email}</p>
+                )}
 
           <FormControl mt={1}>
             <FormLabel>Phone</FormLabel>
@@ -154,6 +165,10 @@ const EditUserModal = ({ user, isOpen, onClose }) => {
               onChange={handleChange}
             />
           </FormControl>
+          {validationMessages.phone && (
+                  <p className="text-red-700 p-2 rounded w-full">{validationMessages.phone}</p>
+                )}
+
         </ModalBody>
 
         <ModalFooter display="flex" justifyContent="space-between">
