@@ -11,8 +11,8 @@ const ThemeToggle = () => {
     return (
         <Box
             position="fixed"
-            top={7}
-            right={0}
+            top={-1}
+            left={-1}
             p={2}
             zIndex={9999}
         >
