@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import {
   Box,
   Table,
@@ -12,6 +12,7 @@ import {
   HStack,
   useColorMode,
   useColorModeValue,
+  IconButton,
 } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 
@@ -28,7 +29,7 @@ import {
   Select,
   Checkbox,
 } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 
 import SidebarWithHeader from "../components/sidebar/SidebarWithHeader";
 
@@ -328,8 +329,29 @@ const Materials = () => {
       setRowsToShow(material.slice(0, rowsLimit));
     }
   }, [material, rowsLimit]);
+  const [preview, setPreview] = useState(null);
+  const inputRef = useRef();
+
   const { role } = getUserAuthStatus();
   if (role === "admin") return null;
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setEditedMaterial({
+      ...editedMaterial,
+      image: e.target.files[0],
+    });
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+
+      // Assuming you have some method to update the image on the server
+      // updateImageOnServer(file);
+    }
+  };
+  console.log("edddddddditedMaerial", editedMaterial);
 
   return (
     <SidebarWithHeader>
@@ -470,14 +492,38 @@ const Materials = () => {
         <ModalContent>
           <ModalHeader>Edit Material </ModalHeader>
           <ModalBody>
-            <form>
-              <FormControl className="w-[400px] h-[200px] border border-gray-300 rounded-lg overflow-hidden">
+            <form encType="multipart/form-data">
+              <FormControl className="w-[300px] h-[200px] border border-gray-300 rounded-lg overflow-hidden ">
                 <Image
-                  src={`http://127.0.0.1:3000/public/img/materials/${editedMaterial.image}`}
+                  src={
+                    preview ||
+                    `http://127.0.0.1:3000/public/img/materials/${editedMaterial.image}`
+                  }
                   alt={editedMaterial.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full block mx-auto "
+                />
+                <label
+                  htmlFor="imageUpload"
+                  className="absolute bottom-2 right-2 cursor-pointer"
+                >
+                  <IconButton
+                    aria-label="Upload Image"
+                    icon={<AddIcon />}
+                    size="sm"
+                    className="bg-white shadow-md hover:bg-gray-100"
+                    onClick={() => inputRef.current.click()}
+                  />
+                </label>
+                <input
+                  id="imageUpload"
+                  type="file"
+                  ref={inputRef}
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => handleImageChange(e)}
                 />
               </FormControl>
+
               <FormControl>
                 <FormLabel>Name</FormLabel>
                 <Input

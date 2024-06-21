@@ -10,6 +10,8 @@ import Notification from "../Models/NotificationModel.js";
 import { io, getUserSocketId } from "../server.js";
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
+  // console.log("File being uploaded:", file);
+
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
@@ -21,7 +23,7 @@ const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 export const uploadMaterialPhoto = upload.single("image");
 
 export const resizeMaterialPhoto = async (req, res, next) => {
-  // console.log(req.file);
+  // console.log("req", req);
   if (!req.file) return next();
   req.file.filename = `material-${req.body.name}-${req.user.Fname}${req.user.Lname}-${Date.now()}.jpeg`;
 
@@ -72,6 +74,8 @@ export const createMaterial = asyncHandler(async (req, res) => {
   });
 });
 export const updateMaterial = asyncHandler(async (req, res, next) => {
+  // console.log("file", req.file);
+
   if (req.file) req.body.image = req.file.filename;
   const material = await Material.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

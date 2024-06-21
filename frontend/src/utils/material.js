@@ -15,6 +15,7 @@ export const registerMaterial = async (
   totalQuantity,
   minthreshold
 ) => {
+  console.log("image", image);
   try {
     const requestData = {
       name,
@@ -109,9 +110,14 @@ export const generatereport = async (url, start, upto) => {
   }
 };
 
-export const updateMaterial = async (url, editedUser) => {
+export const updateMaterial = async (url, editedMaterial) => {
+  // console.log("eddsubmitting Material ", editedMaterial);
   try {
-    const { data } = await apiInstance.patch(url, editedUser);
+    const { data } = await apiInstance.patch(url, editedMaterial, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     console.log("data updated", data);
 
     if (data?.status === "success") {
