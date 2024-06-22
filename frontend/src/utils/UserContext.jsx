@@ -15,8 +15,6 @@ export const UserProvider = ({ children }) => {
   const [loginAttempted, setLoginAttempted] = useState(false);
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.user);
-
   useEffect(() => {
     const fetchUserData = async () => {
       if (!loading) setLoading(true);
@@ -37,6 +35,7 @@ export const UserProvider = ({ children }) => {
   const resetUser = () => {
     setLoginAttempted(false); // Ensure loginAttempted is reset when user is reset
   };
+  const { user } = useSelector((state) => state.user);
 
   const triggerLoginAttempt = async () => {
     setLoginAttempted(true);

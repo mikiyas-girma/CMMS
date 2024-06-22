@@ -289,6 +289,39 @@ export const getme = asyncHandler(async (req, res, next) => {
   next();
 });
 
+export const getStoreOwnersStatistics = asyncHandler(async (req, res, next) => {
+  const results = await StoreOwner.aggregate([
+    {
+      $facet: {
+        totalStoreOwners: [{ $count: "total" }],
+        totalActiveStoreOwners: [
+          { $match: { status: "active" } },
+          { $count: "total" },
+        ],
+        totalInactiveStoreOwners: [
+          { $match: { status: "inactive" } },
+          { $count: "total" },
+        ],
+      },
+    },
+  ]);
+
+  const stats = {
+    totalStoreOwners: results[0].totalStoreOwners[0]?.total || 0,
+    totalActiveStoreOwners: results[0].totalActiveStoreOwners[0]?.total || 0,
+    totalInactiveStoreOwners:
+      results[0].totalInactiveStoreOwners[0]?.total || 0,
+  };
+
+  // return stats;
+  res.status(200).json({
+    status: "success",
+    data: {
+      stats,
+    },
+  });
+});
+
 // export const RegisterStoreOwner = async (req, res) => {
 //   req.body.role = "storeOwner";
 //   try {

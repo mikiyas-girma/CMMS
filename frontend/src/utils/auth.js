@@ -263,3 +263,18 @@ export const updateProfile = async (editedUser) => {
     };
   }
 };
+
+export const getStoreOnwerStats = async () => {
+  try {
+    const { data } = await apiInstance.get(`/users/getstoreOwnerstatistics`);
+
+    console.log("data", data);
+    return { data, error: null };
+  } catch (error) {
+    console.log("error", error.response?.data);
+    return {
+      data: null,
+      error: error.response?.data?.message || "Something went wrong",
+    };
+  }
+};

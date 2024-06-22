@@ -18,6 +18,7 @@ import {
   DeleteEmployee,
   BlockEmployee,
   UnBlockEmployee,
+  getStoreOwnersStatistics,
 } from "../Controller/userController.js";
 import {
   login,
@@ -49,6 +50,10 @@ userRouter
   .route("/storeOwner")
   .get(restrictTo("admin"), getAllStoreOwner)
   .post(restrictTo("admin"), RegisterStoreOwner);
+userRouter
+  .route("/getstoreOwnerstatistics")
+  .get(restrictTo("admin"), getStoreOwnersStatistics);
+
 userRouter
   .route("/storeOwner/:id")
   .patch(restrictTo("admin"), checkPasswordUpdate, UpdateStoreOwner)
