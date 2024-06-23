@@ -1,4 +1,4 @@
-const Notification = () => {
+ const Notification = () => {
   const notifications = [
     {
       user: { name: "John" },
@@ -70,8 +70,8 @@ const Notification = () => {
             <div className="ml-3 w-0 flex-1 pt-0.5">
               <p className="text-sm leading-5 font-medium text-gray-900">
                 {notification.user.name}, Material {notification.materialName}{" "}
-                quantity is {notification.quantity}. Please reorder.
-              </p>
+                quantity is {notification.quantity}. Please reorde
+               </p>
             </div>
           </div>
           <div className="flex justify-end">
