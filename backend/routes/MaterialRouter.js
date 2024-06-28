@@ -46,11 +46,6 @@ MaterialRouter.route("/removedmaterialreport").post(
   restrictTo("employee", "storeOwner"),
   GetReportOfHowManyMaterialsRemoved
 );
-MaterialRouter.use(restrictTo("employee"));
-
-MaterialRouter.route("/addmaterial").post(insertAndUpdateQuantities);
-MaterialRouter.route("/withdrawmaterial").post(withdrawAndUpdateQuantities);
-
 MaterialRouter.route("/material/:id")
   .patch(
     restrictTo("employee", "storeOwner"),
@@ -60,5 +55,9 @@ MaterialRouter.route("/material/:id")
   )
   .delete(deleteMaterial)
   .get(getMaterialById);
+MaterialRouter.use(restrictTo("employee"));
+
+MaterialRouter.route("/addmaterial").post(insertAndUpdateQuantities);
+MaterialRouter.route("/withdrawmaterial").post(withdrawAndUpdateQuantities);
 
 export default MaterialRouter;
