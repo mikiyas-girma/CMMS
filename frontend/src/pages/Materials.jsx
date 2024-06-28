@@ -91,6 +91,8 @@ const Materials = () => {
   const [AddMaterialLoading, setAddMaterialLoading] = useState("");
   const [editedMaterial, setEditedMaterial] = useState("");
   const [EditMaterialModal, setEditMaterialModal] = useState(false);
+  const [checkedMaterialsByPage, setCheckedMaterialsByPage] = useState({});
+
   useEffect(() => {
     const totalPages = Math.ceil(materialList.length / rowsLimit);
     settotalPage(totalPages);
@@ -202,15 +204,21 @@ const Materials = () => {
   };
 
   const handleCheckboxChange = (e, id) => {
-    const isChecked = checkedMaterials.includes(id);
-    if (isChecked) {
-      setCheckedMaterials(checkedMaterials.filter((item) => item !== id));
-      setInputValues(inputValues.filter((item) => item.material !== id));
+    const updatedCheckedMaterials = { ...checkedMaterialsByPage };
+    const currentPageMaterials = updatedCheckedMaterials[currentPage] || [];
+
+    if (currentPageMaterials.includes(id)) {
+      updatedCheckedMaterials[currentPage] = currentPageMaterials.filter(
+        (item) => item !== id
+      );
     } else {
-      setCheckedMaterials([...checkedMaterials, id]);
+      updatedCheckedMaterials[currentPage] = [...currentPageMaterials, id];
     }
+
+    setCheckedMaterialsByPage(updatedCheckedMaterials);
   };
 
+  // console.log("Cheked Materials", checkedMaterials);
   const handleQuantityChange = (e, material) => {
     const { value } = e.target;
 
@@ -662,10 +670,15 @@ const Materials = () => {
                           id={data._id}
                           borderColor={borderColor}
                           onChange={(e) => handleCheckboxChange(e, data._id)}
+                          isChecked={(
+                            checkedMaterialsByPage[currentPage] || []
+                          ).includes(data._id)}
                         />
                       </Td>
 
-                      {checkedMaterials.includes(data._id.toString()) && (
+                      {(checkedMaterialsByPage[currentPage] || []).includes(
+                        data._id
+                      ) && (
                         <Td>
                           <Input
                             type="number"
