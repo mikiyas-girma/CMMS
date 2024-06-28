@@ -135,6 +135,7 @@ const Reports = () => {
             <div className="flex">
               {startDate <= endDate && (
                 <Button
+                  onClick={handleGenerateReport}
                   colorScheme="teal"
                   variant="solid"
                   width={{ base: "100%", sm: "auto" }}

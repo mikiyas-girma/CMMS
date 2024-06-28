@@ -214,34 +214,6 @@ const Notification = () => {
             </CardBody>
           )}
         </Card>
-        <Box display={showSendForm ? "block" : "none"}>
-          <FormControl as="form" onSubmit={handleSendFormSubmit}>
-            <FormLabel>Message</FormLabel>
-            <Input
-              id="message"
-              type="text"
-              placeholder="enter your message here"
-              required
-            />
-            <Button m={2} type="submit">
-              <MdSend />
-            </Button>
-            <Button
-              onClick={() => {
-                setShowSendForm(false);
-                setIsDetailVisible(false);
-              }}
-            >
-              <MdOutlineCancel />
-            </Button>
-          </FormControl>
-        </Box>
-        <Box>
-          <Button m={2}>Mark all as Read</Button>
-          <Button m={2} onClick={handleSendNotificationClick}>
-            Send Message
-          </Button>
-        </Box>
       </Flex>
     </SidebarWithHeader>
   );
