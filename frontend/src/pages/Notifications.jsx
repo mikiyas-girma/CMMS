@@ -151,6 +151,10 @@ const Notification = () => {
   if (notifications?.length === 0) {
     return <p className="text-gray-500 text-center py-4">No Notifications</p>;
   }
+  notifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  console.log("Notifications");
+
+  console.log("Notifications", notifications);
 
   return (
     <SidebarWithHeader>

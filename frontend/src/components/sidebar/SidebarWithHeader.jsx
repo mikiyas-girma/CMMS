@@ -233,17 +233,17 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
     getunviewedNotification();
   }, [userId]); // Empty dependency array ensures this runs only once
-  console.log(("notViewedLength", notViewedLength));
+  // console.log(("notViewedLength", notViewedLength));
 
-  console.log("NotViwednotifications", NotVnotifications);
-  console.log("RecentNot", recentnotifications);
+  // console.log("NotViwednotifications", NotVnotifications);
+  // console.log("RecentNot", recentnotifications);
 
   const navigate = useNavigate();
   const recentotificationIds = recentnotifications.map(
     (notification) => notification.notificationId
   );
 
-  console.log("recentnotificationIds", recentotificationIds);
+  // console.log("recentnotificationIds", recentotificationIds);
   const markAsViewed = async () => {
     const notificationIds = NotVnotifications.map(
       (notification) => notification._id
