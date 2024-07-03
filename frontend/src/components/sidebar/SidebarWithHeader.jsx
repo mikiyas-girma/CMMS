@@ -186,9 +186,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
       socket.current.disconnect();
     };
   }, [userId]);
-  console.log("notificationsSocket", notifications);
+  // console.log("notificationsSocket", notifications);
 
-  console.log("OnlineUseers", onlineUsers);
+  // console.log("OnlineUseers", onlineUsers);
   //   const [user, setUser] = useState("");
 
   useEffect(() => {
@@ -236,14 +236,19 @@ const MobileNav = ({ onOpen, ...rest }) => {
   console.log(("notViewedLength", notViewedLength));
 
   console.log("NotViwednotifications", NotVnotifications);
+  console.log("RecentNot", recentnotifications);
 
   const navigate = useNavigate();
+  const recentotificationIds = recentnotifications.map(
+    (notification) => notification.notificationId
+  );
+
+  console.log("recentnotificationIds", recentotificationIds);
   const markAsViewed = async () => {
     const notificationIds = NotVnotifications.map(
       (notification) => notification._id
     );
 
-    console.log("notificationIds", notificationIds);
     try {
       if (NotVnotifications.length > 0) {
         await apiInstance.patch("/notifications/markAsViewed", {
@@ -251,8 +256,16 @@ const MobileNav = ({ onOpen, ...rest }) => {
           notificationIds,
         });
       }
+      if (recentnotifications.length > 0) {
+        await apiInstance.patch("/notifications/markAsViewed", {
+          userId,
+          notificationIds: recentotificationIds,
+        });
+        // console.log("Recent notifications marked as viewed.");
+      }
       setRecentNotifications([]);
       setNotVNotifications([]);
+      setnotViewedLength("");
 
       // console.log("Notifications marked as viewed:", response.data);
     } catch (error) {
@@ -310,9 +323,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
             variant="ghost"
             aria-label="open menu"
             icon={<FiBell />}
-            onClick={() =>
-              navigate("/notification", { state: { notifications } })
-            }
+            onClick={() => {
+              navigate("/notification", { state: { notifications } });
+            }}
           />
           {(recentnotifications?.length > 0 || notViewedLength > 0) &&
             role !== "admin" && (

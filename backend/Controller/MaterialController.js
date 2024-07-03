@@ -231,6 +231,7 @@ export const withdrawAndUpdateQuantities = asyncHandler(
 
               if (socketId) {
                 io.to(socketId).emit("newNotification", {
+                  notificationId: notification._id,
                   from: notification.from,
                   text: notification.text,
                 });
