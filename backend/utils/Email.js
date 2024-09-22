@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 // import nodemailerSendgrid from "nodemailer-sendgrid";
+import PostmarkTransport from "nodemailer-postmark-transport";
 import { htmlToText } from "html-to-text";
 
 export class Email {
@@ -12,16 +13,25 @@ export class Email {
 
   newTransport() {
     if (process.env.NODE_ENV === "production") {
-      // SendGrid
-
-      return nodemailer.createTransport({
-        host: "smtp.sendgrid.net",
-        port: 587,
-        auth: {
-          user: "apikey",
-          pass: process.env.SENDGRID_API_KEY,
-        },
-      });
+      if (process.env.EMAIL_SERVICE === "postmark") {
+        return nodemailer.createTransport(
+          PostmarkTransport({
+            auth: {
+              apiKey: process.env.POSTMARK_API_KEY,
+            },
+          })
+        );
+      } else {
+        // SendGrid
+        return nodemailer.createTransport({
+          host: "smtp.sendgrid.net",
+          port: 587,
+          auth: {
+            user: "apikey",
+            pass: process.env.SENDGRID_API_KEY,
+          },
+        });
+      }
     }
 
     return nodemailer.createTransport({
@@ -46,8 +56,15 @@ export class Email {
       text,
     };
 
+    try {
+      await this.newTransport().sendMail(mailOptions);
+    } catch (err) {
+      console.log("Error in sending mail", mailOptions);
+      console.log("Error", err);
+    }
+
     // Create a transport and send email
-    await this.newTransport().sendMail(mailOptions);
+    // await this.newTransport().sendMail(mailOptions);
   }
 
   async sendWelcome(pass) {

@@ -80,6 +80,7 @@ export const register = async (
 ) => {
   // console.log("data", Fname, Lname, email, phone, password, passwordConfirm);
   const { role } = getUserAuthStatus();
+  console.log("now role is : ", role);
   let url = "";
 
   if (role === "admin") {
